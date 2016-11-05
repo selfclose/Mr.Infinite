@@ -15,7 +15,6 @@ class RedBeanController
         else {
             $this->dataModel = \R::dispense($this->table);
         }
-
     }
 
     /**
@@ -44,12 +43,17 @@ class RedBeanController
 
     public function insertAction()
     {
-
+        if ($this->id > 0) {
+            throw new \Exception("Insert don't need ID, it's auto increase");
+        }
         return \R::store($this->dataModel);
     }
 
     public function updateAction()
     {
+        if (!$this->id > 0) {
+            throw new \Exception("Update Need ID (please put id when you new class");
+        }
         return \R::store($this->dataModel);
     }
 
