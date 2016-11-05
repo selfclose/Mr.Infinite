@@ -4,6 +4,7 @@ use RB\Controller\RedBeanController;
 
 /**
  * Class Book
+ * @property int id
  * @property string name
  */
 class Book extends RedBeanController

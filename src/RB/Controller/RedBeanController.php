@@ -3,14 +3,14 @@ namespace RB\Controller;
 
 class RedBeanController
 {
-    protected $id;
+    protected $tableId;
     protected $table;
     public $dataModel;
 
-    function __construct($id = 0)
+    function __construct($tableId = 0)
     {
-        if ($id > 0) {
-            $this->id = $id;
+        if ($tableId > 0) {
+            $this->tableId = $tableId;
         }
         else {
             $this->dataModel = \R::dispense($this->table);
@@ -22,7 +22,7 @@ class RedBeanController
      */
     public function getId()
     {
-        return $this->id;
+        return $this->dataModel->id;
     }
 
     /**
@@ -43,7 +43,7 @@ class RedBeanController
 
     public function insertAction()
     {
-        if ($this->id > 0) {
+        if ($this->tableId > 0) {
             throw new \Exception("Insert don't need ID, it's auto increase");
         }
         return \R::store($this->dataModel);
@@ -51,7 +51,7 @@ class RedBeanController
 
     public function updateAction()
     {
-        if (!$this->id > 0) {
+        if (!$this->tableId > 0) {
             throw new \Exception("Update Need ID (please put id when you new class");
         }
         return \R::store($this->dataModel);
@@ -59,7 +59,7 @@ class RedBeanController
 
     public function readAction()
     {
-        $this->dataModel = \R::load($this->table, $this->id);
+        $this->dataModel = \R::load($this->table, $this->tableId);
     }
 
     /**
@@ -74,7 +74,7 @@ class RedBeanController
 
     public function deleteAction()
     {
-        return \R::trash($this->table, $this->id);
+        return \R::trash($this->table, $this->tableId);
     }
 
     /**
