@@ -11,6 +11,9 @@ $limit=3; //limit per page
 $book = new \RB\Model\Book();
 $allBook = $book->paginateAction($page, $limit, 'id', true);
 
+print_r(json_encode($allBook));
+$paginate = new \RB\Controller\PaginateController();
+
 echo "<hr/>";
 //this is paginate button, MUST inject $page & $limit In 'same' value as patinateAction
 foreach ($allBook as $ALL) {
