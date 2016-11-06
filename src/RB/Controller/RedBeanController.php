@@ -6,6 +6,7 @@ class RedBeanController
     protected $tableId;
     protected $tableName;
     public $dataModel;
+    protected $paginate_count;
 
     function __construct($tableId = 0)
     {
@@ -71,14 +72,20 @@ class RedBeanController
         }
     }
 
-    public function readAllAction($orderBy = '', $sortReverse = false, $limit = '')
+    /**
+     * @param string $orderBy
+     * @param bool $sortReverse
+     * @param string $limit
+     * @return array
+     */
+    public function readAllAction($orderBy = '', $sortReverse = false, $limit = '', $find_key='', $find_value='')
     {
         $concat = '';
         if ($orderBy!='')
             $concat.=' ORDER BY '.$orderBy.' '.($sortReverse?'DESC':'ASC');
         if ($limit!='')
             $concat.=' LIMIT '.$limit;
-        return \R::findAll( $this->tableName , $concat);
+        return array_values(\R::findAll( $this->tableName , $concat));
     }
 
     /**
@@ -88,7 +95,7 @@ class RedBeanController
      */
     public function readAllCustomQueryAction($AddQuery = '')
     {
-        return \R::findAll($this->tableName, $AddQuery);
+        return array_values(\R::findAll($this->tableName, $AddQuery));
     }
 
 
@@ -106,9 +113,12 @@ class RedBeanController
         return \R::count($this->tableName, $AddQuery);
     }
 
-    public function findLike($findBy = 'id', $keyword, $addQuery = '')
+    public function findLikeAction($findBy = 'id', $keyword, $sortReverse = false, $limit = '')
     {
-        return \R::findLike($this->tableName, [$findBy => $keyword], $addQuery);
+        $concat =' ORDER BY '.$findBy.' '.($sortReverse?'DESC':'ASC');
+        if ($limit!='')
+            $concat.=' LIMIT '.$limit;
+        return \R::find($this->tableName, $findBy.' LIKE ? '.$concat, [ '%'.$keyword.'%' ] );
     }
 
     /**
@@ -117,16 +127,17 @@ class RedBeanController
      * @param int $limit
      * @param string $orderBy
      * @param bool $sortReverse DESC or ASC
-     * @param array $search
+     * @param string $search_key
+     * @param string $search_value
      * @return array
      */
-    public function paginateAction($page = 1, $limit = 5, $orderBy = 'id', $sortReverse = false, $search = [])
+    public function paginateAction($page = 1, $limit = 5, $orderBy = 'id', $sortReverse = false, $search_key = '', $search_value = '')
     {
-        if (empty($search)) {
+        if ($search_key=='' && $search_value=='') {
             return $this->readAllAction($orderBy, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
         }
         else {
-            return \R::findLike($this->tableName, $search);
+            return $this->findLikeAction($search_key, $search_value, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
         }
     }
 
