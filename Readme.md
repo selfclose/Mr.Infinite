@@ -1,4 +1,4 @@
-**My startup redbean**
+## **My startup redbean**
 
 Use autoload (PSR-0) and [Redbean](http://www.redbeanphp.com/) for ORM
 
@@ -10,11 +10,118 @@ I'm serious about file size, so I avoid large ORM or framework that's have a bun
 * Each file will tell how it's work.
 * Example model (src/RB/Model) that's extends from Controller.
 
-**Ability**
+### Ability
 * CRUD make more simple through model
 * ReadAll
 * Count
+* json_encode
 * Paginate (php / jQuery with ajax)
 
 _arnanthachai@intbizth.com_
- 
+
+#### Simple Model
+
+```php
+<?php
+/**
+ * Class Book
+ * @property int id
+ * @property string name
+ * @property int price
+ */
+class Book extends RedBeanController
+{
+    function __construct($tableId = 0)
+    {
+        $this->setTableName('book');
+        parent::__construct($tableId);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->dataModel->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->dataModel->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->dataModel->price;
+    }
+
+    /**
+     * @param int $price
+     */
+    public function setPrice($price)
+    {
+        $this->dataModel->price = $price;
+    }
+}
+```
+
+**Now, You can insert update delete count paginate without concern about table**
+
+###### Insert
+```php
+<?php
+$book = new \RB\Model\Book();
+$book->setName('book'.rand(1,1000));
+$book->setPrice(rand(1, 1000));
+$book->insertAction();
+```
+
+###### Update (Same as insert just add id on construct)
+```php
+<?php
+$idToUpdate = 1;
+$book = new \RB\Model\Book($idToUpdate);
+if ($book->readAction()) {
+    $book->setName('book' . rand(1, 1000));
+    $book->setPrice(rand(1, 1000));
+
+    echo $book->updateAction();
+} else {
+    echo "Can't Update(or no id): ".$idToUpdate;
+}
+```
+
+###### Delete
+```php
+<?php
+$idToDelete = 1;
+$book = new \RB\Model\Book($idToDelete);
+if ($book->deleteAction()) {
+    echo "ID: ".$idToDelete." is Deleted!";
+} else {
+    echo "Can't Delete(or no id): ".$idToDelete;
+}
+```
+
+###### Display (Where id style)
+```php
+<?php
+$idToRead = 2;
+$book = new \RB\Model\Book($idToRead);
+if ($book->readAction()) {
+    echo "id: " . $book->getId() . "<br/>";
+    echo "name: " . $book->getName() . "<br/>";
+    echo "price: " . $book->getPrice() . "<br/>";
+} else {
+    echo 'Can\'t read ID: '.$idToRead;
+}
+
+```
+
+Another thing in project.

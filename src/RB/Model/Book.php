@@ -10,10 +10,10 @@ use RB\Controller\RedBeanController;
  */
 class Book extends RedBeanController
 {
-    function __construct($id = 0)
+    function __construct($tableId = 0)
     {
         $this->setTableName('book');
-        parent::__construct($id);
+        parent::__construct($tableId);
     }
 
     /**
