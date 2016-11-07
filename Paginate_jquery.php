@@ -1,5 +1,5 @@
 <?php
-include ('include.php');
+include (__DIR__.'/include.php');
 R::debug(false);
 
 /**

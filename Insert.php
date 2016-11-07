@@ -1,5 +1,5 @@
 <?php
-include ('include.php');
+include (__DIR__.'/include.php');
 
 $book = new \RB\Model\Book();
 $book->setName('book'.rand(1,1000));

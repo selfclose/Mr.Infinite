@@ -1,5 +1,5 @@
 <?php
-include ('include.php');
+include (__DIR__.'/include.php');
 
 $idToDelete = 2;
 echo "<p>try to update id: {$idToDelete}</p>";

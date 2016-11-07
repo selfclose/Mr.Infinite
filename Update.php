@@ -1,5 +1,5 @@
 <?php
-include ('include.php');
+include (__DIR__.'/include.php');
 
 $idToUpdate = 2;
 echo "<p>try to update id: {$idToUpdate}</p>";
