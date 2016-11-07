@@ -8,7 +8,9 @@ $links = [
     'Pagination - Php output (No search yet)' => 'Paginate_php.php',
     'Pagination - jQuery (ajax output With Tabulator table plugin.)' => 'Paginate_jQuery.php',
 ];
-
+?>
+<h1>My simple redbean startup</h1>
+<?php
 echo "<ul>";
 foreach ($links as $key => $val) {
     echo sprintf("<li><a href='%s'>%s</a></li>", $val, $key);

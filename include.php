@@ -1,6 +1,15 @@
 <?php
-require ('vendor/RedBeanPHP4_3_3/rb.php');
-require ('src/autoload.php');
+
+require (__DIR__.'/vendor/RedBeanPHP4_3_3/rb.php');
+require (__DIR__.'/src/autoload.php');
 
 R::setup( 'mysql:host=localhost;dbname=test_redbean', 'root', '12345678' );
-R::debug(true);
+
+//If connected
+if (R::testConnection()) {
+    R::debug(true);
+}
+else {
+    echo ("Can't connect database, Please check include.php for config.");
+    exit;
+}
