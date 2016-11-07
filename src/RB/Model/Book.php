@@ -6,13 +6,13 @@ use RB\Controller\RedBeanController;
  * Class Book
  * @property int id
  * @property string name
+ * @property int price
  */
 class Book extends RedBeanController
 {
-
     function __construct($id = 0)
     {
-        $this->table = 'book';
+        $this->setTableName('book');
         parent::__construct($id);
     }
 

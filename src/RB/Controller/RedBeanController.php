@@ -4,8 +4,9 @@ namespace RB\Controller;
 class RedBeanController
 {
     protected $tableId;
-    protected $table;
+    protected $tableName;
     public $dataModel;
+    protected $paginate_count;
 
     function __construct($tableId = 0)
     {
@@ -13,7 +14,7 @@ class RedBeanController
             $this->tableId = $tableId;
         }
         else {
-            $this->dataModel = \R::dispense($this->table);
+            $this->dataModel = \R::dispense($this->tableName);
         }
     }
 
@@ -28,17 +29,17 @@ class RedBeanController
     /**
      * @return string
      */
-    public function getTable()
+    public function getTableName()
     {
-        return $this->table;
+        return $this->tableName;
     }
 
     /**
-     * @param string $table
+     * @param string $tableName
      */
-    public function setTable($table)
+    public function setTableName($tableName)
     {
-        $this->table = $table;
+        $this->tableName = $tableName;
     }
 
     public function insertAction()
@@ -57,9 +58,34 @@ class RedBeanController
         return \R::store($this->dataModel);
     }
 
+    /**
+     * @return bool
+     */
     public function readAction()
     {
-        $this->dataModel = \R::load($this->table, $this->tableId);
+        $data = \R::load($this->tableName, $this->tableId);
+        if ($data->id) {
+            $this->dataModel = $data;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $orderBy
+     * @param bool $sortReverse
+     * @param string $limit
+     * @return array
+     */
+    public function readAllAction($orderBy = '', $sortReverse = false, $limit = '', $find_key='', $find_value='')
+    {
+        $concat = '';
+        if ($orderBy!='')
+            $concat.=' ORDER BY '.$orderBy.' '.($sortReverse?'DESC':'ASC');
+        if ($limit!='')
+            $concat.=' LIMIT '.$limit;
+        return array_values(\R::findAll( $this->tableName , $concat));
     }
 
     /**
@@ -67,14 +93,15 @@ class RedBeanController
      * @param string $AddQuery
      * @return array
      */
-    public function readAllAction($AddQuery = '')
+    public function readAllCustomQueryAction($AddQuery = '')
     {
-        return \R::findAll($this->table, $AddQuery);
+        return array_values(\R::findAll($this->tableName, $AddQuery));
     }
+
 
     public function deleteAction()
     {
-        return \R::trash($this->table, $this->tableId);
+        return \R::trash($this->tableName, $this->tableId);
     }
 
     /**
@@ -83,6 +110,149 @@ class RedBeanController
      */
     public function countAction($AddQuery = '')
     {
-        return \R::count($this->table, $AddQuery);
+        return \R::count($this->tableName, $AddQuery);
     }
+
+    public function findLikeAction($findBy = 'id', $keyword, $sortReverse = false, $limit = '')
+    {
+        $concat =' ORDER BY '.$findBy.' '.($sortReverse?'DESC':'ASC');
+        if ($limit!='')
+            $concat.=' LIMIT '.$limit;
+        return \R::find($this->tableName, $findBy.' LIKE ? '.$concat, [ '%'.$keyword.'%' ] );
+    }
+
+    /**
+     * Readme: You can take return; as array for loop OR json_encode
+     * @param int $page
+     * @param int $limit
+     * @param string $orderBy
+     * @param bool $sortReverse DESC or ASC
+     * @param string $search_key
+     * @param string $search_value
+     * @return array
+     */
+    public function paginateAction($page = 1, $limit = 5, $orderBy = 'id', $sortReverse = false, $search_key = '', $search_value = '')
+    {
+        if ($search_key=='' && $search_value=='') {
+            return $this->readAllAction($orderBy, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
+        }
+        else {
+            return $this->findLikeAction($search_key, $search_value, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
+        }
+    }
+
+    /**
+     * @param int $page
+     * @param int $limit
+     * @param string $prefix
+     * @param string $buttonClass
+     * @return string echo ME!!
+     */
+    public function paginateButtonAction($page = 1, $limit = 5, $prefix = 'page', $buttonClass = 'pagination')
+    {
+        $total = $this->countAction();
+        $adjacents = "2";
+
+        $firstLabel = "&lsaquo;&lsaquo; First";
+        $prevLabel = "&lsaquo; Prev";
+        $nextLabel = "Next &rsaquo;";
+        $lastLabel = "Last &rsaquo;&rsaquo;";
+
+        $page = ($page == 0 ? 1 : $page);
+        $start = ($page - 1) * $limit;
+
+        $prev = $page - 1;
+        $next = $page + 1;
+
+        $lastPage = ceil($total/$limit);
+
+        $lpm1 = $lastPage - 1; // //last page minus 1
+
+        $pagination = "";
+        $url = '?';
+        if($lastPage > 1){
+            $pagination .= "<ul class='pagination'>";
+            //$pagination .= "<li class='page_info'>Page {$page} of {$lastPage}</li>";
+
+            //if page more than 1
+            if ($page > 1) {
+                $pagination.= "<li><a href='{$url}page=1'>{$firstLabel}</a></li>";
+                $pagination.= "<li><a href='{$url}page={$prev}'>{$prevLabel}</a></li>";
+            }
+
+            if ($lastPage < 7 + ($adjacents * 2)){
+
+                for ($i = 1; $i <= $lastPage; $i++){
+                    echo $i.":".$page;
+                    if ($i == $page)
+                        $pagination.= "<li><a class='current'>ioi{$i}</a></li>";
+                    else
+                        $pagination.= "<li><a href='{$url}{$prefix}={$i}'>{$i}</a></li>";
+                }
+
+            } elseif($lastPage > 5 + ($adjacents * 2)){
+
+                if($page < 1 + ($adjacents * 2)) {
+                    //When first
+                    for ($i = 1; $i < 4 + ($adjacents * 2); $i++){
+                        if ($i == $page)
+                            $pagination.= "<li class='active'><a class='current'>{$i}</a></li>";
+                        else
+                            $pagination.= "<li><a href='{$url}page={$i}'>{$i}</a></li>";
+                    }
+                    $pagination.= "<li class='dot'><a>...</a></li>";
+                    $pagination.= "<li><a href='{$url}page={$lpm1}'>{$lpm1}</a></li>";
+                    $pagination.= "<li><a href='{$url}page={$lastPage}'>{$lastPage}</a></li>";
+
+                } elseif($lastPage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
+                    //when middle end
+                    $pagination.= "<li><a href='{$url}page=1'>1</a></li>";
+                    $pagination.= "<li><a href='{$url}page=2'>2</a></li>";
+                    //when middle first
+                    $pagination.= "<li class='dot'><a>...l</a></li>";
+                    for ($i = $page - $adjacents; $i <= $page + $adjacents; $i++) {
+                        //when middle
+                        if ($i == $page)
+                            $pagination .= "<li class='active'><a class='current'>{$i}</a></li>";
+                        else
+                            $pagination .= "<li><a href='{$url}page={$i}'>{$i}</a></li>";
+                    }
+                    $pagination.= "<li class='dot'><a> ..p</a></li>";
+                    $pagination.= "<li><a href='{$url}page={$lpm1}'>{$lpm1}</a></li>";
+                    $pagination.= "<li><a href='{$url}page={$lastPage}'>{$lastPage}</a></li>";
+
+                } else {
+                    //When end
+                    $pagination.= "<li><a href='{$url}page=1'>1</a></li>";
+                    $pagination.= "<li><a href='{$url}page=2'>2</a></li>";
+                    //split front
+                    $pagination.= "<li class='dot'><a>..</a></li>";
+                    for ($i = $lastPage - (2 + ($adjacents * 2)); $i <= $lastPage; $i++) {
+                        if ($i == $page)
+                            $pagination.= "<li class='active'><a class='current'>{$i}</a></li>";
+                        else
+                            $pagination.= "<li><a href='{$url}page={$i}'>{$i}</a></li>";
+                    }
+                }
+            }
+
+            if ($page < $i - 1) {
+                $pagination.= "<li><a href='{$url}page={$next}'>{$nextLabel}</a></li>";
+                $pagination.= "<li><a href='{$url}page=$lastPage'>{$lastLabel}</a></li>";
+            }
+
+            $pagination.= "</ul>";
+        }
+
+        return $pagination;
+        //return $concat;
+    }
+
+    //--------- FINDING Zone --------//
+    //TODO: Test it
+    public function findOneByAction($findBy = 'id', $value = '1')
+    {
+        return \R::findOne($this->tableName, $findBy.'='.$value);
+    }
+
 }
