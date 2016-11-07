@@ -8,12 +8,18 @@ include (__DIR__.'/include.php');
 
 $page= isset($_GET['page']) ? $_GET['page'] : 1; //get current page
 $limit=3; //limit per page
+$search = $_GET['search'];
 
 $book = new \RB\Model\Book();
-$allBook = $book->paginateAction($page, $limit, 'id', false);
-
-echo "<hr/>";
-
+$allBook = $book->paginateAction($page, $limit, 'id', false, 'name', $search);
+echo $search;
+?>
+<hr/>
+<form action='Paginate_php_with_search.php'>
+    <input type="text" name="search" />
+    <button type="submit">Search</button>
+</form>
+<?php
 //this is paginate button, MUST inject $page & $limit In 'same' value as patinateAction
 foreach ($allBook as $ALL) {
     echo "<p>".$ALL->id.'. '.$ALL->name."</p>";

@@ -118,6 +118,7 @@ class RedBeanController
         $concat =' ORDER BY '.$findBy.' '.($sortReverse?'DESC':'ASC');
         if ($limit!='')
             $concat.=' LIMIT '.$limit;
+
         return \R::find($this->tableName, $findBy.' LIKE ? '.$concat, [ '%'.$keyword.'%' ] );
     }
 
@@ -134,9 +135,13 @@ class RedBeanController
     public function paginateAction($page = 1, $limit = 5, $orderBy = 'id', $sortReverse = false, $search_key = '', $search_value = '')
     {
         if ($search_key=='' && $search_value=='') {
+            //if you paginate
+            $this->paginate_count = $this->countAction();
             return $this->readAllAction($orderBy, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
         }
         else {
+            //if you search
+            $this->paginate_count = \R::count($this->tableName, $search_key.' LIKE ? ', [ '%'.$search_value.'%' ]);
             return $this->findLikeAction($search_key, $search_value, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
         }
     }
@@ -150,7 +155,7 @@ class RedBeanController
      */
     public function paginateButtonAction($page = 1, $limit = 5, $prefix = 'page', $buttonClass = 'pagination')
     {
-        $total = $this->countAction();
+        $total = $this->paginate_count;
         $adjacents = "2";
 
         $firstLabel = "&lsaquo;&lsaquo; First";
@@ -170,6 +175,7 @@ class RedBeanController
 
         $pagination = "";
         $url = '?';
+        echo $total;
         if($lastPage > 1){
             $pagination .= "<ul class='pagination'>";
             //$pagination .= "<li class='page_info'>Page {$page} of {$lastPage}</li>";
