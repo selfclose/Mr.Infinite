@@ -2,8 +2,9 @@
 
 include (__DIR__.'/include.php');
 
-//----------Read single (Where)---------//
+//----------Read single (Where ID)---------//
 $idToRead = 2;
+
 $book = new \RB\Model\Book($idToRead);
 
 //Simple example read & count
@@ -26,5 +27,3 @@ foreach ($book->readAllAction() as $a) {
 echo "<hr/>";
 //-------------Count-------------//
 echo "All book (->countAction): ".$book->countAction();
-echo "<br/>";
-echo "All book (count(->readAllAction())): ".count($book->readAllAction());

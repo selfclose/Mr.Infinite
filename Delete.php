@@ -1,7 +1,7 @@
 <?php
 include (__DIR__.'/include.php');
 
-$idToDelete = 2;
+$idToDelete = 9;
 echo "<p>try to update id: {$idToDelete}</p>";
 
 $book = new \RB\Model\Book($idToDelete);
