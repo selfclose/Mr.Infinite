@@ -11,7 +11,7 @@ class RedBeanController
 
     function __construct($Id = 0)
     {
-        //if you not tell $table is we will use class name as table
+        //if you not override $table, it will use class name as table's name
         if (empty($this->table)) {
             $ex = explode("\\", get_called_class());
             $this->table = strtolower($ex[count($ex)-1]);

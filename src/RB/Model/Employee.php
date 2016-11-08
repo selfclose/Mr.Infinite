@@ -8,19 +8,15 @@ use RB\Controller\RedBeanController;
  * @package RB\Model
  * @property int id
  * @property string name
- * @property string address
+ * @property int age
+ * @property Company company
  */
-class User extends RedBeanController
+class Employee extends RedBeanController
 {
-    /**
-     * @var Company
-     */
-    protected $company;
 
-    function __construct($tableId = 0)
+    function __construct($id = 0)
     {
-        $this->setTableName('company');
-        parent::__construct($tableId);
+        parent::__construct($id);
     }
 
     /**
@@ -40,6 +36,22 @@ class User extends RedBeanController
     }
 
     /**
+     * @return int
+     */
+    public function getAge()
+    {
+        return $this->dataModel->age;
+    }
+
+    /**
+     * @param int $age
+     */
+    public function setAge($age)
+    {
+        $this->dataModel->age = $age;
+    }
+
+    /**
      * @return Company
      */
     public function getCompany()
@@ -52,10 +64,8 @@ class User extends RedBeanController
      */
     public function setCompany($company)
     {
-        \R::dispense( 'Company' );
-        $this->dataModel->company = $company;
+        $comp = new Company($company);
+        $this->dataModel->company = $comp;
     }
-
-
 
 }

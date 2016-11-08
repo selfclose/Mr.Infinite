@@ -1,18 +1,15 @@
 <?php
 namespace RB\Model;
-
 use RB\Controller\RedBeanController;
 
 /**
- * Class Company
- * @package RB\Model
+ * Class Book
  * @property int id
  * @property string name
- * @property string address
+ * @property int price
  */
-class Company extends RedBeanController
+class Store extends RedBeanController
 {
-
     function __construct($id = 0)
     {
         parent::__construct($id);
@@ -34,6 +31,19 @@ class Company extends RedBeanController
         $this->dataModel->name = $name;
     }
 
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->dataModel->price;
+    }
 
-
+    /**
+     * @param int $price
+     */
+    public function setPrice($price)
+    {
+        $this->dataModel->price = $price;
+    }
 }

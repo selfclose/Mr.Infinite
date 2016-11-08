@@ -1,9 +1,9 @@
 <?php
-namespace Intern\Controller;
+namespace RB\Controller;
 
 class RedBeanController
 {
-    protected $tableName;
+    protected $table;
     public $dataModel;
 
     protected $tag;
@@ -11,7 +11,13 @@ class RedBeanController
 
     function __construct($Id = 0)
     {
-        $this->dataModel = \R::dispense($this->tableName);
+        //if you not override $table, it will use class name as table's name
+        if (empty($this->table)) {
+            $ex = explode("\\", get_called_class());
+            $this->table = strtolower($ex[count($ex)-1]);
+        }
+
+        $this->dataModel = \R::dispense($this->table);
         if ($Id > 0) {
             $this->dataModel->id = $Id;
         }
@@ -26,34 +32,26 @@ class RedBeanController
     }
 
     /**
-     * @return string
+     * @param string $table
      */
-    public function getTableName()
+    public function setTable($table)
     {
-        return $this->tableName;
-    }
-
-    /**
-     * @param string $tableName
-     */
-    public function setTableName($tableName)
-    {
-        $this->tableName = $tableName;
+        $this->table = $table;
     }
 
     public function addTag($tag = [])
     {
-        return \R::addTags($this->tableName, $tag);
+        return \R::addTags($this->table, $tag);
     }
 
     public function hasTag($tag = [])
     {
-        return \R::hasTag($this->tableName, $tag);
+        return \R::hasTag($this->table, $tag);
     }
 
     public function removeTag($tag = [])
     {
-        return \R::untag($this->tableName, $tag);
+        return \R::untag($this->table, $tag);
     }
 
     /**
@@ -61,7 +59,7 @@ class RedBeanController
      */
     public function getTag($tag = [])
     {
-        return \R::tagged($this->tableName, $tag = []);
+        return \R::tagged($this->table, $tag = []);
     }
 
     //-------------ACTION-------------//
@@ -87,7 +85,7 @@ class RedBeanController
      */
     public function readAction()
     {
-        $data = \R::load($this->tableName, $this->dataModel->id);
+        $data = \R::load($this->table, $this->dataModel->id);
         if ($data->id) {
             $this->dataModel = $data;
             return true;
@@ -109,7 +107,7 @@ class RedBeanController
             $concat.=' ORDER BY '.$orderBy.' '.($sortReverse?'DESC':'ASC');
         if ($limit!='')
             $concat.=' LIMIT '.$limit;
-        return array_values(\R::findAll( $this->tableName , $concat));
+        return array_values(\R::findAll( $this->table , $concat));
     }
 
     /**
@@ -119,12 +117,12 @@ class RedBeanController
      */
     public function readAllCustomQueryAction($AddQuery = '')
     {
-        return array_values(\R::findAll($this->tableName, $AddQuery));
+        return array_values(\R::findAll($this->table, $AddQuery));
     }
 
     public function deleteAction()
     {
-        return \R::trash($this->tableName, $this->dataModel->id);
+        return \R::trash($this->table, $this->dataModel->id);
     }
 
     /**
@@ -133,7 +131,7 @@ class RedBeanController
      */
     public function countAction($AddQuery = '')
     {
-        return \R::count($this->tableName, $AddQuery);
+        return \R::count($this->table, $AddQuery);
     }
 
     /**
@@ -150,7 +148,7 @@ class RedBeanController
         if ($limit!='')
             $concat.=' LIMIT '.$limit;
 
-        return \R::find($this->tableName, $findBy.' LIKE ? '.$concat, [ '%'.$keyword.'%' ] );
+        return \R::find($this->table, $findBy.' LIKE ? '.$concat, [ '%'.$keyword.'%' ] );
     }
 
     /**
@@ -172,7 +170,7 @@ class RedBeanController
         }
         else {
             //if you search
-            $this->paginate_count = \R::count($this->tableName, $search_key.' LIKE ? ', [ '%'.$search_value.'%' ]);
+            $this->paginate_count = \R::count($this->table, $search_key.' LIKE ? ', [ '%'.$search_value.'%' ]);
             return $this->findLikeAction($search_key, $search_value, $orderBy, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
         }
     }
@@ -289,7 +287,7 @@ class RedBeanController
     //TODO: Test it
     public function findOneByAction($findBy = 'id', $value = '1')
     {
-        return \R::findOne($this->tableName, $findBy.'='.$value);
+        return \R::findOne($this->table, $findBy.'='.$value);
     }
 
 }

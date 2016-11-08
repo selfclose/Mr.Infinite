@@ -12,9 +12,9 @@ class Book extends RedBeanController
 {
     protected $table = 'book';
 
-    function __construct($tableId = 0)
+    function __construct($id = 0)
     {
-        parent::__construct($tableId);
+        parent::__construct($id);
     }
 
     /**
