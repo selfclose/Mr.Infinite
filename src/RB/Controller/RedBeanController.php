@@ -6,6 +6,8 @@ class RedBeanController
     protected $tableId;
     protected $tableName;
     public $dataModel;
+
+    protected $tag;
     protected $paginate_count;
 
     function __construct($tableId = 0)
@@ -41,6 +43,31 @@ class RedBeanController
     {
         $this->tableName = $tableName;
     }
+
+    public function addTag($tag = [])
+    {
+        return \R::addTags($this->tableName, $tag);
+    }
+
+    public function hasTag($tag = [])
+    {
+        return \R::hasTag($this->tableName, $tag);
+    }
+
+    public function removeTag($tag = [])
+    {
+        return \R::untag($this->tableName, $tag);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTag($tag = [])
+    {
+        return \R::tagged($this->tableName, $tag = []);
+    }
+
+    //-------------ACTION-------------//
 
     public function insertAction()
     {
