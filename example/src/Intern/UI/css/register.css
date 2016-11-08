@@ -1,0 +1,159 @@
+@charset "UTF-8";
+h2 {
+    font-weight: 100;
+    color: #7a7a7a;
+}
+
+body {
+    font-family: helvetica, arial, san-serif;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#container > div {
+    width: 22em;
+    height: 40em;
+    /* Rectangle 10: */
+    background: #F5F5F5;
+    border: 1px solid rgba(150, 150, 150, 0.25);
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.13);
+    border-radius: 7.92px;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+}
+
+#work .graphic {
+    width: 70%;
+}
+
+#hire .graphic {
+    width: 55%;
+}
+
+#shadow, #big-shadow, #little-shadow {
+    background-image: linear-gradient(33deg, #2C95DD 13%, #1F83D5 84%);
+}
+
+.graphic {
+    position: relative;
+}
+
+#splash {
+    position: absolute;
+    left: -22%;
+    top: -24%;
+    margin: 0;
+    z-index: -2;
+}
+
+.register-button {
+    background: #E8E8E8;
+    border: 1px solid #D8D8D8;
+    border-radius: 9.35px;
+    width: 60%;
+    padding: 1.5em;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: .9em;
+    font-weight: bold;
+    color: #2C95DD;
+}
+
+#work:hover .register-button, #hire:hover .register-button {
+    color: #FFF;
+    background: #2C95DD;
+}
+
+#splash {
+    transform-origin: center center;
+}
+
+#copy-1, #copy-2, #copy-3, #copy-4, #clock, #small-shadow, #big-shadow, #container, .register-button, #splash, #check, .oval, #shadow {
+    transition: all, ease-in-out, .2s;
+}
+
+#copy-3, #clock, #container, #small-shadow, #big-shadow {
+    /*transform: translate(0, 1.5em);*/
+}
+
+#container .active {
+    background: #2C95DD;
+    color: #fff;
+}
+#container .active h2 {
+    color: #fff;
+}
+#container .active #splash {
+    fill: #fff;
+}
+#container .active #mask, #container .active #check, #container .active #clock {
+    fill: #2C95DD;
+}
+#container .active #tile {
+    fill: #EAF4FB;
+}
+#container .active #shadow, #container .active #small-shadow, #container .active #big-shadow {
+    fill: url(#active-gradient);
+}
+#container .active #copy-3 {
+    fill: #EAF4FB;
+}
+#container .active .register-button span:before {
+    content: "";
+    font-family: FontAwesome;
+    padding-right: .2em;
+    display: inline-block;
+}
+#container .active #splash {
+    animation: radiate 6s infinite ease-in-out;
+}
+#container .active #copy-3, #container .active #clock, #container .active #small-shadow, #container .active #big-shadow, #container .active #container {
+    transform: translate(0, 0.5em);
+}
+#container .active #copy-1, #container .active #copy-2 {
+    stroke: transparent;
+}
+#container .active #copy-1 {
+    fill: #84c1eb;
+}
+#container .active #copy-2 {
+    fill: #58abe4;
+}
+#container .active #copy-4 {
+    fill: #42a0e1;
+}
+#container .active .oval {
+    stroke: #BCD9F2;
+}
+#container .active .register-button {
+    background: #fff;
+    color: #2C95DD;
+    border: 0 transparent none;
+}
+
+@keyframes radiate {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(18deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/*------- another ---------*/
+.select2 {
+    width: 100% !important;
+}
