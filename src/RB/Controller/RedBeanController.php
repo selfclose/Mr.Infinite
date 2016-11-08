@@ -3,20 +3,17 @@ namespace RB\Controller;
 
 class RedBeanController
 {
-    protected $tableId;
     protected $tableName;
     public $dataModel;
 
     protected $tag;
     protected $paginate_count;
 
-    function __construct($tableId = 0)
+    function __construct($Id = 0)
     {
-        if ($tableId > 0) {
-            $this->tableId = $tableId;
-        }
-        else {
-            $this->dataModel = \R::dispense($this->tableName);
+        $this->dataModel = \R::dispense($this->tableName);
+        if ($Id > 0) {
+            $this->dataModel->id = $Id;
         }
     }
 
@@ -71,7 +68,7 @@ class RedBeanController
 
     public function insertAction()
     {
-        if ($this->tableId > 0) {
+        if ($this->dataModel->id > 0) {
             throw new \Exception("Insert don't need ID, it's auto increase");
         }
         return \R::store($this->dataModel);
@@ -79,7 +76,7 @@ class RedBeanController
 
     public function updateAction()
     {
-        if (!$this->tableId > 0) {
+        if (!$this->dataModel->id > 0) {
             throw new \Exception("Update Need ID (please put id when you new class");
         }
         return \R::store($this->dataModel);
@@ -90,7 +87,7 @@ class RedBeanController
      */
     public function readAction()
     {
-        $data = \R::load($this->tableName, $this->tableId);
+        $data = \R::load($this->tableName, $this->dataModel->id);
         if ($data->id) {
             $this->dataModel = $data;
             return true;
@@ -125,12 +122,9 @@ class RedBeanController
         return array_values(\R::findAll($this->tableName, $AddQuery));
     }
 
-    /**
-     * @return bool
-     */
     public function deleteAction()
     {
-        return \R::trash($this->tableName, $this->tableId);
+        return \R::trash($this->tableName, $this->dataModel->id);
     }
 
     /**

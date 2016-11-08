@@ -9,7 +9,7 @@ use Intern\Controller\RedBeanController;
  * @property int province_id
  * @property string name
  * @property string name_eng
- * @property Geo geo_id
+ * @property Geo geo id here
  */
 class Province extends RedBeanController
 {
@@ -70,7 +70,7 @@ class Province extends RedBeanController
     /**
      * @return Geo
      */
-    public function getGeoId()
+    public function getGeo()
     {
         return $this->dataModel->geo_id;
     }
@@ -78,10 +78,13 @@ class Province extends RedBeanController
     /**
      * @param Geo $geo_id
      */
-    public function setGeoId($geo_id)
+    public function setGeo($geo_id)
     {
+        $geo = \R::dispense('geo');
+        $geo->id = 2;
         $geo = new Geo($geo_id);
-        $this->dataModel->geo_id = $geo->dataModel;
+        $geo->readAction();
+        $this->dataModel->geo = $geo;
 //        $this->dataModel->setMeta("buildcommand.unique", [[$this->dataModel->province_id]]);
     }
 
