@@ -77,8 +77,8 @@ class Book extends RedBeanController
 ```php
 <?php
 $book = new \RB\Model\Book();
-$book->setName('book'.rand(1,1000));
-$book->setPrice(rand(1, 1000));
+$book->setName('Harry Potter');
+$book->setPrice(1200));
 $book->insertAction();
 ```
 
@@ -88,10 +88,10 @@ $book->insertAction();
 $idToUpdate = 1;
 $book = new \RB\Model\Book($idToUpdate);
 if ($book->readAction()) {
-    $book->setName('book' . rand(1, 1000));
-    $book->setPrice(rand(1, 1000));
+    $book->setName('Harry potter and the cursed child'));
+    $book->setPrice(1400);
 
-    echo $book->updateAction();
+    $book->updateAction();
 } else {
     echo "Can't Update(or no id): ".$idToUpdate;
 }
@@ -115,9 +115,11 @@ if ($book->deleteAction()) {
 $idToRead = 2;
 $book = new \RB\Model\Book($idToRead);
 if ($book->readAction()) {
-    echo "id: " . $book->getId() . "<br/>";
-    echo "name: " . $book->getName() . "<br/>";
-    echo "price: " . $book->getPrice() . "<br/>";
+?>
+    <p>ID: <?=$book->getId()?></p>
+    <p>Name: <?=$book->getName()?></p>
+    <p>price: <?=$book->getPrice()?></p>
+<?php
 } else {
     echo 'Can\'t read ID: '.$idToRead;
 }
