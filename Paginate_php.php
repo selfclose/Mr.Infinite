@@ -6,8 +6,8 @@ include (__DIR__.'/include.php');
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
 <?php
 
-$page= isset($_GET['page']) ? $_GET['page'] : 1; //get current page
-$limit=3; //limit per page
+$page = isset($_GET['page']) ? $_GET['page'] : 1; //get current page
+$limit = 3; //limit per page
 
 $book = new \RB\Model\Book();
 $allBook = $book->paginateAction($page, $limit, 'id', false);
@@ -42,4 +42,5 @@ echo "<hr/> OR use on bootstrap table";
 </table>
 <?php
 echo $book->paginateButtonAction($page, $limit);
-echo "ssss".count($allBook);
+
+echo "<p>Result: ".count($allBook)."</p>";
