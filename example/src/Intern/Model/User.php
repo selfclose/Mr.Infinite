@@ -80,19 +80,11 @@ class User extends RedBeanController
     }
 
     /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @return string
      */
     public function getUsername()
     {
-        return $this->username;
+        return $this->dataModel->username;
     }
 
     /**
@@ -100,7 +92,7 @@ class User extends RedBeanController
      */
     public function setUsername($username)
     {
-        $this->username = wp_strip_all_tags(strtolower($username));
+        $this->dataModel->username = $username;
     }
 
     /**
@@ -108,7 +100,7 @@ class User extends RedBeanController
      */
     public function getPassword()
     {
-        return $this->password;
+        return $this->dataModel->password;
     }
 
     /**
@@ -116,23 +108,23 @@ class User extends RedBeanController
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->dataModel->password = $password;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getDisplayName()
     {
-        return $this->name;
+        return $this->dataModel->display_name;
     }
 
     /**
-     * @param string $name
+     * @param string $display_name
      */
-    public function setName($name)
+    public function setDisplayName($display_name)
     {
-        $this->name = wp_strip_all_tags($name);
+        $this->dataModel->display_name = $display_name;
     }
 
     /**
@@ -140,7 +132,7 @@ class User extends RedBeanController
      */
     public function getNameEng()
     {
-        return $this->name_eng;
+        return $this->dataModel->name_eng;
     }
 
     /**
@@ -148,7 +140,7 @@ class User extends RedBeanController
      */
     public function setNameEng($name_eng)
     {
-        $this->name_eng = wp_strip_all_tags($name_eng);
+        $this->dataModel->name_eng = $name_eng;
     }
 
     /**
@@ -156,7 +148,7 @@ class User extends RedBeanController
      */
     public function getAddress()
     {
-        return $this->address;
+        return $this->dataModel->address;
     }
 
     /**
@@ -164,15 +156,15 @@ class User extends RedBeanController
      */
     public function setAddress($address)
     {
-        $this->address = strip_tags($address);
+        $this->dataModel->address = $address;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
-        return $this->email;
+        return $this->dataModel->email;
     }
 
     /**
@@ -180,10 +172,7 @@ class User extends RedBeanController
      */
     public function setEmail($email)
     {
-        if (is_email($email))
-            $this->email = $email;
-        else
-            $this->is_valid = false;
+        $this->dataModel->email = $email;
     }
 
     /**
@@ -191,7 +180,7 @@ class User extends RedBeanController
      */
     public function getGender()
     {
-        return $this->gender;
+        return $this->dataModel->gender;
     }
 
     /**
@@ -199,10 +188,7 @@ class User extends RedBeanController
      */
     public function setGender($gender)
     {
-        if (in_array($gender, array('m','f','n'), true))
-            $this->gender = $gender;
-        else
-            $this->is_valid = false;
+        $this->dataModel->gender = $gender;
     }
 
     /**
@@ -210,7 +196,7 @@ class User extends RedBeanController
      */
     public function getUserUrl()
     {
-        return $this->userUrl;
+        return $this->dataModel->userUrl;
     }
 
     /**
@@ -218,23 +204,23 @@ class User extends RedBeanController
      */
     public function setUserUrl($userUrl)
     {
-        $this->userUrl = $userUrl;
+        $this->dataModel->userUrl = $userUrl;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRole()
     {
-        return $this->role;
+        return $this->dataModel->role;
     }
 
     /**
-     * @param mixed $role
+     * @param string $role
      */
     public function setRole($role)
     {
-        $this->role = $role;
+        $this->dataModel->role = $role;
     }
 
     /**
@@ -242,7 +228,7 @@ class User extends RedBeanController
      */
     public function getCompany()
     {
-        return $this->company;
+        return $this->dataModel->company;
     }
 
     /**
@@ -250,24 +236,23 @@ class User extends RedBeanController
      */
     public function setCompany($company)
     {
-        $this->company = $company;
+        $this->dataModel->company = $company;
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getBirthDate()
     {
-        return $this->birthDate;
+        return $this->dataModel->birthDate;
     }
 
     /**
-     * @param DateTime $birthDate
+     * @param string $birthDate
      */
     public function setBirthDate($birthDate)
     {
-//        if ($birthDate instanceof DateTime)
-        $this->birthDate = $birthDate;
+        $this->dataModel->birthDate = $birthDate;
     }
 
     /**
@@ -275,7 +260,7 @@ class User extends RedBeanController
      */
     public function getZipcode()
     {
-        return $this->zipcode;
+        return $this->dataModel->zipcode;
     }
 
     /**
@@ -283,23 +268,23 @@ class User extends RedBeanController
      */
     public function setZipcode($zipcode)
     {
-        $this->zipcode = $zipcode;
+        $this->dataModel->zipcode = $zipcode;
     }
 
     /**
      * @return int
      */
-    public function getProvince_id()
+    public function getProvinceId()
     {
-        return $this->province_id;
+        return $this->dataModel->province_id;
     }
 
     /**
      * @param int $province_id
      */
-    public function setProvince_id($province_id)
+    public function setProvinceId($province_id)
     {
-        $this->province_id = $province_id;
+        $this->dataModel->province_id = $province_id;
     }
 
     /**
@@ -307,7 +292,7 @@ class User extends RedBeanController
      */
     public function getDescription()
     {
-        return $this->description;
+        return $this->dataModel->description;
     }
 
     /**
@@ -315,56 +300,55 @@ class User extends RedBeanController
      */
     public function setDescription($description)
     {
-        $this->description = $description;
-    }
-
-    public static function getUserData($user_id)
-    {
-        return get_userdata($user_id);
+        $this->dataModel->description = $description;
     }
 
     /**
      * @return string
      */
-    public function getFacebook() {
-        return $this->facebook;
+    public function getFacebook()
+    {
+        return $this->dataModel->facebook;
     }
 
     /**
      * @param string $facebook
      */
-    public function setFacebook( $facebook ) {
-        $this->facebook = $facebook;
+    public function setFacebook($facebook)
+    {
+        $this->dataModel->facebook = $facebook;
     }
 
     /**
      * @return string
      */
-    public function getLine() {
-        return $this->line;
+    public function getInstagram()
+    {
+        return $this->dataModel->instagram;
+    }
+
+    /**
+     * @param string $instagram
+     */
+    public function setInstagram($instagram)
+    {
+        $this->dataModel->instagram = $instagram;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLine()
+    {
+        return $this->dataModel->line;
     }
 
     /**
      * @param string $line
      */
-    public function setLine( $line ) {
-        $this->line = $line;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getInstagram()
+    public function setLine($line)
     {
-        return $this->instagram;
-    }
-
-    /**
-     * @param mixed $instagram
-     */
-    public function setInstagram($instagram)
-    {
-        $this->instagram = $instagram;
+        $this->dataModel->line = $line;
     }
 
     /**
@@ -372,63 +356,7 @@ class User extends RedBeanController
      */
     public function getProfileImage()
     {
-        return $this->profile_image;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsConscripted()
-    {
-        return $this->is_conscripted;
-    }
-
-    /**
-     * @param boolean $is_conscripted
-     */
-    public function setIsConscripted($is_conscripted)
-    {
-        $this->is_conscripted = $is_conscripted;
-    }
-
-    /**
-     * @param int $user_id
-     * @return DateTime
-     */
-    public static function getCreatedAt($user_id)
-    {
-        if (isset($user_id)) {
-            $res = get_userdata($user_id)->user_registered;
-        }
-        else
-        {
-            $res = wp_get_current_user()->user_registered;
-        }
-        return $res;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastUpdate()
-    {
-        //TODO: มาทำต่อ
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isGotJob()
-    {
-        return $this->got_job;
-    }
-
-    /**
-     * @param boolean $got_job
-     */
-    public function setGotJob($got_job)
-    {
-        $this->got_job = $got_job;
+        return $this->dataModel->profile_image;
     }
 
     /**
@@ -436,82 +364,137 @@ class User extends RedBeanController
      */
     public function setProfileImage($profile_image)
     {
-        $this->profile_image = $profile_image;
+        $this->dataModel->profile_image = $profile_image;
     }
 
     /**
-     * @param string $dateDob
-     * @return int
+     * @return boolean
      */
-    public function getAge($dateDob = 'Y-m-d')
+    public function isIsConscripted()
     {
-        $day = date($dateDob,strtotime($this->getBirthDate()));
-        $dobObject = new DateTime($day);
-        $nowObject = new DateTime();
-
-        $diff = $dobObject->diff($nowObject);
-        return $diff->y;
-    }
-    
-    public final function insert()
-    {
-        /* ----- CHECK EXIST -----*/
-        if (username_exists($this->getUsername()) or email_exists($this->getEmail())) {
-            return INTERN_STATE::USER_EXIST;
-        }
-        elseif (!$this->is_valid) {
-            return INTERN_STATE::USER_CHEATING;
-        }
-        elseif ($newUserId =
-            wp_insert_user([
-                'user_login' => $this->getUsername(),
-                'user_pass' => $this->getPassword(),
-                'user_email' => $this->getEmail(),
-                'display_name' => $this->getName(),
-//                'first_name' => $this->
-//                'last_name' => $this->
-                
-//        'role' => ''
-            ])
-        ) {
-            //save user data data to meta
-            $data = [
-                'show_admin_bar_front' => 'false',
-                'birth_date'    => $this->getBirthDate(),
-                'eng_name'      => $this->getNameEng(),
-                'user_url'      => $this->getUserUrl(),
-                'description'   => $this->getDescription(),
-                'address'       => $this->getAddress(),
-                'gender'        => $this->getGender(),
-                'province_id'   => $this->getProvince_id(),
-                'zipcode'       => $this->getZipcode(),
-                'facebook'      => $this->getFacebook(),
-                'line'          => $this->getLine(),
-                'instagram'     => $this->getInstagram(),
-                'is_conscripted'=> $this->getIsConscripted(),
-                'got_job'       => $this->isGotJob(),
-//                'profile_image' => $this->getProfileImage(),
-            ];
-            foreach ($data as $key => $value) {
-                update_user_meta($newUserId, $key, $value);
-            }
-
-            if (!empty($this->getProfileImage())) :
-                INTERN_IMAGE::save($this->getProfileImage(), $this->getUsername().'.jpg', INTERN_SETTING::$image_path_intern, false);
-            endif;
-
-            return INTERN_STATE::SUCCESS;
-        }
-        return INTERN_STATE::UNKNOW_ERROR;
+        return $this->dataModel->is_conscripted;
     }
 
-    public final function load()
+    /**
+     * @param boolean $is_conscripted
+     */
+    public function setIsConscripted($is_conscripted)
     {
-        
+        $this->dataModel->is_conscripted = $is_conscripted;
     }
 
-    public final function update()
+    /**
+     * @return array
+     */
+    public function getBadge()
     {
-//        wp_update_user();
+        return $this->dataModel->badge;
     }
+
+    /**
+     * @param array $badge
+     */
+    public function setBadge($badge)
+    {
+        $this->dataModel->badge = $badge;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isGotJob()
+    {
+        return $this->dataModel->got_job;
+    }
+
+    /**
+     * @param boolean $got_job
+     */
+    public function setGotJob($got_job)
+    {
+        $this->dataModel->got_job = $got_job;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFavorite()
+    {
+        return $this->dataModel->favorite;
+    }
+
+    /**
+     * @param string $favorite
+     */
+    public function setFavorite($favorite)
+    {
+        $this->dataModel->favorite = $favorite;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyId()
+    {
+        return $this->dataModel->company_id;
+    }
+
+    /**
+     * @param string $company_id
+     */
+    public function setCompanyId($company_id)
+    {
+        $this->dataModel->company_id = $company_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDepartmentId()
+    {
+        return $this->dataModel->department_id;
+    }
+
+    /**
+     * @param string $department_id
+     */
+    public function setDepartmentId($department_id)
+    {
+        $this->dataModel->department_id = $department_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBookmark()
+    {
+        return $this->dataModel->bookmark;
+    }
+
+    /**
+     * @param string $bookmark
+     */
+    public function setBookmark($bookmark)
+    {
+        $this->dataModel->bookmark = $bookmark;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAge()
+    {
+        return $this->dataModel->age;
+    }
+
+    /**
+     * @param string $age
+     */
+    public function setAge($age)
+    {
+        $this->dataModel->age = $age;
+    }
+
+
+
 }

@@ -13,9 +13,9 @@ class UserSkill extends RedBeanController
 {
     protected $table = 'userskill';
 
-    function __construct($Id)
+    function __construct($id)
     {
-        parent::__construct($Id);
+        parent::__construct($id);
     }
 
     /**
@@ -39,7 +39,7 @@ class UserSkill extends RedBeanController
      */
     public function getSkillId()
     {
-        return $this->skill_id;
+        return $this->dataModel->skill_id;
     }
 
     /**
@@ -47,8 +47,6 @@ class UserSkill extends RedBeanController
      */
     public function setSkillId($skill_id)
     {
-        $this->skill_id = $skill_id;
+        $this->dataModel->skill_id = $skill_id;
     }
-
-
 }
