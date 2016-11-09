@@ -5,6 +5,7 @@ use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
 use Intern\SampleData\RealData\GeoImport;
 use Intern\SampleData\RealData\ProvinceImport;
+use Intern\SampleData\RealData\ResumeImport;
 use Intern\SampleData\RealData\UniversityImport;
 use Intern\SampleData\RealData\UniversityTypeImport;
 use Intern\SampleData\RealData\UserImport;
@@ -28,5 +29,6 @@ class Importer
         new UserSkillImport();
         new UniversityTypeImport();
         new UniversityImport();
+        new ResumeImport();
     }
 }
