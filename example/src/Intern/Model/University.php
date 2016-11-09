@@ -16,9 +16,27 @@ class University extends RedBeanController
 {
     use NameTrait;
 
+    protected $type;
+
     function __construct($id = 0)
     {
         parent::__construct($id);
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->dataModel->universitytype_id;
+    }
+
+    /**
+     * @param int UniversityType $type
+     */
+    public function setType($type)
+    {
+        $this->dataModel->universitytype_id = $type;
     }
 
     /**
