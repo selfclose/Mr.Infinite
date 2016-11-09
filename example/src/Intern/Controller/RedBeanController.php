@@ -325,6 +325,12 @@ class RedBeanController
         \R::exec(sprintf("ALTER TABLE %s AUTO_INCREMENT = 1", $this->table));
     }
 
+    public function updateRelation($column = 'customer_id', $hookTable = 'customers')
+    {
+        \R::exec(sprintf(
+            "ALTER TABLE %s ADD CONSTRAINT `%s` FOREIGN KEY (`%s`) REFERENCES `%s` (`%s`) ON DELETE CASCADE ON UPDATE CASCADE"
+        , $this->table, 'c_fk_'.$this->table.'_'.$column, $column, $hookTable, $column));
+    }
 
     //-------- Private Zone --------//
 

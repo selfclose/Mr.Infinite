@@ -9,9 +9,9 @@ use Intern\Controller\RedBeanController;
  * @property int user_id
  * @property int skill_id
  */
-class UserSkill extends RedBeanController
+class UserResume extends RedBeanController
 {
-    protected $table = 'userskill';
+    protected $resume_id;
 
     function __construct($id = 0)
     {

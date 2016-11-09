@@ -1,5 +1,7 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\NameTrait;
+use Intern\Controller\RedBeanController;
 
 /**
  * Class Skill
@@ -7,8 +9,30 @@ namespace Intern\Model;
  * @property int id
  * @property int type_id
  * @property string name
+ * @property int skillType
  */
-class Skill
+class Skill extends RedBeanController
 {
+    use NameTrait;
 
+    function __construct($id = 0)
+    {
+        parent::__construct($id);
+    }
+
+    /**
+     * @return int SkillType
+     */
+    public function getSkillType()
+    {
+        return $this->dataModel->skilltype_id;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setSkillType($type)
+    {
+        $this->dataModel->skilltype_id = $type;
+    }
 }

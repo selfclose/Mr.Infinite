@@ -3,13 +3,7 @@ namespace Intern\Model;
 use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
-/**
- * Class SkillType
- * @package Intern\Model
- * @property int id
- * @property string name
- */
-class SkillType extends RedBeanController
+class UniversityType extends RedBeanController
 {
     use NameTrait;
 

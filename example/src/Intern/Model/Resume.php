@@ -20,27 +20,29 @@ use Intern\Controller\RedBeanController;
  */
 class Resume extends RedBeanController
 {
+    const PUBLIC_GLOBAL = 'global';
+    const PUBLIC_SPECIFIC = 'specific';
+    const PUBLIC_PRIVATE = 'private';
 
-    function __construct($tableId = 0)
+    function __construct($id = 0)
     {
-        $this->tableName = 'resume';
-        parent::__construct($tableId);
+        parent::__construct($id);
     }
 
     /**
      * @return int
      */
-    public function getUser()
+    public function getUserId()
     {
-        return $this->dataModel->user;
+        return $this->dataModel->wp_users_id;
     }
 
     /**
-     * @param int $user
+     * @param int $userId
      */
-    public function setUser($user)
+    public function setUserId($userId)
     {
-        $this->dataModel->user = $user;
+        $this->dataModel->wp_users_id = $userId;
     }
 
     /**
@@ -62,17 +64,17 @@ class Resume extends RedBeanController
     /**
      * @return int
      */
-    public function getPingCompany()
+    public function getPingCompanyId()
     {
-        return $this->dataModel->ping_company;
+        return $this->dataModel->company_id;
     }
 
     /**
-     * @param int $ping_company
+     * @param int $ping_company_id
      */
-    public function setPingCompany($ping_company)
+    public function setPingCompanyId($ping_company_id)
     {
-        $this->dataModel->ping_company = $ping_company;
+        $this->dataModel->company_id = $ping_company_id;
     }
 
     /**

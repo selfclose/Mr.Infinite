@@ -85,6 +85,7 @@ class ProvinceImport
 
     function __construct()
     {
+        echo "<hr/><p>--- Importing Province ---</p>";
         foreach ($this->records as $record) {
             $province = new \Intern\Model\Province();
             $province->setProvinceId($record[0]);
@@ -92,7 +93,7 @@ class ProvinceImport
             $province->setName($record[2], 'en_US');
             $province->setGeoId($record[3]);
             if ($province->insertAction()) {
-                echo "<p>Inserted Province: ".$record[1]."</p>";
+                echo "<p>* Inserted Province: ".$record[1]."</p>";
             }
         }
     }
