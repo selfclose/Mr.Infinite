@@ -83,7 +83,7 @@ class ProvinceImport
         [86,'บึงกาฬ','buogkan',3],
     ];
 
-    public function import()
+    function __construct()
     {
         foreach ($this->records as $record) {
             $province = new \Intern\Model\Province();

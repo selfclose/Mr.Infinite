@@ -31,7 +31,7 @@ class CompanyImport
         ],
     ];
 
-    public function import()
+    function __construct()
     {
         foreach ($this->records as $record) {
             $data = new Company();

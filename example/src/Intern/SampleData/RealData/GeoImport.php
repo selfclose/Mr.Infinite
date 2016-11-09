@@ -7,7 +7,7 @@ class GeoImport
         'ภาคเหนือ', 'ภาคกลาง', 'ภาคตะวันออกเฉียงเหนือ', 'ภาคตะวันตก', 'ภาคตะวันออก', 'ภาคใต้'
     ];
 
-    public function import()
+    function __construct()
     {
         foreach ($this->records as $record) {
             $geo = new \Intern\Model\Geo();

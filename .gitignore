@@ -49,3 +49,5 @@ Temporary Items
 .idea
 *.__jb_tmp__
 *.php__jb_tmp__
+example/vendor
+*.lock

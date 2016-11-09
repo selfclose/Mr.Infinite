@@ -95,14 +95,7 @@ class User extends RedBeanController
         $this->dataModel->username = $username;
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->dataModel->password;
-    }
-
+    //TODO: Use something such as Wordpress for make password.
     /**
      * @param string $password
      */
@@ -125,22 +118,6 @@ class User extends RedBeanController
     public function setDisplayName($display_name)
     {
         $this->dataModel->display_name = $display_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNameEng()
-    {
-        return $this->dataModel->name_eng;
-    }
-
-    /**
-     * @param string $name_eng
-     */
-    public function setNameEng($name_eng)
-    {
-        $this->dataModel->name_eng = $name_eng;
     }
 
     /**
@@ -468,7 +445,7 @@ class User extends RedBeanController
      */
     public function getBookmark()
     {
-        return $this->dataModel->bookmark;
+        return unserialize($this->dataModel->bookmark);
     }
 
     /**
@@ -476,11 +453,11 @@ class User extends RedBeanController
      */
     public function setBookmark($bookmark)
     {
-        $this->dataModel->bookmark = $bookmark;
+        $this->dataModel->bookmark = serialize($bookmark);
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getAge()
     {
@@ -488,7 +465,7 @@ class User extends RedBeanController
     }
 
     /**
-     * @param string $age
+     * @param int $age
      */
     public function setAge($age)
     {

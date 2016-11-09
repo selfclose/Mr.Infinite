@@ -1,26 +1,25 @@
 <?php
 namespace Intern\SampleData;
 
-use Intern\Model\Company;
 use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
+use Intern\SampleData\RealData\GeoImport;
+use Intern\SampleData\RealData\ProvinceImport;
+use Intern\SampleData\RealData\UserImport;
 
 class Importer
 {
     function __construct()
     {
-        \R::nuke();
+        global $faker;
+        $faker = \Faker\Factory::create();
 
-        $geo = new \Intern\SampleData\RealData\GeoImport();
-        $geo->import();
-
-        $province = new \Intern\SampleData\RealData\ProvinceImport();
-        $province->import();
-
-        $companyType = new CompanyTypeImport();
-        $companyType->import();
-
-        $company = new CompanyImport();
-        $company->import();
+//        \R::nuke();
+//
+//        new GeoImport();
+//        new ProvinceImport();
+//        new CompanyTypeImport();
+//        new CompanyImport();
+        new UserImport();
     }
 }

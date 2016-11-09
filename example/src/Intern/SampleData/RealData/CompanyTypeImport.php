@@ -53,7 +53,7 @@ class CompanyTypeImport
         ],
     ];
 
-    public function import()
+    function __construct()
     {
         foreach ($this->data as $record) {
             $type = new CompanyType();
