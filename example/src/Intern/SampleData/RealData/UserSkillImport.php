@@ -10,7 +10,7 @@ class UserSkillImport
 
     function __construct()
     {
-        echo "<hr/><p>--- Importing User Skill ---</p>";
+        iLog('--- Importing User Skill ---', true);
 
         $allUser = new User();
         $skill = new Skill();
@@ -22,7 +22,8 @@ class UserSkillImport
             $data->setSkillId(rand(1, $allSkill));
             $data->insertAction();
 
-            echo "<p>* Inserted User ID: {$i}, Skill ID: {$data->getSkillId()}</p>";
+            iLog('* Inserted User ID: '.$i.', Skill ID: '.$data->getSkillId());
+
         }
     }
 }

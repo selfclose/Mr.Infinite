@@ -197,19 +197,20 @@ class SkillImport
 
     function __construct()
     {
-        echo "<hr/>";
+        iLog('--- Importing Skill ---', true);
         foreach ($this->records as $key => $val) {
             $skillType = new SkillType();
             $skillType->setName($key);
             $skillType->insertAction();
-            echo "<p>--- Inserted Skill Type: {$key} ---</p>";
+
+            iLog('--- Inserted Skill Type: '.$key.' ---');
 
             foreach ($val as $sk) {
                 $skill = new Skill();
                 $skill->setName($sk);
                 $skill->setSkillType(array_search($key,array_keys($this->records))+1); //+1 cuz table id start with 1
                 $skill->insertAction();
-                echo "<p>* Inserted Skill: {$sk}</p>";
+                iLog('* Inserted Skill: '.$sk);
             }
         }
     }

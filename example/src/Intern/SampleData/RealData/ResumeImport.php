@@ -27,7 +27,7 @@ class ResumeImport
 
     function __construct()
     {
-        echo "<hr/><p>--- Importing Resume ---</p>";
+        iLog('--- Importing Resume ---', true);
 
         $user = new User();
         $allUser = $user->countAction();
@@ -48,7 +48,7 @@ class ResumeImport
             $data->setAttachUrl($faker->url);
 
             $data->insertAction();
-            echo "<p>{$i}. Inserted Resume: {$data->getTitle()}</p>";
+            iLog('Inserted Resume: '.$data->getTitle());
         }
     }
 }

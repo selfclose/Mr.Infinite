@@ -9,14 +9,14 @@ class GeoImport
 
     function __construct()
     {
-        echo "<hr/><p>--- Importing GEO ---</p>";
+       iLog('--- Importing GEO ---', true);
         foreach ($this->records as $record) {
             $geo = new \Intern\Model\Geo();
 
             $geo->setName($record);
 
             if ($geo->insertAction()) {
-                echo "<p>* Inserted Geo: ".$record."</p>";
+                iLog('* Inserted Geo: '.$record);
             }
         }
     }

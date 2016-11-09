@@ -25,14 +25,14 @@ class UniversityTypeImport
 
     function __construct()
     {
-        echo "<hr/><p>--- Importing University Type ---</p>";
+        iLog('--- Importing University Type ---', true);
 
         foreach ($this->records as $record) {
             $data = new UniversityType();
             $data->setName($record['name']);
 
             $data->insertAction();
-            echo "<p>*. Inserted University Type: {$record['name']}</p>";
+            iLog('* Inserted University Type: '.$record['name']);
         }
     }
 }

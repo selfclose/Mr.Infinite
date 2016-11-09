@@ -33,7 +33,7 @@ class CompanyImport
 
     function __construct()
     {
-        echo "<hr/><p>--- Importing Company ---</p>";
+        iLog('--- Importing Company ---', true);
         foreach ($this->records as $record) {
             $data = new Company();
 
@@ -57,8 +57,8 @@ class CompanyImport
             $data->setClicked($record['clicked']);
             $data->setRating($record['rating']);
 
-            echo $data->insertAction(true);
-            echo (sprintf("<p>* Inserted %s</p>", $record['company_name']));
+            if($data->insertAction(true))
+                iLog('* Inserted: '.$record['company_name']);
         }
     }
 }

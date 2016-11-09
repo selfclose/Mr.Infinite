@@ -29,7 +29,7 @@ class UserImport
 //            $data->setAge($record['age']);
 //            $data->insertAction();
 //        }
-        echo "<hr/><p>--- Importing User ---</p>";
+        iLog('--- Importing User ---', true);
 
         global $faker;
         for($i=1;$i<6;$i++) {
@@ -50,7 +50,7 @@ class UserImport
             $data->setWebsite([$faker->url]);
 
             $data->insertAction();
-            echo "<p>{$i}. Inserted user: {$data->getDisplayName()}</p>";
+            iLog($i.'. Inserted user: '.$data->getDisplayName());
         }
     }
 }

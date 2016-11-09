@@ -7,9 +7,18 @@ R::setup( 'mysql:host=localhost;dbname=test_redbean', 'root', '12345678' );
 
 //If connected
 if (R::testConnection()) {
-    R::debug(true); //Un-comment this for see debugging
+//    R::debug(true); //Un-comment this for see debugging
 }
 else {
     echo ("Can't connect database, Please check include.php for config.");
     exit;
+}
+
+function iLog($string, $info = false) {
+    flush();
+    ob_flush();
+    if ($info)
+        echo "<script>console.info('{$string}');</script>";
+    else
+        echo "<script>console.log('{$string}');</script>";
 }

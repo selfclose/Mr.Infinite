@@ -65,7 +65,7 @@ class UniversityImport
 
     function __construct()
     {
-        echo "<hr/><p>--- Importing University ---</p>";
+        iLog('--- Importing Universiry ---', true);
 
         foreach ($this->records as $record) {
             $data = new University();
@@ -76,7 +76,7 @@ class UniversityImport
             $data->setWebsite($record['website']);
 
             $data->insertAction();
-            echo "<p>*. Inserted University: {$record['name']}</p>";
+            iLog('* Inserted University: '.$record['name']);
         }
     }
 }
