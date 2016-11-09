@@ -10,12 +10,13 @@ use Intern\ConcatTrait\NameTrait;
  */
 class CompanyType extends RedBeanController
 {
+    use NameTrait;
     protected $table = 'companytype';
 
-    function __construct($tableId = 0)
+    function __construct($id = 0)
     {
-        parent::__construct($tableId);
+        parent::__construct($id);
     }
 
-    use NameTrait;
+
 }

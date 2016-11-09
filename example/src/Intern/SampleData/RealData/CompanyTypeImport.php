@@ -2,9 +2,8 @@
 namespace Intern\SampleData\RealData;
 
 use Intern\Model\CompanyType;
-use Intern\Model\Geo;
 
-class ProvinceImport
+class CompanyTypeImport
 {
     private $data = [
         [
@@ -30,7 +29,7 @@ class ProvinceImport
         [
             'id' => '5',
             'name' => 'บริษัทมหาชนจำกัด',
-            'name_eng' => '',
+            'name_eng' => 'Limited',
         ],
         [
             'id' => '6',
@@ -43,23 +42,25 @@ class ProvinceImport
             'name_eng' => '',
         ],
         [
-            'id' => '7',
+            'id' => '8',
             'name' => 'บริษัทข้ามชาติ',
             'name_eng' => '',
         ],
         [
-            'id' => '7',
+            'id' => '9',
             'name' => 'กิจการแฟรนไชส์',
             'name_eng' => 'Franchise',
         ],
     ];
 
-    public function inject()
+    public function import()
     {
         foreach ($this->data as $record) {
-            $type = new CompanyType($record['id']);
-            $type->setName($record['name']);
-
+            $type = new CompanyType();
+            $type->setName($record['name'], 'th_TH');
+            $type->setName($record['name_eng'], 'en_US');
+            $type->insertAction(true);
+            echo (sprintf("<p>%s</p>", $record['name']));
         }
     }
 }

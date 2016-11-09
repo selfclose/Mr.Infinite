@@ -1,13 +1,8 @@
 <?php
 namespace Intern\SampleData\RealData;
 
-use Intern\Model\Geo;
-
 class ProvinceImport
 {
-    private $geo = [
-        'ภาคเหนือ', 'ภาคกลาง', 'ภาคตะวันออกเฉียงเหนือ', 'ภาคตะวันตก', 'ภาคตะวันออก', 'ภาคใต้'
-    ];
     private $records = [
         [10,'กรุงเทพมหานคร','Bangkok',2],
         [11,'สมุทรปราการ','Samut Prakan',2],
@@ -88,18 +83,13 @@ class ProvinceImport
         [86,'บึงกาฬ','buogkan',3],
     ];
 
-    public function inject()
+    public function import()
     {
-//        foreach ($this->geo as $item) {
-//            $geo = new Geo();
-//            $geo->setName($item);
-//            $geo->insertAction();
-//        }
         foreach ($this->records as $record) {
             $province = new \Intern\Model\Province();
             $province->setProvinceId($record[0]);
             $province->setName($record[1]);
-            $province->setNameEng($record[2]);
+            $province->setName($record[2], 'en_US');
             $province->setGeoId($record[3]);
             if ($province->insertAction()) {
                 echo "<p>Inserted Province: ".$record[1]."</p>";

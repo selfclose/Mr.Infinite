@@ -1,5 +1,6 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -13,9 +14,10 @@ use Intern\Controller\RedBeanController;
  */
 class Province extends RedBeanController
 {
+    use NameTrait;
+
     function __construct($tableId = 0)
     {
-        $this->setTableName('province');
         parent::__construct($tableId);
     }
 
@@ -36,41 +38,9 @@ class Province extends RedBeanController
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->dataModel->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->dataModel->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNameEng()
-    {
-        return $this->dataModel->name_eng;
-    }
-
-    /**
-     * @param string $name_eng
-     */
-    public function setNameEng($name_eng)
-    {
-        $this->dataModel->name_eng = $name_eng;
-    }
-
-    /**
      * @return Geo
      */
-    public function getGeo()
+    public function getGeoId()
     {
         return $this->dataModel->geo_id;
     }
@@ -78,13 +48,9 @@ class Province extends RedBeanController
     /**
      * @param Geo $geo_id
      */
-    public function setGeo($geo_id)
+    public function setGeoId($geo_id)
     {
-        $geo = \R::dispense('geo');
-        $geo->id = 2;
-        $geo = new Geo($geo_id);
-        $geo->readAction();
-        $this->dataModel->geo = $geo;
+        $this->dataModel->geo_id = $geo_id;
 //        $this->dataModel->setMeta("buildcommand.unique", [[$this->dataModel->province_id]]);
     }
 

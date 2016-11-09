@@ -35,11 +35,11 @@ class RedBeanController
     }
 
     /**
-     * @param string $table
+     * @return string
      */
-    public function setTable($table)
+    public function getTable()
     {
-        $this->table = $table;
+        return $this->table;
     }
 
     public function addTag($tag = [])
@@ -310,10 +310,14 @@ class RedBeanController
         return \R::findOne($this->table, $findBy.'='.$value);
     }
 
-
     //-------- ETC --------//
     public function setTableComment($comment) {
         \R::exec(sprintf("ALTER TABLE %s COMMENT '%s'", $this->table, $comment));
+    }
+
+    public function resetAutoIncrement()
+    {
+        \R::exec(sprintf("ALTER TABLE %s AUTO_INCREMENT = 1", $this->table));
     }
 
 
