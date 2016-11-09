@@ -203,7 +203,7 @@ class SkillImport
             $skillType->setName($key);
             $skillType->insertAction();
 
-            iLog('--- Inserted Skill Type: '.$key.' ---');
+            iLog('--- Inserted Skill Type: '.$key.' ---', true);
 
             foreach ($val as $sk) {
                 $skill = new Skill();
