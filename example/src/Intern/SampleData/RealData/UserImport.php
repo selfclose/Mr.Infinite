@@ -33,7 +33,7 @@ class UserImport
 
         global $faker;
         for($i=1;$i<6;$i++) {
-            echo "<p>user loop: ".$i."</p>";
+
             $data = new User();
             $data->setDisplayName($faker->name);
             $data->setGender($faker->randomElement(['m', 'f', 'n']));
@@ -47,8 +47,10 @@ class UserImport
             $data->setFacebook('http://www.facebook.com/'.$faker->userName);
             $data->setLine($faker->userName);
             $data->setGotJob($faker->boolean());
+            $data->setWebsite([$faker->url]);
 
             $data->insertAction();
+            echo "<p>{$i}. Inserted user: {$data->getDisplayName()}</p>";
         }
     }
 }

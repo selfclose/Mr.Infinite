@@ -13,7 +13,7 @@ class UserSkill extends RedBeanController
 {
     protected $table = 'userskill';
 
-    function __construct($id)
+    function __construct($id = 0)
     {
         parent::__construct($id);
     }
@@ -31,7 +31,7 @@ class UserSkill extends RedBeanController
      */
     public function setUserId($user_id)
     {
-        $this->dataModel->user_id[] = $user_id;
+        $this->dataModel->wp_users_id = $user_id;
     }
 
     /**

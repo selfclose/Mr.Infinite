@@ -1,5 +1,7 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\NameTrait;
+use Intern\Controller\RedBeanController;
 
 /**
  * @property int university_id
@@ -10,103 +12,45 @@ namespace Intern\Model;
  * @property string website
  * @property int province_id
  */
-class University implements UniversityInterface
+class University extends RedBeanController
 {
-    protected $id;
-    protected $university_id;
-    protected $name;
-    protected $name_eng;
-    protected $short_name;
-    protected $short_name_eng;
-    protected $website;
-    protected $province_id;
+    use NameTrait;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    function __construct($id = 0)
     {
-        return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUniversityId()
-    {
-        return $this->university_id;
-    }
-
-    /**
-     * @param int $university_id
-     */
-    public function setUniversityId($university_id)
-    {
-        $this->university_id = $university_id;
+        parent::__construct($id);
     }
 
     /**
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = wp_strip_all_tags($name);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNameEng()
-    {
-        return $this->name_eng;
-    }
-
-    /**
-     * @param mixed $name_eng
-     */
-    public function setNameEng($name_eng)
-    {
-        $this->name_eng = wp_strip_all_tags($name_eng);
-    }
-
-    /**
-     * @return mixed
-     */
     public function getShortName()
     {
-        return $this->short_name;
+        return $this->dataModel->short_name;
     }
 
     /**
-     * @param mixed $short_name
+     * @param string $short_name
      */
     public function setShortName($short_name)
     {
-        $this->short_name = $short_name;
+        $this->dataModel->short_name = $short_name;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShortNameEng()
     {
-        return $this->short_name_eng;
+        return $this->dataModel->short_name_eng;
     }
 
     /**
-     * @param mixed $short_name_eng
+     * @param string $short_name_eng
      */
     public function setShortNameEng($short_name_eng)
     {
-        $this->short_name_eng = $short_name_eng;
+        $this->dataModel->short_name_eng = $short_name_eng;
     }
 
     /**
@@ -114,7 +58,7 @@ class University implements UniversityInterface
      */
     public function getWebsite()
     {
-        return $this->website;
+        return $this->dataModel->website;
     }
 
     /**
@@ -122,7 +66,7 @@ class University implements UniversityInterface
      */
     public function setWebsite($website)
     {
-        $this->website = $website;
+        $this->dataModel->website = $website;
     }
 
     /**
@@ -130,14 +74,14 @@ class University implements UniversityInterface
      */
     public function getProvinceId()
     {
-        return $this->province_id;
+        return $this->dataModel->province_id;
     }
 
     /**
-     * @param int $province_id
+     * @param int Province $province_id
      */
     public function setProvinceId($province_id)
     {
-        $this->province_id = $province_id;
+        $this->dataModel->province_id = $province_id;
     }
 }

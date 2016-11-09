@@ -66,6 +66,8 @@ class User extends RedBeanController
     protected $bookmark = [];
     protected $age = 0; //no set no save
 
+    protected $website = [];
+
     /**
      * @var array
      */
@@ -472,6 +474,21 @@ class User extends RedBeanController
         $this->dataModel->age = $age;
     }
 
+    /**
+     * @return array
+     */
+    public function getWebsite()
+    {
+        return unserialize($this->dataModel->website);
+    }
+
+    /**
+     * @param array $website
+     */
+    public function setWebsite($website)
+    {
+        $this->dataModel->website = serialize($website);
+    }
 
 
 }
