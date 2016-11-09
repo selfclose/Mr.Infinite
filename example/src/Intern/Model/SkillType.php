@@ -1,5 +1,7 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\NameTrait;
+use Intern\Controller\RedBeanController;
 
 /**
  * Class SkillType
@@ -7,36 +9,12 @@ namespace Intern\Model;
  * @property int id
  * @property string name
  */
-class SkillType implements SkillTypeInterface
+class SkillType extends RedBeanController
 {
-    /**
-     * @var int
-     */
-    protected $id;
+    use NameTrait;
 
-    /**
-     * @var string
-     */
-    protected $name;
-
-	/**
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 */
-	public function setName( $name ) {
-		$this->name = $name;
-	}
+    function __construct($id = 0)
+    {
+        parent::__construct($id);
+    }
 }

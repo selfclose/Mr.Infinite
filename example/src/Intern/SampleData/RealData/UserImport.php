@@ -45,6 +45,7 @@ class UserImport
             $data->setEmail($faker->email);
             $data->setFacebook('http://www.facebook.com/'.$faker->userName);
             $data->setLine($faker->userName);
+            $data->setGotJob($faker->boolean());
 
             $data->insertAction();
         }

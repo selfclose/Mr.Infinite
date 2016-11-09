@@ -23,7 +23,7 @@ class UserSkill extends RedBeanController
      */
     public function getUserId()
     {
-        return $this->dataModel->wp_users;
+        return $this->dataModel->wp_users_id;
     }
 
     /**

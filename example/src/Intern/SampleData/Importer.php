@@ -14,12 +14,13 @@ class Importer
         global $faker;
         $faker = \Faker\Factory::create();
 
-//        \R::nuke();
-//
-//        new GeoImport();
-//        new ProvinceImport();
-//        new CompanyTypeImport();
-//        new CompanyImport();
+        \R::nuke(); //purge all tables
+
+        //order by priority
+        new GeoImport();
+        new ProvinceImport();
+        new CompanyTypeImport();
+        new CompanyImport();
         new UserImport();
     }
 }
