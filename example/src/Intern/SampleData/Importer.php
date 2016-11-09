@@ -1,6 +1,8 @@
 <?php
 namespace Intern\SampleData;
 
+use Intern\Model\Company;
+use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
 
 class Importer
@@ -17,5 +19,8 @@ class Importer
 
         $companyType = new CompanyTypeImport();
         $companyType->import();
+
+        $company = new CompanyImport();
+        $company->import();
     }
 }

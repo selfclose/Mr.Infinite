@@ -6,7 +6,7 @@ use Intern\Controller\RedBeanController;
  * @property int id
  * @property string username
  * @property string password
- * @property string name
+ * @property string display_name
  * @property string name_eng
  * @property string address
  * @property string email
@@ -22,7 +22,6 @@ use Intern\Controller\RedBeanController;
  * @property string instagram
  * @property string line
  * @property string profile_image
- * @property string profile_image_filename
  * @property bool is_conscripted
  * @property array badge
  * @property bool got_job = false
@@ -34,6 +33,8 @@ use Intern\Controller\RedBeanController;
 **/
 class User extends RedBeanController
 {
+    protected $table = 'wp_users';
+
     protected $id;
     protected $username;
     protected $password;
@@ -73,10 +74,9 @@ class User extends RedBeanController
 
     private $is_valid = true;
 
-    function __construct($tableId = 0)
+    function __construct($id = 0)
     {
-        $this->setTableName('wp_users');
-        parent::__construct($tableId);
+        parent::__construct($id, true);
     }
 
     /**

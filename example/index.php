@@ -9,8 +9,16 @@ require_once __DIR__.'/src/autoload.php';
 //    $geo->insertAction();
 //}
 
-$province = new \Intern\Model\Province();
-$province->setName('เชียงราย');
-$province->setNameEng('chiang rai');
-$province->setGeo(1);
-echo $province->insertAction();
+//$province = new \Intern\Model\Province();
+//$province->setName('เชียงราย');
+//$province->setNameEng('chiang rai');
+//$province->setGeo(1);
+//echo $province->insertAction();
+
+new \Intern\SampleData\Importer();
+//$type->timestamp = true;
+//$type->setName('oooบริษัทไม่จำกัด');
+//$type->setName('unlimited', 'en_US');
+//echo $type->insertAction(true);
+
+//echo date('d-m-Y H:i:s', $type->dataModel->created_at);

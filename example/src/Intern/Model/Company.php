@@ -29,9 +29,13 @@ use Intern\Controller\RedBeanController;
  */
 class Company extends RedBeanController
 {
-    function __construct($tableId = 0)
+    const ACCOUNT_FREE = 'free';
+    const ACCOUNT_VIP = 'vip';
+    const ACCOUNT_PREMIUM = 'premium';
+
+    function __construct($id = 0)
     {
-        parent::__construct($tableId);
+        parent::__construct($id);
     }
 
     /**
@@ -71,15 +75,15 @@ class Company extends RedBeanController
      */
     public function getType()
     {
-        return $this->dataModel->type;
+        return $this->dataModel->companytype_id;
     }
 
     /**
-     * @param CompanyType $type
+     * @param int CompanyType $type
      */
     public function setType($type)
     {
-        $this->dataModel->type = new CompanyType($type);
+        $this->dataModel->companytype_id = $type;
     }
 
     /**
@@ -135,7 +139,7 @@ class Company extends RedBeanController
      */
     public function getTel()
     {
-        return $this->dataModel->tel;
+        return unserialize($this->dataModel->tel);
     }
 
     /**
@@ -143,7 +147,7 @@ class Company extends RedBeanController
      */
     public function setTel($tel)
     {
-        $this->dataModel->tel = $tel;
+        $this->dataModel->tel = serialize($tel);
     }
 
     /**
@@ -151,7 +155,7 @@ class Company extends RedBeanController
      */
     public function getFax()
     {
-        return $this->dataModel->fax;
+        return unserialize($this->dataModel->fax);
     }
 
     /**
@@ -159,7 +163,7 @@ class Company extends RedBeanController
      */
     public function setFax($fax)
     {
-        $this->dataModel->fax = $fax;
+        $this->dataModel->fax = serialize($fax);
     }
 
     /**
@@ -195,15 +199,15 @@ class Company extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return Province
      */
     public function getProvinceId()
     {
-        return $this->dataModel->province_id;
+        return $this->dataModel->province_provinceid;
     }
 
     /**
-     * @param int $province_id
+     * @param int Province $province_id
      */
     public function setProvinceId($province_id)
     {

@@ -12,7 +12,7 @@ class RedBeanController
     //config
     public $timestamp = false;
 
-    function __construct($Id = 0)
+    function __construct($Id = 0, $bypass_prefix = false)
     {
         //if you not override $table, it will use class name as table's name
         if (empty($this->table)) {
@@ -20,7 +20,12 @@ class RedBeanController
             $this->table = strtolower($ex[count($ex)-1]);
         }
 
-        $this->dataModel = \R::dispense($this->table);
+        if (!$bypass_prefix) {
+            $this->dataModel = \R::dispense($this->table); //underscore is relation
+        } else {
+            $this->dataModel = \R::getRedBean()->dispense( $this->table ); //can use underscore
+        }
+
         if ($Id > 0) {
             $this->dataModel->id = $Id;
         }
