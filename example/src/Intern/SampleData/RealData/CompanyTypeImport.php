@@ -55,12 +55,13 @@ class CompanyTypeImport
 
     function __construct()
     {
+        echo "<hr/><p>--- Importing Company ---</p>";
         foreach ($this->data as $record) {
             $type = new CompanyType();
             $type->setName($record['name'], 'th_TH');
             $type->setName($record['name_eng'], 'en_US');
             $type->insertAction(true);
-            echo (sprintf("<p>%s</p>", $record['name']));
+            echo "<p>* Inserted {$record['name']}</p>";
         }
     }
 }

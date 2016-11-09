@@ -29,6 +29,7 @@ class UserImport
 //            $data->setAge($record['age']);
 //            $data->insertAction();
 //        }
+        echo "<hr/><p>--- Importing User ---</p>";
 
         global $faker;
         for($i=1;$i<6;$i++) {

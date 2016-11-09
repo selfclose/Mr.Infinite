@@ -33,6 +33,7 @@ class CompanyImport
 
     function __construct()
     {
+        echo "<hr/><p>--- Importing Company ---</p>";
         foreach ($this->records as $record) {
             $data = new Company();
 
@@ -57,7 +58,7 @@ class CompanyImport
             $data->setRating($record['rating']);
 
             echo $data->insertAction(true);
-            echo (sprintf("<p>%s</p>", $record['company_name']));
+            echo (sprintf("<p>* Inserted %s</p>", $record['company_name']));
         }
     }
 }
