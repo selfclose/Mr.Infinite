@@ -9,6 +9,7 @@ include (__DIR__.'/include.php');
 $page = isset($_GET['page']) ? $_GET['page'] : 1; //get current page
 
 $limit = 3; //per page
+
 $search = $_GET['search'];
 
 $book = new \RB\Model\Book();

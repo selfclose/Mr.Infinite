@@ -8,10 +8,8 @@ use RB\Controller\RedBeanController;
  * @property string name
  * @property int price
  */
-class Book extends RedBeanController
+class Store extends RedBeanController
 {
-    protected $table = 'book';
-
     function __construct($id = 0)
     {
         parent::__construct($id);

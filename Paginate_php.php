@@ -7,12 +7,13 @@ include (__DIR__.'/include.php');
 <?php
 
 $page = isset($_GET['page']) ? $_GET['page'] : 1; //get current page
+
 $limit = 3; //limit per page
 
 $book = new \RB\Model\Book();
 $allBook = $book->paginateAction($page, $limit, 'id', false);
 
-echo "<hr/>";
+echo "<p>insert more data to make them paging</p><hr/>";
 
 //this is paginate button, MUST inject $page & $limit In 'same' value as patinateAction
 foreach ($allBook as $ALL) {

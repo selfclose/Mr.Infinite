@@ -33,7 +33,6 @@ class Book extends RedBeanController
 {
     function __construct($tableId = 0)
     {
-        $this->setTableName('book');
         parent::__construct($tableId);
     }
 
@@ -70,6 +69,14 @@ class Book extends RedBeanController
     }
 }
 ```
+It's will automatic create table's name by class name
+
+Or you can manually tell table's name by add
+
+```php
+    protected $table = 'book';
+```
+
 
 **Now, You can insert update delete count paginate without concern about table**
 
@@ -78,7 +85,7 @@ class Book extends RedBeanController
 <?php
 $book = new \RB\Model\Book();
 $book->setName('Harry Potter');
-$book->setPrice(1200));
+$book->setPrice(1200);
 $book->insertAction();
 ```
 
