@@ -31,7 +31,6 @@ class Company extends RedBeanController
 {
     function __construct($tableId = 0)
     {
-        $this->setTableName('company');
         parent::__construct($tableId);
     }
 
@@ -80,7 +79,7 @@ class Company extends RedBeanController
      */
     public function setType($type)
     {
-        $this->dataModel->type = $type;
+        $this->dataModel->type = new CompanyType($type);
     }
 
     /**

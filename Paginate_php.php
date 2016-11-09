@@ -7,6 +7,7 @@ include (__DIR__.'/include.php');
 <?php
 
 $page = isset($_GET['page']) ? $_GET['page'] : 1; //get current page
+
 $limit = 3; //limit per page
 
 $book = new \RB\Model\Book();

@@ -1,7 +1,7 @@
 <?php
 namespace Intern\Model;
 use Intern\Controller\RedBeanController;
-
+use Intern\ConcatTrait\NameTrait;
 /**
  * Class Company
  * @package Intern\Model
@@ -10,27 +10,12 @@ use Intern\Controller\RedBeanController;
  */
 class CompanyType extends RedBeanController
 {
+    protected $table = 'companytype';
+
     function __construct($tableId = 0)
     {
-        $this->setTableName('company_type');
         parent::__construct($tableId);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->dataModel->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->dataModel->name = $name;
-    }
-
-
+    use NameTrait;
 }

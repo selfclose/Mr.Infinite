@@ -1,5 +1,5 @@
 <?php
-namespace RB\Controller;
+namespace Intern\Controller;
 
 class RedBeanController
 {
@@ -8,6 +8,9 @@ class RedBeanController
 
     protected $tag;
     protected $paginate_count;
+
+    //config
+    public $timestamp = false;
 
     function __construct($Id = 0)
     {
@@ -64,19 +67,36 @@ class RedBeanController
 
     //-------------ACTION-------------//
 
-    public function insertAction()
+    /**
+     * @return int|string
+     * @throws \Exception
+     */
+    public function insertAction($force = false)
     {
-        if ($this->dataModel->id > 0) {
+        if ($this->dataModel->id > 0 && !$force) {
             throw new \Exception("Insert don't need ID, it's auto increase");
+        }
+        if ($this->timestamp) {
+            $this->dataModel->created_at = time();
+            $this->dataModel->updated_at = time();
         }
         return \R::store($this->dataModel);
     }
 
-    public function updateAction()
+    /**
+     * @return int|string
+     * @throws \Exception
+     */
+    public function updateAction($force = false)
     {
-        if (!$this->dataModel->id > 0) {
+        if (!$this->dataModel->id > 0 && !$force) {
             throw new \Exception("Update Need ID (please put id when you new class");
         }
+
+        if ($this->timestamp) {
+            $this->dataModel->updated_at = time();
+        }
+
         return \R::store($this->dataModel);
     }
 
@@ -289,5 +309,14 @@ class RedBeanController
     {
         return \R::findOne($this->table, $findBy.'='.$value);
     }
+
+
+    //-------- ETC --------//
+    public function setTableComment($comment) {
+        \R::exec(sprintf("ALTER TABLE %s COMMENT '%s'", $this->table, $comment));
+    }
+
+
+    //-------- Private Zone --------//
 
 }
