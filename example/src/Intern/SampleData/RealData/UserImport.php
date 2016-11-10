@@ -1,6 +1,7 @@
 <?php
 namespace Intern\SampleData\RealData;
 
+use Intern\Model\Skill;
 use Intern\Model\User;
 
 class UserImport
@@ -29,6 +30,10 @@ class UserImport
 //            $data->setAge($record['age']);
 //            $data->insertAction();
 //        }
+
+        $skill = new Skill();
+        $allSkill = $skill->countAction();
+
         iLog('--- Importing User ---', true);
 
         global $faker;
@@ -49,6 +54,9 @@ class UserImport
             $data->setGotJob($faker->boolean());
             $data->setWebsite([$faker->url]);
             $data->setTel([$faker->phoneNumber]);
+
+            $data->setSkills([rand(1, $allSkill)]);
+            $data->setResumes([rand(1,10)]);
 
             $data->insertAction();
             iLog($i.'. Inserted user: '.$data->getDisplayName());

@@ -25,7 +25,7 @@ class ResumeImport
         ],
     ];
 
-    function __construct()
+    function __construct($loop = 10)
     {
         iLog('--- Importing Resume ---', true);
 
@@ -37,7 +37,7 @@ class ResumeImport
 
         global $faker;
 
-        for ($i=1;$i<10;$i++) {
+        for ($i=1;$i<$loop;$i++) {
             $data = new Resume();
             $data->timestamp = true;
             $data->setUserId(rand(1, $allUser));
@@ -49,7 +49,7 @@ class ResumeImport
             $data->setAttachUrl($faker->url);
 
             $data->insertAction();
-            iLog('Inserted Resume: '.$data->getTitle());
+            iLog('* Inserted Resume: '.$data->getTitle());
         }
     }
 }

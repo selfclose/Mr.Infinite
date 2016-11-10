@@ -1,7 +1,7 @@
 <?php
 namespace Intern\Model;
 
-use Intern\ConcatTrait\NameTrait;
+use Intern\ConcatTrait\EnabledTrait;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -15,11 +15,16 @@ use Intern\Controller\RedBeanController;
  */
 class Job extends RedBeanController
 {
+    use EnabledTrait;
+
     protected $table = 'job';
 
     function __construct($id = 0)
     {
         parent::__construct($id);
+
+        //default value
+        $this->setEnabled(true);
     }
 
     /**
@@ -105,7 +110,7 @@ class Job extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return \DateTime
      */
     public function getStartDate()
     {
@@ -113,7 +118,7 @@ class Job extends RedBeanController
     }
 
     /**
-     * @param mixed $start_date
+     * @param \DateTime $start_date
      */
     public function setStartDate($start_date)
     {
