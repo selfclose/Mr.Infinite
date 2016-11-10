@@ -82,8 +82,8 @@ class RedBeanController
             throw new \Exception("Insert don't need ID, it's auto increase");
         }
         if ($this->timestamp) {
-            $this->dataModel->created_at = time();
-            $this->dataModel->updated_at = time();
+            $this->dataModel->created_at = date("Y-m-d H:i:s");
+            $this->dataModel->updated_at = date("Y-m-d H:i:s");
         }
         return \R::store($this->dataModel);
     }
@@ -99,7 +99,7 @@ class RedBeanController
         }
 
         if ($this->timestamp) {
-            $this->dataModel->updated_at = time();
+            $this->dataModel->updated_at = date("Y-m-d H:i:s");
         }
 
         return \R::store($this->dataModel);
