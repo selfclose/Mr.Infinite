@@ -14,11 +14,11 @@ class JobCategoryImport
     {
        iLog('--- Importing Job Category ---', true);
         foreach ($this->records as $record) {
-            $geo = new \Intern\Model\JobCategory();
+            $data = new \Intern\Model\JobCategory();
 
-            $geo->setName($record);
+            $data->setName($record);
 
-            if ($geo->insertAction()) {
+            if ($data->insertAction()) {
                 iLog('* Inserted Job Category: '.$record);
             }
         }

@@ -33,12 +33,12 @@ class JobTypeImport
     {
        iLog('--- Importing Job Type ---', true);
         foreach ($this->records as $record) {
-            $geo = new JobType();
+            $data = new JobType();
 
-            $geo->setName($record['name']);
-            $geo->setName($record['name_eng'], 'en_US');
+            $data->setName($record['name']);
+            $data->setName($record['name_eng'], 'en_US');
 
-            if ($geo->insertAction()) {
+            if ($data->insertAction()) {
                 iLog('* Inserted Job Type: '.$record['name']);
             }
         }

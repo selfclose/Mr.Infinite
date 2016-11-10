@@ -1,6 +1,7 @@
 <?php
 namespace Intern\SampleData;
 
+use Intern\SampleData\RealData\CompanyDepartmentImport;
 use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
 use Intern\SampleData\RealData\GeoImport;
@@ -30,6 +31,7 @@ class Importer
         new SkillImport();
         new UserImport();
         new UserSkillImport();
+        new CompanyDepartmentImport(); //need company & user
         new UniversityTypeImport();
         new UniversityImport();
         new ResumeImport();

@@ -48,6 +48,7 @@ class UserImport
             $data->setLine($faker->userName);
             $data->setGotJob($faker->boolean());
             $data->setWebsite([$faker->url]);
+            $data->setTel([$faker->phoneNumber]);
 
             $data->insertAction();
             iLog($i.'. Inserted user: '.$data->getDisplayName());
