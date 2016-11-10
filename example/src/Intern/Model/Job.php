@@ -15,6 +15,8 @@ use Intern\Controller\RedBeanController;
  */
 class Job extends RedBeanController
 {
+    protected $table = 'job';
+
     function __construct($id = 0)
     {
         parent::__construct($id);
@@ -132,5 +134,34 @@ class Job extends RedBeanController
     public function setEndDate($end_date)
     {
         $this->dataModel->end_date = $end_date;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTag()
+    {
+        return $this->dataModel->sharedJobtag;
+    }
+
+    /**
+     * @param $tagId array JobTag
+     */
+    public function setTag($tags)
+    {
+        unset($this->dataModel->sharedJobtag);
+        if (is_array($tags)) {
+            foreach ($tags as $tag) {
+                $this->dataModel->sharedJobtag[] = \R::load('jobtag', $tag);
+            }
+        }
+    }
+
+    /**
+     * @param $tagId int JobTag
+     */
+    public function addTag($tagId)
+    {
+        $this->dataModel->sharedJobtag[] = \R::load('jobtag', $tagId);
     }
 }
