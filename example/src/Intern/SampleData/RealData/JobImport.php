@@ -43,7 +43,7 @@ class JobImport extends DateTimeProvider
         $allCompany = $company->countAction();
 
         $tag = new JobTag();
-        $tag->countAction();
+        $allTag = $tag->countAction();
 
         for ($i=0;$i<$loop;$i++) {
             $data = new Job();
@@ -53,6 +53,7 @@ class JobImport extends DateTimeProvider
             $data->setDescription($faker->paragraph(2));
             $data->setStartDate($this->getToday());
             $data->setEndDate($this->forwardFromToday(7));
+            $data->setTag([1,rand(2,$allTag)]);
 
             if ($data->insertAction()) {
                 iLog('* Inserted Job : '.$data->getTitle());

@@ -506,5 +506,45 @@ class User extends RedBeanController
         $this->dataModel->tel = serialize($tel);
     }
 
+    /**
+     * @return array
+     */
+    public function getSkills()
+    {
+        return $this->dataModel->sharedSkill;
+    }
 
+    /**
+     * @param $skills array Skill
+     */
+    public function setSkills($skills)
+    {
+        unset($this->dataModel->sharedSkill);
+        if (is_array($skills)) {
+            foreach ($skills as $skill) {
+                $this->dataModel->sharedSkill[] = \R::load('skill', $skill);
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getResumes()
+    {
+        return $this->dataModel->ownResume;
+    }
+
+    /**
+     * @param $resumes array Resume
+     */
+    public function setResumes($resumes)
+    {
+        unset($this->dataModel->ownResume);
+        if (is_array($resumes)) {
+            foreach ($resumes as $resume) {
+                $this->dataModel->ownResume[] = \R::load('resume', $resume);
+            }
+        }
+    }
 }

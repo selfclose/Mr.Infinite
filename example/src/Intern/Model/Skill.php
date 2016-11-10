@@ -1,5 +1,6 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\EnabledTrait;
 use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
@@ -14,10 +15,13 @@ use Intern\Controller\RedBeanController;
 class Skill extends RedBeanController
 {
     use NameTrait;
+    use EnabledTrait;
 
     function __construct($id = 0)
     {
         parent::__construct($id);
+
+        $this->setEnabled(true);
     }
 
     /**

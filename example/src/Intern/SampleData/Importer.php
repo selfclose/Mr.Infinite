@@ -29,14 +29,15 @@ class Importer
         new ProvinceImport();
         new CompanyTypeImport();
         new CompanyImport();
-        new SkillImport();
-        new UserImport();
-        new UserSkillImport();
         new CompanyDepartmentImport(); //need company & user
         new UniversityTypeImport();
         new UniversityImport();
-        new ResumeImport();
+        new ResumeImport(); //need user, company, university
+        new SkillImport();
+        new UserImport(); //need skill
         new JobTagImport();
         new JobImport();
+
+        iLog('**** Success Import! ****', true);
     }
 }

@@ -47,28 +47,28 @@ class RedBeanController
         return $this->table;
     }
 
-    public function addTag($tag = [])
-    {
-        return \R::addTags($this->table, $tag);
-    }
-
-    public function hasTag($tag = [])
-    {
-        return \R::hasTag($this->table, $tag);
-    }
-
-    public function removeTag($tag = [])
-    {
-        return \R::untag($this->table, $tag);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTag($tag = [])
-    {
-        return \R::tagged($this->table, $tag = []);
-    }
+//    public function addTag($tag = [])
+//    {
+//        return \R::addTags($this->table, $tag);
+//    }
+//
+//    public function hasTag($tag = [])
+//    {
+//        return \R::hasTag($this->table, $tag);
+//    }
+//
+//    public function removeTag($tag = [])
+//    {
+//        return \R::untag($this->table, $tag);
+//    }
+//
+//    /**
+//     * @return mixed
+//     */
+//    public function getTag($tag = [])
+//    {
+//        return \R::tagged($this->table, $tag = []);
+//    }
 
     //-------------ACTION-------------//
 
@@ -330,6 +330,11 @@ class RedBeanController
         \R::exec(sprintf(
             "ALTER TABLE %s ADD CONSTRAINT `%s` FOREIGN KEY (`%s`) REFERENCES `%s` (`%s`) ON DELETE CASCADE ON UPDATE CASCADE"
         , $this->table, 'c_fk_'.$this->table.'_'.$column, $column, $hookTable, $column));
+    }
+
+    public function setDefaultValue($column_name, $defaultValue)
+    {
+        \R::exec(sprintf("ALTER TABLE %s ALTER COLUMN %s SET DEFAULT '%s';", $this->table, $column_name, $defaultValue));
     }
 
     //-------- Private Zone --------//
