@@ -1,9 +1,12 @@
 <?php
 namespace Intern\SampleData;
 
+use Intern\SampleData\RealData\CompanyDepartmentImport;
 use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
 use Intern\SampleData\RealData\GeoImport;
+use Intern\SampleData\RealData\JobImport;
+use Intern\SampleData\RealData\JobTagImport;
 use Intern\SampleData\RealData\ProvinceImport;
 use Intern\SampleData\RealData\ResumeImport;
 use Intern\SampleData\RealData\SkillImport;
@@ -29,9 +32,11 @@ class Importer
         new SkillImport();
         new UserImport();
         new UserSkillImport();
+        new CompanyDepartmentImport(); //need company & user
         new UniversityTypeImport();
         new UniversityImport();
         new ResumeImport();
-
+        new JobTagImport();
+        new JobImport();
     }
 }

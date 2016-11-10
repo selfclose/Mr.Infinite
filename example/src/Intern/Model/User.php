@@ -490,5 +490,21 @@ class User extends RedBeanController
         $this->dataModel->website = serialize($website);
     }
 
+    /**
+     * @return array
+     */
+    public function getTel()
+    {
+        return unserialize($this->dataModel->tel);
+    }
+
+    /**
+     * @param array $tel
+     */
+    public function setTel($tel)
+    {
+        $this->dataModel->tel = serialize($tel);
+    }
+
 
 }
