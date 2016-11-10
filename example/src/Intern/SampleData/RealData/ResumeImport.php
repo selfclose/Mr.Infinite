@@ -39,6 +39,7 @@ class ResumeImport
 
         for ($i=1;$i<10;$i++) {
             $data = new Resume();
+            $data->timestamp = true;
             $data->setUserId(rand(1, $allUser));
             $data->setTitle($faker->name);
             $data->setPingCompanyId(rand(1, $allCompany));
