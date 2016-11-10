@@ -4,7 +4,7 @@ namespace Intern\Model;
 use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
-class JobCategory extends RedBeanController
+class JobTag extends RedBeanController
 {
     use NameTrait;
 

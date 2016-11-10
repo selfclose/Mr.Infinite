@@ -5,7 +5,8 @@ use Intern\SampleData\RealData\CompanyDepartmentImport;
 use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
 use Intern\SampleData\RealData\GeoImport;
-use Intern\SampleData\RealData\JobCategoryImport;
+use Intern\SampleData\RealData\JobImport;
+use Intern\SampleData\RealData\JobTagImport;
 use Intern\SampleData\RealData\ProvinceImport;
 use Intern\SampleData\RealData\ResumeImport;
 use Intern\SampleData\RealData\SkillImport;
@@ -35,6 +36,7 @@ class Importer
         new UniversityTypeImport();
         new UniversityImport();
         new ResumeImport();
-        new JobCategoryImport();
+        new JobTagImport();
+        new JobImport();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Intern\SampleData\RealData;
 
-class JobCategoryImport
+class JobTagImport
 {
     private $records = [
         'ฝึกงาน',
@@ -14,7 +14,7 @@ class JobCategoryImport
     {
        iLog('--- Importing Job Category ---', true);
         foreach ($this->records as $record) {
-            $data = new \Intern\Model\JobCategory();
+            $data = new \Intern\Model\jobTag();
 
             $data->setName($record);
 

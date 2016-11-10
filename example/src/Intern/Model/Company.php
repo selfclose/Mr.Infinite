@@ -71,6 +71,22 @@ class Company extends RedBeanController
     }
 
     /**
+     * @return string
+     */
+    public function getLogoUrl()
+    {
+        return $this->dataModel->logo;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setLogoUrl($url)
+    {
+        $this->dataModel->logo = $url;
+    }
+
+    /**
      * @return CompanyType
      */
     public function getType()
