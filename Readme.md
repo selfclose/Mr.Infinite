@@ -95,7 +95,7 @@ $book->insertAction();
 $idToUpdate = 1;
 $book = new \RB\Model\Book($idToUpdate);
 if ($book->readAction()) {
-    $book->setName('Harry potter and the cursed child'));
+    $book->setName('Harry potter and the cursed child');
     $book->setPrice(1400);
 
     $book->updateAction();
@@ -134,3 +134,27 @@ if ($book->readAction()) {
 ```
 
 Another thing in project.
+
+###Relation Keyword (I May wrong)
+* Example Dummy is table name
+
+one-to-many: "own"
+
+```php
+//Library
+$this->dataModel->ownBook = \R::load('book', 1);
+```
+
+many-to-one: 
+
+```php
+//Library
+$this->dataModel->book_id = 2;
+```
+
+many-to-many: "shared"
+
+```php
+//Book
+$this->dataModel->sharedAuthor = \R::load('author', 1);
+```
