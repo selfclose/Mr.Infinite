@@ -16,7 +16,8 @@
                             label(for='company') บริษัทที่จะส่ง Resume ถึง :
                             select#company.form-control(name='company')
                                 - foreach ($company as $comp) {
-                                option(value='test') บริษัททดสอบ
+                                option(value='test')
+                                    != $comp->name;
                                 - }
                                 option(value='ts2') number 2
 
