@@ -24,3 +24,12 @@ spl_autoload_register(function ($className) {
 
     return false;
 });
+
+function iLog($string, $info = false) {
+//    flush();
+    ob_flush();
+    if ($info)
+        echo "<script>console.info(\"{$string}\");</script>";
+    else
+        echo "<script>console.log(\"{$string}\");</script>";
+}

@@ -7,16 +7,16 @@ trait NameTrait
     /**
      * @return string
      */
-    public function getName($lang = 'th_TH')
+    public function getName()
     {
-        return $this->dataModel['name_'.$lang];
+        return $this->dataModel->name;
     }
 
     /**
      * @param string $name
      */
-    public function setName($name, $lang = 'th_TH')
+    public function setName($name)
     {
-        $this->dataModel['name_'.$lang] = $name;
+        $this->dataModel->name = $name;
     }
 }

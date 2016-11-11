@@ -23,20 +23,20 @@ class Skill extends RedBeanController
 
         $this->setEnabled(true);
     }
-
-    /**
-     * @return int SkillType
-     */
-    public function getSkillType()
-    {
-        return $this->dataModel->skilltype_id;
-    }
-
-    /**
-     * @param int $type
-     */
-    public function setSkillType($type)
-    {
-        $this->dataModel->skilltype_id = $type;
-    }
+//
+//    /**
+//     * @return int SkillType
+//     */
+//    public function getSkillType()
+//    {
+//        return $this->dataModel->skilltype_id;
+//    }
+//
+//    /**
+//     * @param int $type
+//     */
+//    public function setSkillType($type)
+//    {
+//        $this->dataModel->skilltype_id = $type;
+//    }
 }

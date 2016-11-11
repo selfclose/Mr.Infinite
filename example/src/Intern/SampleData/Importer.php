@@ -13,7 +13,6 @@ use Intern\SampleData\RealData\SkillImport;
 use Intern\SampleData\RealData\UniversityImport;
 use Intern\SampleData\RealData\UniversityTypeImport;
 use Intern\SampleData\RealData\UserImport;
-use Intern\SampleData\RealData\UserSkillImport;
 
 class Importer
 {
@@ -22,6 +21,7 @@ class Importer
         global $faker;
         $faker = \Faker\Factory::create();
 
+        iLog('**** Purging All Data! ****', true);
         \R::nuke(); //purge all tables
 
         //order by priority

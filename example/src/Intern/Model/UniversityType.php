@@ -1,11 +1,11 @@
 <?php
 namespace Intern\Model;
-use Intern\ConcatTrait\NameTrait;
+use Intern\ConcatTrait\NameLangTrait;
 use Intern\Controller\RedBeanController;
 
 class UniversityType extends RedBeanController
 {
-    use NameTrait;
+    use NameLangTrait;
 
     function __construct($id = 0)
     {

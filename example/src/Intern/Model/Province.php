@@ -1,6 +1,6 @@
 <?php
 namespace Intern\Model;
-use Intern\ConcatTrait\NameTrait;
+use Intern\ConcatTrait\NameLangTrait;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -14,7 +14,7 @@ use Intern\Controller\RedBeanController;
  */
 class Province extends RedBeanController
 {
-    use NameTrait;
+    use NameLangTrait;
 
     function __construct($tableId = 0)
     {

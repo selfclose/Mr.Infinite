@@ -1,7 +1,7 @@
 <?php
 namespace Intern\Model;
 use Intern\Controller\RedBeanController;
-use Intern\ConcatTrait\NameTrait;
+use Intern\ConcatTrait\NameLangTrait;
 /**
  * Class Company
  * @package Intern\Model
@@ -10,7 +10,7 @@ use Intern\ConcatTrait\NameTrait;
  */
 class CompanyType extends RedBeanController
 {
-    use NameTrait;
+    use NameLangTrait;
     protected $table = 'companytype';
 
     function __construct($id = 0)

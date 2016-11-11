@@ -108,8 +108,12 @@ class RedBeanController
     /**
      * @return bool
      */
-    public function readAction()
+    public function readAction($id = 0)
     {
+        if ($id > 0) {
+            $this->dataModel->id = $id;
+        }
+
         $data = \R::load($this->table, $this->dataModel->id);
         if ($data->id) {
             $this->dataModel = $data;

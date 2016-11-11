@@ -1,6 +1,6 @@
 <?php
 namespace Intern\Model;
-use Intern\ConcatTrait\NameTrait;
+use Intern\ConcatTrait\NameLangTrait;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -11,7 +11,7 @@ class UserType extends RedBeanController
 {
     protected $table = 'wp_users_type';
 
-    use NameTrait;
+    use NameLangTrait;
     function __construct($id = 0)
     {
         parent::__construct($id, true);
