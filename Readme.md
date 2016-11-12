@@ -131,10 +131,21 @@ if ($book->readAction()) {
     echo 'Can\'t read ID: '.$idToRead;
 }
 
+//--OR--
+$book = new \RB\Model\Book();
+if ($book->readAction(5)) {
+?>
+    ...
+<?php
+} else {
+    ...
+}
+
 ```
 
 Another thing in project.
 
+<hr/>
 ###Relation Keyword (I May wrong)
 * Example Dummy is table name
 
@@ -157,4 +168,91 @@ many-to-many: "shared"
 ```php
 //Book
 $this->dataModel->sharedAuthor = \R::load('author', 1);
+```
+<hr/>
+
+#### Retrieve Relation object
+
+* Model - SkillType
+
+###### (little trick: I'm use annotation of column for easier to retrieve properties when foreach)
+
+```php
+/**
+ * @property int|array id
+ * @property string name
+ * @property array sharedSkill
+ */
+class SkillType extends RedBeanController
+{
+    function __construct($id = 0)
+    {
+        parent::__construct($id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->dataModel->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->dataModel->name = $name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSkills()
+    {
+        return $this->dataModel->sharedSkill;
+    }
+
+    /**
+     * @param $skills array Skill
+     */
+    public function setSkills($skills)
+    {
+        unset($this->dataModel->sharedSkill);
+        if (is_array($skills)) {
+            foreach ($skills as $skill) {
+                $this->dataModel->sharedSkill[] = \R::load('skill', $skill);
+            }
+        }
+    }
+
+    public function addSkill($skill)
+    {
+        $this->dataModel->sharedSkill[] = \R::load('skill', $skill);
+        iLog($skill);
+    }
+}
+```
+
+* Skill Class is the same but only get, set Name
+
+* Display
+
+```php
+        /**
+         * @var $skType SkillType
+         */
+        foreach ($skillType->readAllAction() as $skType) {
+
+            echo "<p>* {$skType->name}</p>";
+
+            /**
+             * @var $sk Skill
+             */
+            foreach ($skType->sharedSkill as $sk) {
+
+                echo "<p> {$sk->id}--{$sk->name}</p>";
+            }
+        }
 ```
