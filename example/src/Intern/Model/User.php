@@ -532,7 +532,7 @@ class User extends RedBeanController
      */
     public function getResumes()
     {
-        return $this->dataModel->ownResume;
+        return array_keys($this->dataModel->ownResume);
     }
 
     /**
@@ -546,5 +546,21 @@ class User extends RedBeanController
                 $this->dataModel->ownResume[] = \R::load('resume', $resume);
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function getWorkStatus()
+    {
+        return $this->dataModel->working;
+    }
+
+    /**
+     * @param bool $is_working
+     */
+    public function setWorkStatus($is_working)
+    {
+        $this->dataModel->working = $is_working;
     }
 }

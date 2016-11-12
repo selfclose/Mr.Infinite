@@ -59,6 +59,8 @@ class FormProvider
         //for group-menu if you pass
         $relation_model = isset($parameters['relation_model']) ? $parameters['relation_model'] : false;
         $relation_column = isset($parameters['relation_column']) ? $parameters['relation_model'] : false;
+        $data = isset($parameters['data'])?$parameters['data']:false;
+
         $for = '';
         if (isset($parameters['label'])) {
 
@@ -103,10 +105,83 @@ class FormProvider
         echo "</select>";
         echo "</div>";
 
+        if ($data) {
+            ?>
+            <script>
+                $(document).ready(function () {
+                    $('#<?=$for?>').val(<?=self::ArrayToStringKey($data)?>).trigger('change');
+                });
+            </script>
+            <?php
+        }
     }
 
     public static function Button_Submit($label)
     {
         echo "<input type=\"submit\" value=\"{$label}\" />";
+    }
+
+    public static function Input_Password($parameters)
+    {
+        $class = $parameters['class']?$parameters['class']:'form-control';
+        $class_label = $parameters['class_label']?:'';
+        $label = $parameters['label'];
+        $id = $parameters['name']?$parameters['name']:false;
+        $required = $parameters['required']?' required':'';
+        $placeholder = $parameters['placeholder']?:'';
+
+        echo "<div class=\"form-group{$required}\">";
+        echo "<label for=\"{$id}\" class=\"{$class_label}\">{$label}</label>";
+        echo "<input type=\"password\" class=\"{$class}\" id=\"{$id}\" placeholder=\"{$placeholder}\">";
+        echo "</div>";
+    }
+
+    public static function Input($parameters)
+    {
+        $class = $parameters['class']?$parameters['class']:'form-control';
+        $class_label = $parameters['class_label']?:'';
+        $label = $parameters['label'];
+        $id = $parameters['name']?$parameters['name']:false;
+        $required = $parameters['required']?' required':'';
+        $placeholder = $parameters['placeholder']?:'';
+        $type = isset($parameters['type'])?$parameters['type']:'text';
+        $data = isset($parameters['data'])?$parameters['data']:'';
+
+        echo "<div class=\"form-group{$required}\">";
+        echo "<label for=\"{$id}\" class=\"{$class_label}\">{$label}</label>";
+        echo "<input type=\"{$type}\" class=\"{$class}\" id=\"{$id}\" placeholder=\"{$placeholder}\" value=\"{$data}\">";
+        echo "</div>";
+    }
+
+    public static function Textarea($parameters)
+    {
+        $class = $parameters['class']?$parameters['class']:'form-control';
+        $class_label = $parameters['class_label']?:'';
+        $label = $parameters['label'];
+        $id = $parameters['name']?$parameters['name']:'';
+        $data = $parameters['data'];
+        $row = isset($parameters['row'])?$parameters['row']:6;
+
+        echo "<div class=\"form-group\">";
+        echo "<label class=\"{$class_label}\" for=\"{$id}\">{$label}</label>";
+        echo "<textarea id=\"{$id}\" name=\"{$id}\" class=\"{$class}\" rows=\"{$row}\">{$data}</textarea>";
+        echo "</div>";
+    }
+
+    //-------- ETC --------
+    static function ArrayToStringKey($array, $key = 'id') {
+        $i = 0;
+        $concat = "[";
+        foreach ($array as $item) {
+            if ($i==0) {
+                $concat .= "\"" . $item[$key] . "\"";
+                $i++;
+            }
+            else
+                $concat.= ",\"".$item[$key]."\"";
+        }
+        $concat.="]";
+        return $concat;
+        //["4", "3"]
     }
 }

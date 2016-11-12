@@ -13,18 +13,21 @@ require_once __DIR__.'/vendor/autoload.php'; //composer autoload
 <script src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
 
 <!--http://www.jqueryscript.net/time-clock/Beautiful-ES5-ES6-Date-Daterange-Picker-For-jQuery.html-->
-<link rel='stylesheet' type='text/css' href='http://www.jqueryscript.net/demo/Beautiful-ES5-ES6-Date-Daterange-Picker-For-jQuery/calendar.css'>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
-<script src="http://www.jqueryscript.net/demo/Beautiful-ES5-ES6-Date-Daterange-Picker-For-jQuery/es6.js"></script>
-
 <script src="http://www.jqueryscript.net/demo/Progress-Bar-Style-Date-Range-Indicator-Plugin-with-jQuery-daterangeBar/src/js/daterangeBar.js"></script>
 
+<link rel='stylesheet' type='text/css' href='//cdn.jsdelivr.net/datetimepicker/latest/DateTimePicker.min.css'>
+<script src='//cdn.jsdelivr.net/datetimepicker/latest/DateTimePicker.min.js'></script>
 <?php
-//new \Intern\SampleData\Importer();
+if (isset($_GET['import'])) {
+    new \Intern\SampleData\Importer();
+    exit;
+}
 
 $test = new \Intern\UI\Shortcode\ResumeTest();
-$test::construct();
+//$test::construct();
 
+$user = new \Intern\UI\Shortcode\UserProfile();
+$user::construct();
 
 //create users
 //$users = array();

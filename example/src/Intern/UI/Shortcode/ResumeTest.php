@@ -39,7 +39,6 @@ class ResumeTest extends FormProvider
             ]
         );
 
-
 //        $category = \R::load('company', 1);
 //        $shops= $category->withCondition('companytype_id = ?',[1]);
 //        var_dump(json_encode($shops));
@@ -62,7 +61,7 @@ class ResumeTest extends FormProvider
                             <form role="form">
                                 <div class="form-group required">
                                     <label for="title" >ชื่อ Resume</label>
-                                    <input type="text" class="form-control" id="" aria-describedby="emailHelp" placeholder="ชื่อหัวเรื่อง">
+                                    <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="ชื่อหัวเรื่อง">
                                     <small class="form-text text-muted">เช่น: ขอฝึกงานบริษัท ...</small>
                                 </div>
                                 <?php
@@ -76,13 +75,19 @@ class ResumeTest extends FormProvider
                                 );
                                 ?>
                                 <div class="form-group">
-                                    <label for="rangedate">ระยะเวลาขอฝึกงาน:</label>
-                                    <input class="form-control" type="text" placeholder="คลิกเพื่อเปิดปฏิทิน" id="rangedate">
+                                    <div class="col-sm-6">
+                                        <label for="start_date">วันเริ่มฝึก:</label>
+                                        <input class="form-control" name="start_date" id="start_date" type="text" data-field="date" readonly>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="end_date">สิ้นสุดการฝึก:</label>
+                                        <input class="form-control" name="end_date" id="end_date" type="text" data-field="date" readonly>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="title">Url ไฟล์แนบ</label>
-                                    <input type="text" class="form-control" id="" aria-describedby="emailHelp" placeholder="ชื่อหัวเรื่อง">
+                                    <label for="attach_url">Url ไฟล์แนบ</label>
+                                    <input type="text" class="form-control" id="attach_url" name="attach_url" aria-describedby="attach_url" placeholder="ชื่อหัวเรื่อง">
                                     <small class="form-text text-muted">เช่น: http://portforio.com/mylink/</small>
                                 </div>
 
@@ -90,13 +95,13 @@ class ResumeTest extends FormProvider
                                     <div class="col-sm-offset-2 col-sm-10">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" />ฉัน ยอมรับ ข้อตกลงของเว็บไซต์</label>
+                                                <input type="checkbox" />ฉันยอมรับ <a href="#">ข้อตกลง</a>ของเว็บไซต์</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> ดูตัวอย่าง</button>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> ดูตัวอย่าง Resume</button>
                                     </div>
                                 </div>
                             </form>
@@ -115,7 +120,7 @@ class ResumeTest extends FormProvider
                         <div class="panel-body">
                             <div class="form-group">
                                 <label for="description">ข้อความจะถูกแนบไปพร้อมกับ Resume</label>
-                                <textarea id="description" class="form-control" rows="6"></textarea>
+                                <textarea id="description" name="description" class="form-control" rows="6"></textarea>
                             </div>
                         </div>
                     </div>
@@ -123,7 +128,7 @@ class ResumeTest extends FormProvider
             </div>
         </div>
         <div class="bar"></div>
-
+        <div id="dtBox"><!--calendar--></div>
         <script type="text/javascript">
             $(document).ready(function() {
                 $('.bar').daterangeBar({
@@ -134,12 +139,11 @@ class ResumeTest extends FormProvider
                     'msg': 'of January'
                 });
 
-                $('#rangedate').DatePicker({
-                    type: 'rangedate',
-                    locale: 'th',
-                    modalMode: true,
-                    startDate: moment().subtract(1, 'week'),
-                    endDate: moment()
+                $("#dtBox").DateTimePicker({
+                    setButtonContent: 'เลือก...',
+                    titleContentDate: 'วันฝึกงาน',
+                    fullMonthNames: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+
                 });
             });
 
