@@ -9,7 +9,7 @@ class FormProvider
             <script>
                 (function($) {
                     $(document).ready(function() {
-                        $('select').select2();
+                        $('select').select2({width: '100%' });
                     });
                 })(jQuery);
             </script>
@@ -49,43 +49,60 @@ class FormProvider
     public static function Render_Select($parameters)
     {
         $table = $parameters['model'];
-        $class = isset($parameters['class'])?$parameters['class']:'form-control';
-        $multiple = isset($parameters['multiple'])?" multiple=\"multiple\"":"";
+        $classLabel = isset($parameters['class_label']) ? $parameters['class_label'] : '';
+        $classSelect = isset($parameters['class']) ? $parameters['class'] : 'form-control';
+        $multiple = isset($parameters['multiple']) ? " multiple=\"multiple\"" : "";
         $column = $parameters['column'];
-        $label = isset($parameters['label'])?$parameters['label']:false;
+        $label = isset($parameters['label']) ? $parameters['label'] : false;
 
+        $choice = $parameters['choice'];
         //for group-menu if you pass
-        $relation_model = isset($parameters['relation_model'])?$parameters['relation_model']:false;
-        $relation_column = isset($parameters['relation_column'])?$parameters['relation_model']:false;
-        
+        $relation_model = isset($parameters['relation_model']) ? $parameters['relation_model'] : false;
+        $relation_column = isset($parameters['relation_column']) ? $parameters['relation_model'] : false;
+        $for = '';
         if (isset($parameters['label'])) {
-            echo "<label for=\"{$table->getTable()}\">";
+
+            if (isset($table))
+                $for = $table->getTable();
+            else
+                $for = $parameters['name'];
+            echo "<label class='{$classLabel}' for=\"{$for}\">";
             echo $label;
         }
+        if (isset($label)) {
+            echo "</label>";
+        }
+        echo "<div class=\"form-group\">";
+        echo "<select id='{$for}' class='{$classSelect}' name='".(isset($table)?$table->getTable():$parameters['name'])."''{$multiple}>";
 
-        echo "<select class='{$class}' name='{$table->getTable()}'{$multiple}>";
+        if (isset($choice)) { //if custom choice
 
-        //group or not
-        if (!$relation_model && !$relation_column) {
-            foreach ($table->readAllAction() as $key => $value) {
-                echo "<option value=\"{$value->id}\">{$value[$column]}</option>";
+            foreach ($choice as $key => $value) {
+                echo "<option value=\"{$key}\">{$value}</option>";
             }
         }
         else {
-            foreach ($table->readAllAction() as $key => $value) {
-                echo "<optgroup label='{$value[$column]}'></optgroup>";
 
-                foreach ($value[$relation_model] as $sk) {
-                    echo "<option value='{$sk->id}'>{$sk['name']}</option>";
+            //group or not
+            if (!$relation_model && !$relation_column) {
+                foreach ($table->readAllAction() as $key => $value) {
+                    echo "<option value=\"{$value->id}\">{$value[$column]}</option>";
+                }
+            }
+            else {
+                foreach ($table->readAllAction() as $key => $value) {
+                    echo "<optgroup label='{$value[$column]}'></optgroup>";
+
+                    foreach ($value[$relation_model] as $sk) {
+                        echo "<option value='{$sk->id}'>{$sk['name']}</option>";
+                    }
                 }
             }
         }
 
         echo "</select>";
+        echo "</div>";
 
-        if (isset($label)) {
-            echo "</label>";
-        }
     }
 
     public static function Button_Submit($label)
