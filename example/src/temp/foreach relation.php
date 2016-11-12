@@ -18,3 +18,12 @@ foreach ($skillType->readAllAction() as $skType) {
 }
 
 echo "</select>";
+
+//$(document).ready(function() {
+//    $('.bar').daterangeBar({
+//                    'endDate': '13-11-2016',
+//                    'barClass': 'progress-bar-striped active',
+//                    'bootstrap': true,
+//                    'privateColors': false,
+//                    'msg': 'of January'
+//                });
