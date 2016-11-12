@@ -106,6 +106,7 @@ class RedBeanController
     }
 
     /**
+     * @param int $id
      * @return bool
      */
     public function readAction($id = 0)

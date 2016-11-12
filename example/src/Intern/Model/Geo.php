@@ -11,7 +11,6 @@ class Geo extends RedBeanController
 {
     function __construct($tableId = 0)
     {
-        $this->tableName = 'geo';
         parent::__construct($tableId);
     }
 

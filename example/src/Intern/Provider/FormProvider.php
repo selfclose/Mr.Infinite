@@ -49,13 +49,15 @@ class FormProvider
     public static function Render_Select($parameters)
     {
         $table = $parameters['model'];
-        $class = isset($parameters['class'])?:'form-control';
+        $class = isset($parameters['class'])?$parameters['class']:'form-control';
         $multiple = isset($parameters['multiple'])?" multiple=\"multiple\"":"";
         $column = $parameters['column'];
-        $label = isset($parameters['label'])?:false;
-        $table_optgroup = isset($parameters['model_optgroup'])?:false;
-        $column_optgroup = isset($parameters['column_optgroup'])?:false;
+        $label = isset($parameters['label'])?$parameters['label']:false;
 
+        //for group-menu if you pass
+        $relation_model = isset($parameters['relation_model'])?$parameters['relation_model']:false;
+        $relation_column = isset($parameters['relation_column'])?$parameters['relation_model']:false;
+        
         if (isset($parameters['label'])) {
             echo "<label for=\"{$table->getTable()}\">";
             echo $label;
@@ -63,8 +65,20 @@ class FormProvider
 
         echo "<select class='{$class}' name='{$table->getTable()}'{$multiple}>";
 
-        foreach ($table->readAllAction() as $key=>$value) {
-            echo "<option value=\"{$value->id}\">{$value[$column]}</option>";
+        //group or not
+        if (!$relation_model && !$relation_column) {
+            foreach ($table->readAllAction() as $key => $value) {
+                echo "<option value=\"{$value->id}\">{$value[$column]}</option>";
+            }
+        }
+        else {
+            foreach ($table->readAllAction() as $key => $value) {
+                echo "<optgroup label='{$value[$column]}'></optgroup>";
+
+                foreach ($value[$relation_model] as $sk) {
+                    echo "<option value='{$sk->id}'>{$sk['name']}</option>";
+                }
+            }
         }
 
         echo "</select>";
