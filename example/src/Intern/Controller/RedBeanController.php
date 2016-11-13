@@ -27,7 +27,7 @@ class RedBeanController
         }
 
         if ($id > 0) {
-            $this->dataModel->id = $id;
+            $this->readAction($id);
         }
     }
 

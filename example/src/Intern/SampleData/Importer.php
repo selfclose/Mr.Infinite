@@ -1,6 +1,7 @@
 <?php
 namespace Intern\SampleData;
 
+use Intern\SampleData\RealData\BadgeImport;
 use Intern\SampleData\RealData\CompanyDepartmentImport;
 use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
@@ -33,6 +34,7 @@ class Importer
         new UniversityTypeImport();
         new UniversityImport();
         new ResumeImport(); //need user, company, university
+        new BadgeImport(); //need user
         new SkillImport();
         new UserImport(); //need skill
         new JobTagImport();

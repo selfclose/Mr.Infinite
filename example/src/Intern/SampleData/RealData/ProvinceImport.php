@@ -1,6 +1,8 @@
 <?php
 namespace Intern\SampleData\RealData;
 
+use Intern\Model\Province;
+
 class ProvinceImport
 {
     private $records = [
@@ -87,10 +89,10 @@ class ProvinceImport
     {
         iLog('--- Importing Province ---', true);
         foreach ($this->records as $record) {
-            $province = new \Intern\Model\Province();
+            $province = new Province();
             $province->setProvinceId($record[0]);
             $province->setName($record[1]);
-            $province->setName($record[2], 'en_US');
+            $province->setName($record[2], 'en');
             $province->setGeoId($record[3]);
             if ($province->insertAction()) {
                 iLog('* Inserted Province: '.$record[1]);

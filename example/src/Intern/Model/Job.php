@@ -7,7 +7,7 @@ use Intern\Controller\RedBeanController;
 /**
  * Class Job
  * @package Intern\Model
- * @property string name
+ * @property string title
  * @property int company_id
  * @property int companydepartment_id
  * @property int jobtype_id

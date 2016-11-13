@@ -7,7 +7,7 @@ trait NameLangTrait
     /**
      * @return string
      */
-    public function getName($lang = 'th_TH')
+    public function getName($lang = 'th')
     {
         return $this->dataModel['name_'.$lang];
     }
@@ -15,7 +15,7 @@ trait NameLangTrait
     /**
      * @param string $name
      */
-    public function setName($name, $lang = 'th_TH')
+    public function setName($name, $lang = 'th')
     {
         $this->dataModel['name_'.$lang] = $name;
     }

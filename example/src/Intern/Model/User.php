@@ -363,22 +363,6 @@ class User extends RedBeanController
     }
 
     /**
-     * @return array
-     */
-    public function getBadge()
-    {
-        return $this->dataModel->badge;
-    }
-
-    /**
-     * @param array $badge
-     */
-    public function setBadge($badge)
-    {
-        $this->dataModel->badge = $badge;
-    }
-
-    /**
      * @return boolean
      */
     public function isGotJob()
@@ -463,6 +447,7 @@ class User extends RedBeanController
      */
     public function getAge()
     {
+        //TODO: Can get form calculate
         return $this->dataModel->age;
     }
 
@@ -491,19 +476,19 @@ class User extends RedBeanController
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getTel()
     {
-        return unserialize($this->dataModel->tel);
+        return $this->dataModel->tel;
     }
 
     /**
-     * @param array $tel
+     * @param string $tel
      */
     public function setTel($tel)
     {
-        $this->dataModel->tel = serialize($tel);
+        $this->dataModel->tel = $tel;
     }
 
     /**
@@ -549,18 +534,23 @@ class User extends RedBeanController
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function getWorkStatus()
+    public function getBadge()
     {
-        return $this->dataModel->working;
+        return array_keys($this->dataModel->sharedBadge);
     }
 
     /**
-     * @param bool $is_working
+     * @param $badges array Resume
      */
-    public function setWorkStatus($is_working)
+    public function setBadge($badges)
     {
-        $this->dataModel->working = $is_working;
+        unset($this->dataModel->sharedBadge);
+        if (is_array($badges)) {
+            foreach ($badges as $badge) {
+                $this->dataModel->sharedBadge[] = \R::load('badge', $badge);
+            }
+        }
     }
 }

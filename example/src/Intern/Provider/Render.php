@@ -1,7 +1,7 @@
 <?php
 namespace Intern\Provider;
 
-class FormProvider
+class Render
 {
     public static function jQuery()
     {
@@ -28,15 +28,6 @@ class FormProvider
         echo "</form>";
     }
 
-    public static function Select($loopFor, $printValue, $class = 'form-control')
-    {
-        echo "<select class=\"{$class}\" name=\"{$loopFor->getTable()}\">";
-        foreach ($loopFor->readAllAction() as $key=>$value) {
-            echo "<option value='{$value->id}'>{$value[$printValue]}</option>";
-        }
-        echo "</select>";
-    }
-
     public static function Select_Multiple($loopFor, $printValue, $class = 'form-control')
     {
         echo "<select class=\"{$class}\" name=\"{$loopFor->getTable()}\" multiple=\"multiple\">";
@@ -46,9 +37,10 @@ class FormProvider
         echo "</select>";
     }
 
-    public static function Render_Select($parameters)
+    public static function Select($parameters)
     {
         $table = $parameters['model'];
+        $id = $parameters['id']?$parameters['id']:'';
         $classLabel = isset($parameters['class_label']) ? $parameters['class_label'] : '';
         $classSelect = isset($parameters['class']) ? $parameters['class'] : 'form-control';
         $multiple = isset($parameters['multiple']) ? " multiple=\"multiple\"" : "";
@@ -61,21 +53,11 @@ class FormProvider
         $relation_column = isset($parameters['relation_column']) ? $parameters['relation_model'] : false;
         $data = isset($parameters['data'])?$parameters['data']:false;
 
-        $for = '';
         if (isset($parameters['label'])) {
-
-            if (isset($table))
-                $for = $table->getTable();
-            else
-                $for = $parameters['name'];
-            echo "<label class='{$classLabel}' for=\"{$for}\">";
-            echo $label;
-        }
-        if (isset($label)) {
-            echo "</label>";
+            echo "<label class='{$classLabel}' for=\"{$id}\">{$label}</label>";
         }
         echo "<div class=\"form-group\">";
-        echo "<select id='{$for}' class='{$classSelect}' name='".(isset($table)?$table->getTable():$parameters['name'])."''{$multiple}>";
+        echo "<select id='{$id}' class='{$classSelect}' name='{$id}'{$multiple}>";
 
         if (isset($choice)) { //if custom choice
 
@@ -109,7 +91,7 @@ class FormProvider
             ?>
             <script>
                 $(document).ready(function () {
-                    $('#<?=$for?>').val(<?=self::ArrayToStringKey($data)?>).trigger('change');
+                    $('#<?=$id?>').val(<?=is_array($data)?self::ArrayToStringKey($data):$data?>).trigger('change');
                 });
             </script>
             <?php
@@ -138,12 +120,12 @@ class FormProvider
 
     public static function Input($parameters)
     {
-        $class = $parameters['class']?$parameters['class']:'form-control';
-        $class_label = $parameters['class_label']?:'';
+        $class = isset($parameters['class'])?$parameters['class']:'form-control';
+        $class_label = isset($parameters['class_label'])?$parameters['class_label']:'';
         $label = $parameters['label'];
-        $id = $parameters['name']?$parameters['name']:false;
-        $required = $parameters['required']?' required':'';
-        $placeholder = $parameters['placeholder']?:'';
+        $id = isset($parameters['id'])?$parameters['id']:false;
+        $required = isset($parameters['required'])?' required':'';
+        $placeholder = isset($parameters['placeholder'])?$parameters['placeholder']:'';
         $type = isset($parameters['type'])?$parameters['type']:'text';
         $data = isset($parameters['data'])?$parameters['data']:'';
 
@@ -155,16 +137,37 @@ class FormProvider
 
     public static function Textarea($parameters)
     {
-        $class = $parameters['class']?$parameters['class']:'form-control';
+        $class = isset($parameters['class'])?$parameters['class']:'form-control';
         $class_label = $parameters['class_label']?:'';
         $label = $parameters['label'];
-        $id = $parameters['name']?$parameters['name']:'';
+        $id = isset($parameters['id'])?$parameters['id']:'';
         $data = $parameters['data'];
         $row = isset($parameters['row'])?$parameters['row']:6;
 
         echo "<div class=\"form-group\">";
         echo "<label class=\"{$class_label}\" for=\"{$id}\">{$label}</label>";
         echo "<textarea id=\"{$id}\" name=\"{$id}\" class=\"{$class}\" rows=\"{$row}\">{$data}</textarea>";
+        echo "</div>";
+    }
+
+    public static function RadioGroup($parameters)
+    {
+        $class = isset($parameters['class'])?$parameters['class']:'radio-inline';
+        $class_label = $parameters['class_label']?:'';
+        $label = $parameters['label'];
+        $id = isset($parameters['id'])?$parameters['id']:'';
+        $choice = $parameters['choice'];
+        $data = $parameters['data'];
+
+        echo "<div class=\"form-group\">";
+        echo "<label class=\"{$class_label}\" for=\"{$id}\">{$label}</label>";
+        foreach ($choice as $key => $value) {
+            echo "<label class=\"{$class}\"><input type=\"radio\" name=\"{$id}\" id=\"{$id}\"";
+            if (isset($data) && $data==$key) {
+                echo " checked=\"checked\"";
+            }
+            echo " value=\"{$key}\"> {$value}</label>";
+        }
         echo "</div>";
     }
 

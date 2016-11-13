@@ -56,7 +56,7 @@ class CompanyDepartmentImport
             $data = new CompanyDepartment();
 
             $data->setName($record['name']);
-            $data->setName($record['name_eng'], 'en_US');
+            $data->setName($record['name_eng'], 'en');
             $data->setCompanyId(rand(1, $allCompany));
             $data->setUserId(rand(1, $allUser));
             $data->setDescription($faker->paragraph(1));

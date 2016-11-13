@@ -3,12 +3,14 @@ namespace Intern\UI\Shortcode;
 
 use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
+use Intern\Model\Province;
 use Intern\Model\Skill;
 use Intern\Model\SkillType;
 use Intern\Model\User;
 use Intern\Provider\FormProvider;
+use Intern\Provider\Render;
 
-class UserProfile extends FormProvider
+class UserProfile
 {
 
     public static function construct()
@@ -19,11 +21,12 @@ class UserProfile extends FormProvider
         $current_id = isset($_GET['id'])?$_GET['id']:0;
         $user = new User($current_id);
         $company = new Company();
+        $province = new Province();
         $companyDepartment = new CompanyDepartment();
         $skill = new Skill();
         $skillType = new SkillType();
 
-        self::jQuery();
+        Render::jQuery();
 //        self::Form_Begin();
 
 
@@ -70,32 +73,81 @@ class UserProfile extends FormProvider
                                     <input class="form-control col-sm-6" type="text" id="birth_date" name="birth_date" data-field="date" value="<?=$user->getBirthDate()?>" readonly>
                                 </div>
                                 <?php
-                                self::Textarea(
+                                Render::Textarea(
                                     [
                                         'id' => 'address',
                                         'label' => 'ที่อยู่',
                                         'data' => $user->getAddress(),
                                     ]
                                 );
-                                self::Input(
+                                Render::Input(
                                     [
                                         'id' => 'zipcode',
                                         'label' => 'รหัสไปรษณีย์',
                                         'data' => $user->getZipcode(),
                                     ]
                                 );
-
-                                self::Textarea(
+                                ?>
+                                <div class='row'>
+                                    <div class='col-sm-4'>
+                                        <?php
+                                        Render::Input(
+                                            [
+                                                'id' => 'facebook',
+                                                'label' => 'Facebook',
+                                                'data' => $user->getFacebook(),
+                                            ]
+                                        );
+                                        ?>
+                                    </div>
+                                    <div class='col-sm-4'>
+                                        <?php
+                                        Render::Input(
+                                            [
+                                                'id' => 'line',
+                                                'label' => 'Line',
+                                                'data' => $user->getLine(),
+                                            ]
+                                        );
+                                        ?>
+                                    </div>
+                                    <div class='col-sm-4'>
+                                        <?php
+                                        Render::Input(
+                                            [
+                                                'id' => 'instagram',
+                                                'label' => 'Instagram',
+                                                'data' => $user->getInstagram(),
+                                            ]
+                                        );
+                                        ?>
+                                    </div>
+                                </div>
+                                <?php
+                                Render::Textarea(
                                     [
                                         'id' => 'description',
                                         'label' => 'อธิบายส่วนตัว',
                                         'data' => $user->getDescription(),
                                     ]
                                 );
-                                self::Render_Select(
+                                Render::Select(
+                                    [
+                                        'model' => $province,
+                                        'column' => 'name_th_th',
+                                        'id' => $province->getTable(),
+                                        'label' => 'จังหวัด',
+                                        'class' => 'form-control',
+//                                        'relation_model' => 'sharedSkill',
+//                                        'relation_column' => 'name',
+                                        'data' => $user->getProvinceId(),
+                                    ]
+                                );
+                                Render::Select(
                                     [
                                         'model' => $skillType,
                                         'column' => 'name',
+                                        'id' => $skillType->getTable(),
                                         'label' => 'ทักษะ - ความสามารถ',
                                         'multiple' => true,
                                         'class' => 'form-control',
@@ -105,15 +157,40 @@ class UserProfile extends FormProvider
                                     ]
                                 );
 
-                                self::Render_Select(
+                                Render::RadioGroup(
                                     [
-                                        'label' => 'ถึง บริษัท:',
-                                        'model' => $company,
-                                        'column' => 'company_name',
-                                        'class' => 'col-sm-12'
+                                        'id' => 'gender',
+                                        'label' => 'เพศ: ',
+                                        'choice' => [
+                                            'm' => 'ชาย',
+                                            'f' => 'หญิง',
+                                            'n' => 'ไม่ระบุ',
+                                        ],
+                                        'data' => $user->getGender(),
                                     ]
                                 );
+                                Render::RadioGroup(
+                                    [
+                                        'id' => 'worked',
+                                        'label' => 'การทำงาน',
+                                        'choice' => [
+                                            '0' => 'ว่างงาน',
+                                            '1' => 'มีงานแล้ว',
+                                        ],
+                                        'data' => $user->isGotJob(),
+                                    ]
+                                );
+
+                                Render::Input(
+                                    [
+                                        'id' => 'tel',
+                                        'label' => 'เบอร์โทรศัพท์',
+                                        'data' => $user->getTel(),
+                                    ]
+                                );
+
                                 ?>
+
 
                                 <div class="form-group">
                                     <label for="title">Url ไฟล์แนบ</label>

@@ -9,7 +9,7 @@ class CompanyImport
     private $records = [
         [
             'account_type' => Company::ACCOUNT_PREMIUM,
-            'company_name' => 'บริษัท intbizth',
+            'name' => 'บริษัท intbizth',
             'company_type' => 5,
             'founder' => 'พี่มิกซ์',
             'description' => 'บริษัท Software',
@@ -31,7 +31,7 @@ class CompanyImport
         ],
         [
             'account_type' => Company::ACCOUNT_FREE,
-            'company_name' => 'HappyFresh (Thailand) Co., Ltd.',
+            'name' => 'HappyFresh (Thailand) Co., Ltd.',
             'company_type' => 5,
             'founder' => 'พี่มิกซ์',
             'description' => 'บริษัท Software',
@@ -64,7 +64,7 @@ class CompanyImport
             $data->timestamp = true;
 
             $data->setAccountType($record['account_type']);
-            $data->setCompanyName($record['company_name']);
+            $data->setName($record['name']);
             $data->setLogoUrl($faker->imageUrl());
             $data->setType($record['company_type']);
             $data->setFounder($record['founder']);
@@ -83,7 +83,7 @@ class CompanyImport
             $data->setRating($record['rating']);
 
             if($data->insertAction(true))
-                iLog('* Inserted: '.$record['company_name']);
+                iLog('* Inserted: '.$record['name']);
         }
     }
 }

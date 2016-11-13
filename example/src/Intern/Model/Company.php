@@ -1,13 +1,13 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
 /**
- * Class Company
- * @package Intern\Model
  * @property string id
  * @property string account_type
- * @property string company_name
+ * @property string name
+ * @property string logo Url
  * @property CompanyType type
  * @property string founder
  * @property string description
@@ -29,6 +29,8 @@ use Intern\Controller\RedBeanController;
  */
 class Company extends RedBeanController
 {
+    use NameTrait;
+
     const ACCOUNT_FREE = 'free';
     const ACCOUNT_VIP = 'vip';
     const ACCOUNT_PREMIUM = 'premium';
@@ -52,22 +54,6 @@ class Company extends RedBeanController
     public function setAccountType($account_type)
     {
         $this->dataModel->account_type = $account_type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompanyName()
-    {
-        return $this->dataModel->company_name;
-    }
-
-    /**
-     * @param string $company_name
-     */
-    public function setCompanyName($company_name)
-    {
-        $this->dataModel->company_name = $company_name;
     }
 
     /**

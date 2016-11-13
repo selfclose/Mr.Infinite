@@ -5,9 +5,9 @@ use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
 use Intern\Model\Skill;
 use Intern\Model\SkillType;
-use Intern\Provider\FormProvider;
+use Intern\Provider\Render;
 
-class ResumeTest extends FormProvider
+class ResumeTest
 {
 
     public static function construct()
@@ -23,13 +23,13 @@ class ResumeTest extends FormProvider
         $skill = new Skill();
         $skillType = new SkillType();
 
-        self::jQuery();
+        Render::jQuery();
 //        self::Form_Begin();
 
 
-
-        self::Render_Select(
+        Render::Select(
             [
+                'id' => $skillType->getTable(),
                 'model' => $skillType,
                 'column' => 'name',
                 'label' => 'ทักษะ',
@@ -65,11 +65,12 @@ class ResumeTest extends FormProvider
                                     <small class="form-text text-muted">เช่น: ขอฝึกงานบริษัท ...</small>
                                 </div>
                                 <?php
-                                self::Render_Select(
+                                Render::Select(
                                     [
+                                        'id' => $company->getTable(),
                                         'label' => 'ถึง บริษัท:',
                                         'model' => $company,
-                                        'column' => 'company_name',
+                                        'column' => 'name',
                                         'class' => 'col-sm-12'
                                     ]
                                 );
