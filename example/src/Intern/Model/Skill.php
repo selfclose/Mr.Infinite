@@ -39,4 +39,32 @@ class Skill extends RedBeanController
 //    {
 //        $this->dataModel->skilltype_id = $type;
 //    }
+
+    /**
+     * @return array
+     */
+    public function getSkillType()
+    {
+        return $this->dataModel->sharedSkill;
+    }
+
+    /**
+     * @param $skills array Skill
+     */
+    public function setSkillType($skills)
+    {
+        unset($this->dataModel->sharedSkill);
+        if (is_array($skills)) {
+            foreach ($skills as $skill) {
+                $this->dataModel->sharedSkill[] = Skill::readAction($skill);// \R::load('skill', $skill);
+            }
+        }
+    }
+
+    public function addSkill($skill)
+    {
+        $this->dataModel->sharedSkill[] = \R::load('skill', $skill);
+        iLog($skill);
+    }
+
 }

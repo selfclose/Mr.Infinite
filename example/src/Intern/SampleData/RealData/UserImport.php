@@ -1,6 +1,7 @@
 <?php
 namespace Intern\SampleData\RealData;
 
+use Intern\Model\Badge;
 use Intern\Model\Skill;
 use Intern\Model\User;
 
@@ -34,29 +35,35 @@ class UserImport
         $skill = new Skill();
         $allSkill = $skill->countAction();
 
+        $badge = new Badge();
+        $allBadge = $badge->countAction();
+
         iLog('--- Importing User ---', true);
 
         global $faker;
-        for($i=1;$i<6;$i++) {
+        for($i=1;$i<20;$i++) {
 
             $data = new User();
+            $data->setUsername($faker->userName);
             $data->setDisplayName($faker->name);
+            $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setGender($faker->randomElement(['m', 'f', 'n']));
-            $data->setAge(rand(16, 50));
             $data->setAddress($faker->address);
             $data->setZipcode($faker->postcode);
             $data->setProvinceId(rand(1, 77));
-            $data->setDescription($faker->paragraph(1));
+            $data->setDescription($faker->paragraph(6));
             $data->setBirthDate($faker->dateTime);
             $data->setEmail($faker->email);
             $data->setFacebook('http://www.facebook.com/'.$faker->userName);
+
             $data->setLine($faker->userName);
             $data->setGotJob($faker->boolean());
             $data->setWebsite([$faker->url]);
-            $data->setTel([$faker->phoneNumber]);
+            $data->setTel($faker->phoneNumber);
+            $data->setBadge([rand(1,$allBadge)]);
 
-            $data->setSkills([rand(1, $allSkill)]);
-            $data->setResumes([rand(1,10)]);
+            $data->setSkills([rand(1, $allSkill), rand(1, $allSkill), rand(1, $allSkill)]);
+            $data->setResumes([$i]);
 
             $data->insertAction();
             iLog($i.'. Inserted user: '.$data->getDisplayName());

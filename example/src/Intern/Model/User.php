@@ -1,5 +1,6 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\ImageTrait;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -33,6 +34,8 @@ use Intern\Controller\RedBeanController;
 **/
 class User extends RedBeanController
 {
+    use ImageTrait;
+
     protected $table = 'wp_users';
 
     protected $id;
@@ -363,22 +366,6 @@ class User extends RedBeanController
     }
 
     /**
-     * @return array
-     */
-    public function getBadge()
-    {
-        return $this->dataModel->badge;
-    }
-
-    /**
-     * @param array $badge
-     */
-    public function setBadge($badge)
-    {
-        $this->dataModel->badge = $badge;
-    }
-
-    /**
      * @return boolean
      */
     public function isGotJob()
@@ -463,6 +450,7 @@ class User extends RedBeanController
      */
     public function getAge()
     {
+        //TODO: Can get form calculate
         return $this->dataModel->age;
     }
 
@@ -491,19 +479,19 @@ class User extends RedBeanController
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getTel()
     {
-        return unserialize($this->dataModel->tel);
+        return $this->dataModel->tel;
     }
 
     /**
-     * @param array $tel
+     * @param string $tel
      */
     public function setTel($tel)
     {
-        $this->dataModel->tel = serialize($tel);
+        $this->dataModel->tel = $tel;
     }
 
     /**
@@ -532,7 +520,7 @@ class User extends RedBeanController
      */
     public function getResumes()
     {
-        return $this->dataModel->ownResume;
+        return array_keys($this->dataModel->ownResume);
     }
 
     /**
@@ -544,6 +532,27 @@ class User extends RedBeanController
         if (is_array($resumes)) {
             foreach ($resumes as $resume) {
                 $this->dataModel->ownResume[] = \R::load('resume', $resume);
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getBadge()
+    {
+        return array_keys($this->dataModel->sharedBadge);
+    }
+
+    /**
+     * @param $badges array Resume
+     */
+    public function setBadge($badges)
+    {
+        unset($this->dataModel->sharedBadge);
+        if (is_array($badges)) {
+            foreach ($badges as $badge) {
+                $this->dataModel->sharedBadge[] = \R::load('badge', $badge);
             }
         }
     }

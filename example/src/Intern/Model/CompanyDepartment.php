@@ -58,17 +58,22 @@ class CompanyDepartment extends RedBeanController
     /**
      * @return array
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->dataModel->wp_users_id;
+        return  $this->dataModel->sharedWp_users;
     }
 
     /**
-     * @param array $wp_user_id
+     * @param $tagId array wp_users
      */
-    public function setUserId($wp_users_id)
+    public function setUser($users)
     {
-        $this->dataModel->wp_users_id = $wp_users_id;
+        unset($this->dataModel->sharedWp_users);
+        if (is_array($users)) {
+            foreach ($users as $tag) {
+                $this->dataModel->sharedWp_users[] = \R::load('wp_users', $tag);
+            }
+        }
     }
 
     /**

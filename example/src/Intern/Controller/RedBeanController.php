@@ -27,7 +27,7 @@ class RedBeanController
         }
 
         if ($id > 0) {
-            $this->dataModel->id = $id;
+            $this->readAction($id);
         }
     }
 
@@ -106,6 +106,7 @@ class RedBeanController
     }
 
     /**
+     * @param int $id
      * @return bool
      */
     public function readAction($id = 0)
@@ -117,7 +118,7 @@ class RedBeanController
         $data = \R::load($this->table, $this->dataModel->id);
         if ($data->id) {
             $this->dataModel = $data;
-            return true;
+            return $data;
         } else {
             return false;
         }
@@ -155,12 +156,16 @@ class RedBeanController
     }
 
     /**
-     * @param string $AddQuery
+     * @param string $findBy
+     * @param string $keyword
      * @return int
      */
-    public function countAction($AddQuery = '')
+    public function countAction($findBy = 'id', $keyword = '')
     {
-        return \R::count($this->table, $AddQuery);
+        if ($keyword=='')
+            return \R::count($this->table);
+        else
+            return \R::count($this->table, " {$findBy} = ?", [$keyword]);
     }
 
     /**

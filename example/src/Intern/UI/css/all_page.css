@@ -47,3 +47,11 @@ th {
 .x_content span, .x_content label {
   margin-top: 0;
 }
+/*---Panel---*/
+.panel-primary {
+  border-color: #f39c12;
+}
+.panel-primary>.panel-heading {
+  background-color: #f39c12;
+  border-color: #f39c12;
+}

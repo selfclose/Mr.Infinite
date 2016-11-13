@@ -7,8 +7,9 @@ use Intern\Controller\RedBeanController;
 /**
  * Class SkillType
  * @package Intern\Model
- * @property int id
+ * @property int|array id
  * @property string name
+ * @property array sharedSkill
  */
 class SkillType extends RedBeanController
 {

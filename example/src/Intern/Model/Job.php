@@ -5,12 +5,11 @@ use Intern\ConcatTrait\EnabledTrait;
 use Intern\Controller\RedBeanController;
 
 /**
- * Class Job
- * @package Intern\Model
- * @property string name
+ * @property int id
+ * @property string title
+ * @property array sharedJobtag
  * @property int company_id
  * @property int companydepartment_id
- * @property int jobtype_id
  * @property string description
  */
 class Job extends RedBeanController
@@ -44,21 +43,21 @@ class Job extends RedBeanController
     }
 
      /**
-     * @return string
+     * @return Company
      */
-    public function getCompanyId()
+    public function getCompany()
     {
+//        return \R::load('company', $this->dataModel->company_id);
         return $this->dataModel->company_id;
     }
 
     /**
      * @param string $company_id
      */
-    public function setCompanyId($company_id)
+    public function setCompany($company_id)
     {
         $this->dataModel->company_id = $company_id;
     }
-
 
 
     /**
@@ -146,7 +145,7 @@ class Job extends RedBeanController
      */
     public function getTag()
     {
-        return $this->dataModel->sharedJobtag;
+        return  $this->dataModel->sharedJobtag;
     }
 
     /**

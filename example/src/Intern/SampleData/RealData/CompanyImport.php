@@ -9,7 +9,7 @@ class CompanyImport
     private $records = [
         [
             'account_type' => Company::ACCOUNT_PREMIUM,
-            'company_name' => 'บริษัท intbizth',
+            'name' => 'บริษัท intbizth',
             'company_type' => 5,
             'founder' => 'พี่มิกซ์',
             'description' => 'บริษัท Software',
@@ -31,9 +31,9 @@ class CompanyImport
         ],
         [
             'account_type' => Company::ACCOUNT_FREE,
-            'company_name' => 'HappyFresh (Thailand) Co., Ltd.',
+            'name' => 'HappyFresh (Thailand) Co., Ltd.',
             'company_type' => 5,
-            'founder' => 'พี่มิกซ์',
+            'founder' => 'ใครวะ',
             'description' => 'บริษัท Software',
             'start_date' => '2016-03-01',
             'province_id' => 1,
@@ -42,9 +42,9 @@ class CompanyImport
             'open_date' => [], //later
             'close_date' => [], //later
             'address' => '2/119 หมู่บ้าน Villa ซอยมิสทีน บลาๆๆๆๆ',
-            'zipcode' => '52000',
+            'zipcode' => '78666',
             'google_map' => '0.243,0.888',
-            'wallet' => 120,
+            'wallet' => 3200,
             'end_package_date' => '2018-03-01',
             'facebook' => 'http://www.facebook.com/intbizth/',
             'website' => 'http://www.intbizth.com',
@@ -64,8 +64,8 @@ class CompanyImport
             $data->timestamp = true;
 
             $data->setAccountType($record['account_type']);
-            $data->setCompanyName($record['company_name']);
-            $data->setLogoUrl($faker->imageUrl());
+            $data->setName($record['name']);
+            $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setType($record['company_type']);
             $data->setFounder($record['founder']);
             $data->setDescription($record['description']);
@@ -83,7 +83,7 @@ class CompanyImport
             $data->setRating($record['rating']);
 
             if($data->insertAction(true))
-                iLog('* Inserted: '.$record['company_name']);
+                iLog('* Inserted: '.$record['name']);
         }
     }
 }

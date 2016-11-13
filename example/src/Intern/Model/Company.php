@@ -1,13 +1,14 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\ImageTrait;
+use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
 /**
- * Class Company
- * @package Intern\Model
  * @property string id
  * @property string account_type
- * @property string company_name
+ * @property string name
+ * @property string logo Url
  * @property CompanyType type
  * @property string founder
  * @property string description
@@ -29,6 +30,9 @@ use Intern\Controller\RedBeanController;
  */
 class Company extends RedBeanController
 {
+    use NameTrait;
+    use ImageTrait;
+
     const ACCOUNT_FREE = 'free';
     const ACCOUNT_VIP = 'vip';
     const ACCOUNT_PREMIUM = 'premium';
@@ -57,33 +61,9 @@ class Company extends RedBeanController
     /**
      * @return string
      */
-    public function getCompanyName()
-    {
-        return $this->dataModel->company_name;
-    }
-
-    /**
-     * @param string $company_name
-     */
-    public function setCompanyName($company_name)
-    {
-        $this->dataModel->company_name = $company_name;
-    }
-
-    /**
-     * @return string
-     */
     public function getLogoUrl()
     {
         return $this->dataModel->logo;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setLogoUrl($url)
-    {
-        $this->dataModel->logo = $url;
     }
 
     /**

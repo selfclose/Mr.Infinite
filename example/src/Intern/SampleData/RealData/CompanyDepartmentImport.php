@@ -17,7 +17,7 @@ class CompanyDepartmentImport
             'name_eng' => 'Management',
         ],
         [
-            'name' => 'ฝ่ายกราฟฟิิค ดีไซน์',
+            'name' => 'ฝ่ายกราฟฟิค ดีไซน์',
             'name_eng' => 'Graphic Designer',
         ],
         [
@@ -56,9 +56,9 @@ class CompanyDepartmentImport
             $data = new CompanyDepartment();
 
             $data->setName($record['name']);
-            $data->setName($record['name_eng'], 'en_US');
+            $data->setName($record['name_eng'], 'en');
             $data->setCompanyId(rand(1, $allCompany));
-            $data->setUserId(rand(1, $allUser));
+//            $data->setUser([rand(1, $allUser), rand(1, $allUser)]);
             $data->setDescription($faker->paragraph(1));
             $data->setTel([$faker->phoneNumber]);
             $data->setFax([$faker->phoneNumber]);
