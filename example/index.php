@@ -29,8 +29,8 @@ $test = new \Intern\UI\Shortcode\ResumeTest();
 $user = new \Intern\UI\Shortcode\UserProfile();
 //$user::construct();
 
-$company = new \Intern\UI\Shortcode\CompanyList();
-$company::construct();
+$job = new \Intern\UI\Shortcode\JobList();
+$job::construct();
 //create users
 //$users = array();
 //foreach (array('arul', 'jeff', 'mugunth', 'vish') as $name) {

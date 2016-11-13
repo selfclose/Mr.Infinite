@@ -47,7 +47,7 @@ class JobImport extends DateTimeProvider
 
         for ($i=0;$i<$loop;$i++) {
             $data = new Job();
-            $data->setCompanyId(rand(1, $allCompany));
+            $data->setCompany(rand(1, $allCompany));
             $data->setDepartmentId(rand(1, 3));
             $data->setTitle('บริษัท '.$faker->company.' ประกาศหางาน');
             $data->setDescription($faker->paragraph(2));

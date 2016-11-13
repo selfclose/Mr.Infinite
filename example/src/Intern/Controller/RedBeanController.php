@@ -118,7 +118,7 @@ class RedBeanController
         $data = \R::load($this->table, $this->dataModel->id);
         if ($data->id) {
             $this->dataModel = $data;
-            return true;
+            return $data;
         } else {
             return false;
         }
