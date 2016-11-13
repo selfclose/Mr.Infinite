@@ -1,25 +1,27 @@
 <?php
-namespace Intern\UI\Shortcode\Job;
+namespace Intern\UI\Shortcode\Company;
 
 use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
+use Intern\Model\CompanyType;
 use Intern\Model\Job;
 use Intern\Model\JobTag;
-use Intern\Model\Skill;
-use Intern\Model\SkillType;
+use Intern\Model\Province;
 use Intern\Provider\Render;
 
-class Show
+class Profile
 {
 
     public static function construct()
     {
-        $current_id = $_GET['id'];
+        $current_id = $_GET['company'];
 
-        $job = new Job($current_id);
-        $job_tag = new JobTag();
-        $company = new Company($job->getCompany());
-        $company_department = new CompanyDepartment($job->getDepartmentId());
+        $company = new Company($current_id);
+        $company_type = new CompanyType();
+
+        $province = new Province();
+
+        $company_department = new CompanyDepartment();
 
         Render::jQuery();
 
@@ -34,57 +36,79 @@ class Show
                         </div>
 
                         <div class="panel-body">
+                            <div>
+                                <h2><?=$company->getName()?></h2>
+                                <p><img style="max-width: 80%;" src="<?=$company->getLogoUrl()?>"></p>
+                                <p>Founder : <?=$company->getFounder()?></p>
+                                <p>StartDate : <?=$company->getStartDate()?></p>
+                                <p>ZipCode : <?=$company->getZipcode()?></p>
+                                <p>google coordinate : <?=$company->getGoogleMap()?></p>
+                                <p>Wallet : <?=$company->getWallet()?></p>
+                                <p>End Package : <?=$company->getEndPackageDate()?></p>
+                                <p>Click : <?=$company->getClicked()?></p>
+                                <p>Rating : <?=$company->getRating()?></p>
+                            </div>
+
+<!--                                'open_date' => [], //later-->
+<!--                                'close_date' => [], //later-->
+
                             <form role="form">
                                 <?php
                                 Render::Input(
                                     [
-                                        'id' => 'title',
-                                        'data' => $job->getTitle(),
+                                        'id' => 'company',
+                                        'label' => 'ประเภท',
+                                        'data' => $company->getAccountType(),
                                     ]
                                 );
                                 Render::Input(
                                     [
                                         'id' => 'company',
-                                        'label' => 'โดยบริษัท',
+                                        'label' => 'ชื่อบริษัท',
                                         'data' => $company->getName(),
-                                    ]
-                                );
-                                Render::Input(
-                                    [
-                                        'id' => 'department',
-                                        'label' => 'แผนก',
-                                        'data' => $company_department->getName(),
                                     ]
                                 );
                                 Render::Select(
                                     [
-                                        'id' => 'tag',
-                                        'label' => 'รูปแบบงาน:',
-                                        'model' => $job_tag,
+                                        'id' => 'company_type',
+                                        'label' => 'ประเภทบริษัท',
+                                        'model' => $company_type,
                                         'column' => 'name_th',
-                                        'multiple' => true,
-                                        'class' => 'col-sm-12',
-                                        'data' => $job->getTag(),
-                                    ]
-                                );
+                                        'data' => $company->getType(),
 
-                                echo '<div class="row"><div class="col-sm-6">';
-                                Render::DateDialog(
-                                    [
-                                        'id' => 'start_date',
-                                        'label' => 'เปิดรับสมัคร',
-                                        'data' => $job->getStartDate(),
                                     ]
                                 );
-                                echo '</div><div class="col-sm-6">';
-                                Render::DateDialog(
+                                Render::Select(
                                     [
-                                        'id' => 'end_date',
-                                        'label' => 'สิ้นสุดการรับสมัคร',
-                                        'data' => $job->getEndDate(),
+                                        'id' => 'province_id',
+                                        'label' => 'จังหวัด',
+                                        'model' => $province,
+                                        'column' => 'name_th',
+                                        'data' => $company->getProvinceId(),
+
                                     ]
                                 );
-                                echo '</div></div>';
+                                Render::Input(
+                                    [
+                                        'id' => 'tel',
+                                        'label' => 'เบอร์โทรติดต่อ',
+                                        'data' => $company->getTel(),
+                                    ]
+                                );
+                                Render::Input(
+                                    [
+                                        'id' => 'fax',
+                                        'label' => 'เบอร์โทรติดต่อ',
+                                        'data' => $company->getFax(),
+                                    ]
+                                );
+                                Render::Input(
+                                    [
+                                        'id' => 'address',
+                                        'label' => 'ที่อยู่',
+                                        'data' => $company->getAddress(),
+                                    ]
+                                );
                                 ?>
 
                                 <div class="form-group">
@@ -125,7 +149,7 @@ class Show
                                 [
                                     'id' => 'description',
                                     'label' => 'รายละเอียด และความต้องการ',
-                                    'data' => $job->getDescription(),
+                                    'data' => $company->getDescription(),
                                 ]
                             );
                             ?>
@@ -156,7 +180,7 @@ class Show
             });
 
         </script>
-<?php
+        <?php
 
     }
 }

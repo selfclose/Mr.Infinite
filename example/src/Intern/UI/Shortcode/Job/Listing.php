@@ -46,8 +46,8 @@ class Listing
                 ?>
                 <tr>
                     <th scope="row"><?=$i?></th>
-                    <td><a href="#<?=$item->id?>"><?=$item->title?></a></td>
-                    <td><a href="#<?=$company->getId()?>"><?=$company->getName()?></a></td>
+                    <td><a href="?id=<?=$item->id?>"><?=$item->title?></a></td>
+                    <td><a href="?company=<?=$company->getId()?>"><?=$company->getName()?></a></td>
                     <td>
                         <?php
 
@@ -55,7 +55,7 @@ class Listing
                          * @var $tag JobTag
                          */
                         foreach ($item->sharedJobtag as $tag) { ?>
-                <a class="btn btn-primary" href="#<?=$tag->id?>"><?php print_r($tag->name_th)?></a>
+                <a class="btn btn-primary" href="?all=<?=$tag->id?>"><?php print_r($tag->name_th)?></a>
                         <?php } ?>
                     </td>
                 </tr>
@@ -65,6 +65,6 @@ class Listing
         <?php
         echo $job->paginateButtonAction($page, $limit);
 
-        echo "<p>Result: " . count($job_paginate) . "</p>";
+        echo "<p>พบงาน: " . count($job_paginate) . " รายการ</p>";
     }
 }

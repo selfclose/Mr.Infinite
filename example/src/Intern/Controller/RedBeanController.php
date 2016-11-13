@@ -159,9 +159,12 @@ class RedBeanController
      * @param string $AddQuery
      * @return int
      */
-    public function countAction($AddQuery = '')
+    public function countAction($findBy = 'id', $keyword = '')
     {
-        return \R::count($this->table, $AddQuery);
+        if ($keyword=='')
+            return \R::count($this->table);
+        else
+            return \R::count($this->table, " {$findBy} = ?", [$keyword]);
     }
 
     /**
