@@ -17,3 +17,7 @@ require_once __DIR__.'/vendor/autoload.php'; //composer autoload
 
 <link rel='stylesheet' type='text/css' href='src/Intern/UI/vendor/DateTimePicker/DateTimePicker.min.css'>
 <script src='src/Intern/UI/vendor/DateTimePicker/DateTimePicker.min.js'></script>
+
+<!--TinyMCE-->
+<link rel='stylesheet' href='//www.tinymce.com/css/codepen.min.css'>
+<script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
