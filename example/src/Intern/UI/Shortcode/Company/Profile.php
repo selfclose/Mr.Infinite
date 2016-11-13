@@ -38,7 +38,7 @@ class Profile
                         <div class="panel-body">
                             <div>
                                 <h2><?=$company->getName()?></h2>
-                                <p><img style="max-width: 80%;" src="<?=$company->getLogoUrl()?>"></p>
+                                <p><img style="max-width: 80%;" src="<?=$company->getImageUrl()?>"></p>
                                 <p>Founder : <?=$company->getFounder()?></p>
                                 <p>StartDate : <?=$company->getStartDate()?></p>
                                 <p>ZipCode : <?=$company->getZipcode()?></p>

@@ -65,7 +65,7 @@ class CompanyImport
 
             $data->setAccountType($record['account_type']);
             $data->setName($record['name']);
-            $data->setLogoUrl($faker->imageUrl(320, 240));
+            $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setType($record['company_type']);
             $data->setFounder($record['founder']);
             $data->setDescription($record['description']);

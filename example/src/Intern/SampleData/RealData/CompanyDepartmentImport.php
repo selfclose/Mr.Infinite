@@ -58,7 +58,7 @@ class CompanyDepartmentImport
             $data->setName($record['name']);
             $data->setName($record['name_eng'], 'en');
             $data->setCompanyId(rand(1, $allCompany));
-            $data->setUser([rand(1, $allUser), rand(1, $allUser)]);
+//            $data->setUser([rand(1, $allUser), rand(1, $allUser)]);
             $data->setDescription($faker->paragraph(1));
             $data->setTel([$faker->phoneNumber]);
             $data->setFax([$faker->phoneNumber]);

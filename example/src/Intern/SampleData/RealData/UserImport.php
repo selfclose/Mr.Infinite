@@ -41,15 +41,17 @@ class UserImport
         iLog('--- Importing User ---', true);
 
         global $faker;
-        for($i=1;$i<8;$i++) {
+        for($i=1;$i<20;$i++) {
 
             $data = new User();
+            $data->setUsername($faker->userName);
             $data->setDisplayName($faker->name);
+            $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setGender($faker->randomElement(['m', 'f', 'n']));
             $data->setAddress($faker->address);
             $data->setZipcode($faker->postcode);
             $data->setProvinceId(rand(1, 77));
-            $data->setDescription($faker->paragraph(3));
+            $data->setDescription($faker->paragraph(6));
             $data->setBirthDate($faker->dateTime);
             $data->setEmail($faker->email);
             $data->setFacebook('http://www.facebook.com/'.$faker->userName);

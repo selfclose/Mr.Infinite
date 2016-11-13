@@ -156,7 +156,8 @@ class RedBeanController
     }
 
     /**
-     * @param string $AddQuery
+     * @param string $findBy
+     * @param string $keyword
      * @return int
      */
     public function countAction($findBy = 'id', $keyword = '')

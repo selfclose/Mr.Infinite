@@ -1,5 +1,5 @@
 <?php
-namespace Intern\UI\Shortcode;
+namespace Intern\UI\Shortcode\User;
 
 use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
@@ -10,7 +10,7 @@ use Intern\Model\User;
 use Intern\Provider\FormProvider;
 use Intern\Provider\Render;
 
-class UserProfile
+class Profile
 {
 
     public static function construct()
@@ -67,12 +67,24 @@ class UserProfile
                                            value="<?=$user->getDisplayName()?>">
                                     <small class="form-text text-muted">ไม่ต้องมีคำนำหน้าชื่อ</small>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="birth_date">วันเกิด</label>
-                                    <input class="form-control col-sm-6" type="text" id="birth_date" name="birth_date" data-field="date" value="<?=$user->getBirthDate()?>" readonly>
+                                    <img class="img-thumbnail" src="<?=$user->getImageUrl()?>">
                                 </div>
                                 <?php
+                                Render::Input(
+                                    [
+                                        'id' => 'user',
+                                        'label' => 'Username',
+                                        'data' => $user->getUsername(),
+                                    ]
+                                );
+                                Render::DateDialog(
+                                    [
+                                        'id' => 'birth_date',
+                                        'label' => 'วันเกิด',
+                                        'data' => $user->getBirthDate(),
+                                    ]
+                                );
                                 Render::Textarea(
                                     [
                                         'id' => 'address',
@@ -134,7 +146,7 @@ class UserProfile
                                 Render::Select(
                                     [
                                         'model' => $province,
-                                        'column' => 'name_th_th',
+                                        'column' => 'name_th',
                                         'id' => $province->getTable(),
                                         'label' => 'จังหวัด',
                                         'class' => 'form-control',

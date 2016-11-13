@@ -1,5 +1,6 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\ImageTrait;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -33,6 +34,8 @@ use Intern\Controller\RedBeanController;
 **/
 class User extends RedBeanController
 {
+    use ImageTrait;
+
     protected $table = 'wp_users';
 
     protected $id;

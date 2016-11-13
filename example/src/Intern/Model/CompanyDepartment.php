@@ -71,7 +71,7 @@ class CompanyDepartment extends RedBeanController
         unset($this->dataModel->sharedWp_users);
         if (is_array($users)) {
             foreach ($users as $tag) {
-                $this->dataModel->sharedWp_users[] = new User($tag);
+                $this->dataModel->sharedWp_users[] = \R::load('wp_users', $tag);
             }
         }
     }

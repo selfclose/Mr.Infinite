@@ -1,5 +1,6 @@
 <?php
 namespace Intern\Model;
+use Intern\ConcatTrait\ImageTrait;
 use Intern\ConcatTrait\NameTrait;
 use Intern\Controller\RedBeanController;
 
@@ -30,6 +31,7 @@ use Intern\Controller\RedBeanController;
 class Company extends RedBeanController
 {
     use NameTrait;
+    use ImageTrait;
 
     const ACCOUNT_FREE = 'free';
     const ACCOUNT_VIP = 'vip';
@@ -62,14 +64,6 @@ class Company extends RedBeanController
     public function getLogoUrl()
     {
         return $this->dataModel->logo;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setLogoUrl($url)
-    {
-        $this->dataModel->logo = $url;
     }
 
     /**
