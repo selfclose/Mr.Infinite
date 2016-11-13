@@ -3,7 +3,7 @@ namespace Intern\Provider;
 
 class Render
 {
-    public static function jQuery()
+    static function jQuery()
     {
         ?>
             <script>
@@ -18,26 +18,17 @@ class Render
 
     public $Button_Submit_class = '';
 
-    public static function Form_Begin($action = ' ', $method = 'get')
+    static function Form_Begin($action = ' ', $method = 'get')
     {
         echo "<form method=\"{$method}\" action=\"{$action}\">";
     }
 
-    public static function Form_End()
+    static function Form_End()
     {
         echo "</form>";
     }
 
-    public static function Select_Multiple($loopFor, $printValue, $class = 'form-control')
-    {
-        echo "<select class=\"{$class}\" name=\"{$loopFor->getTable()}\" multiple=\"multiple\">";
-        foreach ($loopFor->readAllAction() as $key=>$value) {
-            echo "<option value='{$value->id}'>{$value[$printValue]}</option>";
-        }
-        echo "</select>";
-    }
-
-    public static function Select($parameters)
+    static function Select($parameters)
     {
         $table = $parameters['model'];
         $id = $parameters['id']?$parameters['id']:'';
@@ -98,12 +89,12 @@ class Render
         }
     }
 
-    public static function Button_Submit($label)
+    static function Button_Submit($label)
     {
         echo "<input type=\"submit\" value=\"{$label}\" />";
     }
 
-    public static function Input_Password($parameters)
+    static function Input_Password($parameters)
     {
         $class = $parameters['class']?$parameters['class']:'form-control';
         $class_label = $parameters['class_label']?:'';
@@ -118,7 +109,7 @@ class Render
         echo "</div>";
     }
 
-    public static function Input($parameters)
+    static function Input($parameters)
     {
         $class = isset($parameters['class'])?$parameters['class']:'form-control';
         $class_label = isset($parameters['class_label'])?$parameters['class_label']:'';
@@ -135,7 +126,7 @@ class Render
         echo "</div>";
     }
 
-    public static function Textarea($parameters)
+    static function Textarea($parameters)
     {
         $class = isset($parameters['class'])?$parameters['class']:'form-control';
         $class_label = $parameters['class_label']?:'';
@@ -150,7 +141,7 @@ class Render
         echo "</div>";
     }
 
-    public static function RadioGroup($parameters)
+    static function RadioGroup($parameters)
     {
         $class = isset($parameters['class'])?$parameters['class']:'radio-inline';
         $class_label = $parameters['class_label']?:'';
@@ -168,6 +159,20 @@ class Render
             }
             echo " value=\"{$key}\"> {$value}</label>";
         }
+        echo "</div>";
+    }
+
+    static function DateDialog($parameters)
+    {
+        $class = isset($parameters['class'])?$parameters['class']:'form-control';
+        $class_label = $parameters['class_label']?:'';
+        $label = $parameters['label'];
+        $id = isset($parameters['id'])?$parameters['id']:'';
+        $data = $parameters['data'];
+
+        echo "<div class=\"form-group\">";
+        echo "<label class=\"{$class_label}\" for=\"{$id}\">{$label}</label>";
+        echo "<input class=\"{$class}\" name=\"{$id}\" id=\"{$id}\" type=\"text\" data-field=\"date\" value=\"{$data}\" readonly>";
         echo "</div>";
     }
 

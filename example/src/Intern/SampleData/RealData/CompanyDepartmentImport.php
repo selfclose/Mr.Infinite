@@ -17,7 +17,7 @@ class CompanyDepartmentImport
             'name_eng' => 'Management',
         ],
         [
-            'name' => 'ฝ่ายกราฟฟิิค ดีไซน์',
+            'name' => 'ฝ่ายกราฟฟิค ดีไซน์',
             'name_eng' => 'Graphic Designer',
         ],
         [

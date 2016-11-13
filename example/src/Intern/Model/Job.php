@@ -60,7 +60,6 @@ class Job extends RedBeanController
     }
 
 
-
     /**
      * @return mixed
      */

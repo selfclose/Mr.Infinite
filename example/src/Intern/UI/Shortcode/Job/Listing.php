@@ -1,13 +1,13 @@
 <?php
 
-namespace Intern\UI\Shortcode;
+namespace Intern\UI\Shortcode\Job;
 use Intern\Model\Job;
 use Intern\Model\JobTag;
 use Intern\Provider\Render;
 
 use Intern\Model\Company;
 
-class JobList
+class Listing
 {
     public static function construct()
     {
