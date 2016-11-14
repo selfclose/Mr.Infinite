@@ -556,4 +556,28 @@ class User extends RedBeanController
             }
         }
     }
+
+    /**
+     * @return array
+     */
+    public function isSendToJob()
+    {
+        return array_keys($this->dataModel->sharedBadge);
+    }
+
+    /**
+     * @param $companies array Company
+     */
+    public function setSentToCompany($companies)
+    {
+        unset($this->dataModel->sharedJob);
+        if (is_array($companies)) {
+            foreach ($companies as $company_id) {
+                $this->dataModel->sharedCompany[] = \R::load('company', $company_id);
+            }
+        }
+    }
+
+
+
 }
