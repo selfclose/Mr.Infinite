@@ -55,6 +55,18 @@ class Profile
                                     <button class="btn btn-default"><i class="fa fa-save"></i> ยกเลิก</button>
                                 </div>
 
+                                <?php
+                                Render::Input(
+                                    [
+                                        'id'    => 'email',
+                                        'label' => 'Email Address',
+                                        'data'  => $user->getEmail(),
+                                        'disabled'  => true,
+                                        'required'  => true,
+                                        'muted' => 'เป็นเมลล์ถาวร ไม่สามาถเปลี่ยนได้',
+                                    ]
+                                );
+                                ?>
                                 <div class="form-group required">
                                     <label for="email">Email address</label>
                                     <input type="email" class="form-control" id="email" aria-describedby="email"
@@ -76,6 +88,7 @@ class Profile
                                         'id' => 'user',
                                         'label' => 'Username',
                                         'data' => $user->getUsername(),
+                                        'disabled' => true,
                                     ]
                                 );
                                 Render::DateDialog(
