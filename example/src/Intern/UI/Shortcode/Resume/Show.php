@@ -1,6 +1,7 @@
 <?php
 namespace Intern\UI\Shortcode\Resume;
 
+use Intern\Config\Table;
 use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
 use Intern\Model\Province;
@@ -77,7 +78,7 @@ class Show
                                         <h4>การศึกษา</h4>
                                         <p>สถาบัน: </p>
                                         <?php foreach($resume->getUser()->getEducations() as $education) {
-                                            echo $education['university']->name_th;
+                                            echo $education[Table::UNIVERSITY]->name_th;
                                         }
                                         ?>
                                         <hr/>

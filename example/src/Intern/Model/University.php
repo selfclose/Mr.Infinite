@@ -4,7 +4,7 @@ use Intern\ConcatTrait\NameLangTrait;
 use Intern\Controller\RedBeanController;
 
 /**
- * @property int university_id
+ * @property int id
  * @property string name_th
  * @property string name_eng
  * @property string short_name

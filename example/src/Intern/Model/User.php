@@ -82,7 +82,6 @@ class User extends RedBeanController
     private $is_valid = true;
 
     protected $province;
-    protected $education;
 
     function __construct($id = 0)
     {
@@ -498,19 +497,7 @@ class User extends RedBeanController
      */
     public function getEducations()
     {
-        if (empty($this->education)) {
-            $university = new University();
-            /**
-             * @var $edu Education
-             */
-            foreach ($this->dataModel->sharedEducation as $edu) {
-                $this->education[] = $edu;
-                $this->education['university'] = $university->readAction($edu->university_id);
-            }
-//            $this->education = new Education($this->dataModel->sharedEducation);
-        }
-        return $this->education;
-//        return $this->dataModel->sharedEducation;
+        return $this->dataModel->sharedEducation;
     }
 
     /**

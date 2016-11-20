@@ -78,8 +78,8 @@ class Listing
                 /**
                  * @var $edu University
                  */
-                foreach ($university->readAllAction($user->getEducations(), 'university_id') as $edu) {
-                    echo "<li><a href=\"?id={$edu->id}\">{$edu->name_th}</a></li>";
+                foreach ($user->getEducations() as $edu) {
+                    echo "<li><a href=\"?id={$edu->id}\">{$edu[Table::UNIVERSITY]->name_th}</a></li>";
                 }?></ul></td>
                     <td><a href="?id=<?=$user->getProvince()->getId()?>"><?=$user->getProvince()->getName()?></a></td>
                     <td><a href="?id=<?=$item->id?>"><?=$user->getAge()?></a></td>
