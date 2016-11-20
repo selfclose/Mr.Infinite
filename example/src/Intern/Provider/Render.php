@@ -60,12 +60,12 @@ class Render
 
             //group or not
             if (!$relation_model && !$relation_column) {
-                foreach ($table->readAllAction() as $key => $value) {
+                foreach ($table->findAllAction() as $key => $value) {
                     echo "<option value=\"{$value->id}\">{$value[$column]}</option>";
                 }
             }
             else {
-                foreach ($table->readAllAction() as $key => $value) {
+                foreach ($table->findAllAction() as $key => $value) {
                     echo "<optgroup label='{$value[$column]}'></optgroup>";
 
                     foreach ($value[$relation_model] as $sk) {

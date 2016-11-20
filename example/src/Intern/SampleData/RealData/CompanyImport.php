@@ -1,6 +1,7 @@
 <?php
 namespace Intern\SampleData\RealData;
 
+use Intern\Config\Table;
 use Intern\Model\Company;
 use Intern\Model\CompanyType;
 
@@ -57,7 +58,37 @@ class CompanyImport
     {
         global $faker;
 
+        $comp_type = new CompanyType();
+        $all_comp_type = $comp_type->countAction();
+
         iLog('--- Importing Company ---', true);
+
+        for ($i=0; $i<10;$i++) {
+            $data = new Company();
+
+            $data->timestamp = true;
+
+            $data->setAccountType($faker->randomElement([Company::ACCOUNT_FREE, Company::ACCOUNT_PREMIUM, Company::ACCOUNT_VIP]));
+            $data->setName('บริษํท '.$faker->company);
+            $data->setImageUrl($faker->imageUrl(320, 240));
+            $data->setType(rand(1, $all_comp_type));
+            $data->setFounder($faker->firstName);
+            $data->setDescription($faker->paragraph(7));
+            $data->setStartDate($faker->dateTimeBetween('-10 years', '-1 years'));
+            $data->setProvinceId(rand(1, \R::count(Table::province)));
+            $data->setTel($faker->phoneNumber);
+            $data->setFax($faker->phoneNumber);
+
+            $data->setEndPackageDate($faker->dateTimeBetween('-1 years', '1 years'));
+            $data->setFacebook('https://www.facebook.com/'.$faker->userName);
+            $data->setWebsite($faker->domainName);
+            $data->setClicked(rand(1, 5000));
+            $data->setRating(rand(1, 10));
+
+            if($data->insertAction(true))
+                iLog('* Inserted company: '.$i);
+        }
+        /*
         foreach ($this->records as $record) {
             $data = new Company();
 
@@ -84,6 +115,6 @@ class CompanyImport
 
             if($data->insertAction(true))
                 iLog('* Inserted: '.$record['name']);
-        }
+        }*/
     }
 }

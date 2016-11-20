@@ -8,6 +8,7 @@ use Intern\Model\Job;
 use Intern\Model\JobTag;
 use Intern\Model\Province;
 use Intern\Model\Resume;
+use Intern\Model\University;
 use Intern\Model\User;
 use Intern\Provider\DateTimeProvider;
 use Intern\Provider\Render;
@@ -23,7 +24,9 @@ class Listing
         $limit = 8; //limit per page
 
         $resume = new Resume();
+        $university = new University();
         $user = new User();
+        $company = new Company();
         $province = new Province();
         $timeProvider = new DateTimeProvider();
 
@@ -40,6 +43,7 @@ class Listing
                 <th>จากมหาวิทยาลัย</th>
                 <th>จังหวัด</th>
                 <th>อายุ</th>
+                <th>สมัครไปยังบริษัท</th>
             </tr>
             </thead>
             <tbody>
@@ -55,17 +59,20 @@ class Listing
                     <th scope="row"><?=$i?></th>
                     <td><a href="?id=<?=$item->id?>"><?=$user->getDisplayName()?></a></td>
                     <td><a href="?id=<?=$item->id?>"><?=$item->title?></a></td>
-                    <td><a href="?id=<?=$item->id?>"><ul>
+                    <td><ul>
                 <?php
                 /**
-                 * @var $edu Education
+                 * @var $edu University
                  */
-                echo json_encode($user->getEducations());
-                foreach ($user->getEducations() as $edu) {
-                    echo "<li>{$edu->name_th}</li>";
-                }?></ul></a></td>
+                foreach ($university->readAllAction($user->getEducations(), 'university_id') as $edu) {
+                    echo "<li><a href=\"?id={$edu->id}\">{$edu->name_th}</a></li>";
+                }?></ul></td>
                     <td><a href="?id=<?=$item->id?>"><?=$user->getProvince()->getName()?></a></td>
                     <td><a href="?id=<?=$item->id?>"><?=$timeProvider->yearDiff($user->getBirthDate(),  date("Y-m-d H:i:s"))?></a></td>
+                    <td><a href="?id=<?=$item->id?>"><?php
+                            $company->readAction($item->company_id);
+                            echo $company->getName();
+                            ?></a></td>
 
                 </tr>
             <?php } ?>

@@ -23,6 +23,29 @@ class UserImport
         ],
     ];
 
+    protected $thaiName = [
+        'อานันทชัย ชมภูชัย',
+        'ทนาทร เกียรติสังหาร',
+        'ประสบ อุบัติเหตุ',
+        'พัดลม บินทะลุบ้าน',
+        'สมหวัง บุญมาน้อย',
+        'ภาสินอย หอยอารี',
+        'ภทรพงษ์ เหงาจัง',
+        'เกริกเกียรติ กางมุ้งคอย',
+        'แม็ก โดนอม',
+        'สุภาภร เจียมสังขาร',
+        'ลูกแพร ไทยไหม',
+        'วนาพร ป้อมป่ราการ',
+        'จตุพร กะละมัง',
+        'กนกพร เยสไอแคน',
+        'ผิวผ่อง ขลำยาว',
+        'สมอ เท่เสมอ',
+        'วรรณคดี มีฮา',
+        'พายัพ เยิน',
+        'คณานัพ สะดุดตา',
+        'อุดมการ เซลฟี่',
+    ];
+
     function __construct()
     {
 //        foreach ($this->records as $record) {
@@ -47,11 +70,11 @@ class UserImport
         iLog('--- Importing User ---', true);
 
         global $faker;
-        for($i=1;$i<20;$i++) {
+        for($i=1;$i<=count($this->thaiName);$i++) {
 
             $data = new User();
             $data->setUsername($faker->userName);
-            $data->setDisplayName($faker->name);
+            $data->setDisplayName($this->thaiName[$i-1]);
             $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setGender($faker->randomElement(['m', 'f', 'n']));
             $data->setAddress($faker->address);

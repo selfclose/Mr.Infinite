@@ -5,7 +5,7 @@ use Intern\Controller\RedBeanController;
 
 /**
  * @property int university_id
- * @property string name
+ * @property string name_th
  * @property string name_eng
  * @property string short_name
  * @property string short_name_eng

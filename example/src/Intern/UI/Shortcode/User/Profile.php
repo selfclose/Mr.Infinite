@@ -166,7 +166,7 @@ class Profile
                                         'class' => 'form-control',
 //                                        'relation_model' => 'sharedSkill',
 //                                        'relation_column' => 'name',
-                                        'data' => $user->getProvinceId(),
+                                        'data' => $user->getProvince()->getId(),
                                     ]
                                 );
                                 Render::Select(

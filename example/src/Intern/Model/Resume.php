@@ -9,7 +9,7 @@ use Intern\Controller\RedBeanController;
  * @property int id
  * @property int wp_users_id
  * @property string title
- * @property int ping_company บริษัทที่จะส่ง หรือ ไม่เจาะจง
+ * @property int company_id บริษัทที่จะส่ง หรือ ไม่เจาะจง
  * @property \DateTime out_date วันหมดอายุ
  * @property array type ฝึกงานประเภทอะไรบ้าง
  * @property \DateTime start_date

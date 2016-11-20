@@ -501,8 +501,7 @@ class User extends RedBeanController
      */
     public function getEducations()
     {
-//        new Education($this->dataModel->sharedEducation);
-        return \R::loadAll(Table::UNIVERSITY, array_column($this->dataModel->sharedEducation, 'id'));
+        return $this->dataModel->sharedEducation;
     }
 
     /**

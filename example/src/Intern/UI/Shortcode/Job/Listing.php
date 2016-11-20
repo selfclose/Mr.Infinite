@@ -17,7 +17,7 @@ class Listing
 
         $job = new Job();
         $jobTag = new JobTag();
-        $allTags = $jobTag->readAllAction();
+        $allTags = $jobTag->findAllAction();
         $company = new Company();
 
         $job_paginate = $job->paginateAction($page, $limit, 'id', false);
