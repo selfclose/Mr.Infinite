@@ -24,11 +24,11 @@ class University extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return UniversityType
      */
     public function getType()
     {
-        return $this->dataModel->universitytype_id;
+        return new UniversityType($this->dataModel->universitytype_id);
     }
 
     /**

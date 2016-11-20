@@ -2,6 +2,7 @@
 namespace Intern\SampleData\RealData;
 
 use Intern\Model\Badge;
+use Intern\Model\Education;
 use Intern\Model\Skill;
 use Intern\Model\User;
 
@@ -38,6 +39,11 @@ class UserImport
         $badge = new Badge();
         $allBadge = $badge->countAction();
 
+        $education = new Education();
+        $allEducation = $education->countAction();
+
+        $resume = new Education();
+        $allResume = $resume->countAction();
         iLog('--- Importing User ---', true);
 
         global $faker;
@@ -50,7 +56,7 @@ class UserImport
             $data->setGender($faker->randomElement(['m', 'f', 'n']));
             $data->setAddress($faker->address);
             $data->setZipcode($faker->postcode);
-            $data->setProvinceId(rand(1, 77));
+            $data->setProvince(rand(1, 77));
             $data->setDescription($faker->paragraph(6));
             $data->setBirthDate($faker->dateTime);
             $data->setEmail($faker->email);
@@ -63,7 +69,9 @@ class UserImport
             $data->setBadge([rand(1,$allBadge)]);
 
             $data->setSkills([rand(1, $allSkill), rand(1, $allSkill), rand(1, $allSkill)]);
-            $data->setResumes([$i]);
+
+            $data->setEducations([rand(1, $allEducation), rand(1, $allEducation)]);
+            $data->setResumes([rand(1, $allResume), rand(1, $allResume)]);
 
             $data->insertAction();
             iLog($i.'. Inserted user: '.$data->getDisplayName());

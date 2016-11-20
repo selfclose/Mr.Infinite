@@ -1,6 +1,7 @@
 <?php
 namespace Intern\Model;
 use Intern\ConcatTrait\ImageTrait;
+use Intern\Config\Table;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -11,6 +12,7 @@ use Intern\Controller\RedBeanController;
  * @property string name_eng
  * @property string address
  * @property string email
+ * @property array educations
  * @property string gender
  * @property string userUrl
  * @property string role
@@ -254,17 +256,17 @@ class User extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return Province
      */
-    public function getProvinceId()
+    public function getProvince()
     {
-        return $this->dataModel->province_id;
+        return new Province($this->dataModel->province_id);
     }
 
     /**
      * @param int $province_id
      */
-    public function setProvinceId($province_id)
+    public function setProvince($province_id)
     {
         $this->dataModel->province_id = $province_id;
     }
@@ -495,6 +497,28 @@ class User extends RedBeanController
     }
 
     /**
+     * @return Education
+     */
+    public function getEducations()
+    {
+//        new Education($this->dataModel->sharedEducation);
+        return \R::loadAll(Table::UNIVERSITY, array_column($this->dataModel->sharedEducation, 'id'));
+    }
+
+    /**
+     * @param array $educations
+     */
+    public function setEducations($educations)
+    {
+        unset($this->dataModel->sharedEducation);
+        if (is_array($educations)) {
+            foreach ($educations as $education) {
+                $this->dataModel->sharedEducation[] = \R::load(Table::education, $education);
+            }
+        }
+    }
+
+    /**
      * @return array
      */
     public function getSkills()
@@ -531,7 +555,7 @@ class User extends RedBeanController
         unset($this->dataModel->ownResume);
         if (is_array($resumes)) {
             foreach ($resumes as $resume) {
-                $this->dataModel->ownResume[] = \R::load('resume', $resume);
+                $this->dataModel->ownResume[] = \R::load(Table::resume, $resume);
             }
         }
     }
@@ -552,7 +576,7 @@ class User extends RedBeanController
         unset($this->dataModel->sharedBadge);
         if (is_array($badges)) {
             foreach ($badges as $badge) {
-                $this->dataModel->sharedBadge[] = \R::load('badge', $badge);
+                $this->dataModel->sharedBadge[] = \R::load(Table::badge, $badge);
             }
         }
     }
