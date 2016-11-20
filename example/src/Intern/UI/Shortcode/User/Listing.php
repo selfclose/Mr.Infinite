@@ -19,8 +19,6 @@ class Listing
         $limit = 8; //limit per page
 
         $user = new User();
-        $timeProvider = new DateTimeProvider();
-
         $user_paginate = $user->paginateAction($page, $limit, 'id', false);
         ?>
 
@@ -47,7 +45,7 @@ class Listing
                     <td><a href="?id=<?=$item->id?>"><?=$item->display_name?></a></td>
                     <td><a href="?id=<?=$item->id?>"><?=$item->username?></a></td>
                     <td><a href="?id=<?=$item->id?>"><?=$item->gender?></a></td>
-                    <td><a href="?id=<?=$item->id?>"><?=$timeProvider->yearDiff($item->birthDate,  date("Y-m-d H:i:s"))?></a></td>
+                    <td><a href="?id=<?=$item->id?>"><?=DateTimeProvider::yearDiff($item->birthDate,  date("Y-m-d H:i:s"))?></a></td>
 
                 </tr>
             <?php } ?>

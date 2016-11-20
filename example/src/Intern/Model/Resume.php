@@ -7,9 +7,9 @@ use Intern\Controller\RedBeanController;
  * Class Resume
  * @package Intern\Model
  * @property int id
- * @property int user
+ * @property int wp_users_id
  * @property string title
- * @property int ping_company บริษัทที่จะส่ง หรือ ไม่เจาะจง
+ * @property int company_id บริษัทที่จะส่ง หรือ ไม่เจาะจง
  * @property \DateTime out_date วันหมดอายุ
  * @property array type ฝึกงานประเภทอะไรบ้าง
  * @property \DateTime start_date
@@ -17,6 +17,7 @@ use Intern\Controller\RedBeanController;
  * @property string attach_url
  * @property string description
  * @property string public GLOBAL | SPECIFIC | PRIVATE
+ * @property string status PENDING | APPROVE | REJECT
  */
 class Resume extends RedBeanController
 {
@@ -24,23 +25,32 @@ class Resume extends RedBeanController
     const PUBLIC_SPECIFIC = 'specific';
     const PUBLIC_PRIVATE = 'private';
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVE = 'approve';
+    const STATUS_REJECT = 'reject';
+
+    protected $user;
+
     function __construct($id = 0)
     {
         parent::__construct($id);
     }
 
     /**
-     * @return int
+     * @return User
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->dataModel->wp_users_id;
+        if (empty($this->user)) {
+            $this->user = new User($this->dataModel->wp_users_id);
+        }
+        return $this->user;
     }
 
     /**
      * @param int $userId
      */
-    public function setUserId($userId)
+    public function setUser($userId)
     {
         $this->dataModel->wp_users_id = $userId;
     }
@@ -187,5 +197,21 @@ class Resume extends RedBeanController
     public function setPublic($public)
     {
         $this->dataModel->public = $public;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->dataModel->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->dataModel->status = $status;
     }
 }

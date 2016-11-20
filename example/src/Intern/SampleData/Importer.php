@@ -5,6 +5,7 @@ use Intern\SampleData\RealData\BadgeImport;
 use Intern\SampleData\RealData\CompanyDepartmentImport;
 use Intern\SampleData\RealData\CompanyImport;
 use Intern\SampleData\RealData\CompanyTypeImport;
+use Intern\SampleData\RealData\EducationImport;
 use Intern\SampleData\RealData\GeoImport;
 use Intern\SampleData\RealData\JobImport;
 use Intern\SampleData\RealData\JobTagImport;
@@ -33,10 +34,12 @@ class Importer
         new CompanyDepartmentImport(); //need company & user
         new UniversityTypeImport();
         new UniversityImport();
-        new ResumeImport(); //need user, company, university
-        new BadgeImport(); //need user
         new SkillImport();
-        new UserImport(); //need skill
+        new EducationImport(); //need university
+        new ResumeImport(); //need user, company, university
+        new UserImport(); //need skill, resume, education
+        new BadgeImport(); //need user
+
         new JobTagImport();
         new JobImport();
 

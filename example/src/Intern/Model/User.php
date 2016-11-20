@@ -1,7 +1,9 @@
 <?php
 namespace Intern\Model;
 use Intern\ConcatTrait\ImageTrait;
+use Intern\Config\Table;
 use Intern\Controller\RedBeanController;
+use Intern\Provider\DateTimeProvider;
 
 /**
  * @property int id
@@ -11,6 +13,7 @@ use Intern\Controller\RedBeanController;
  * @property string name_eng
  * @property string address
  * @property string email
+ * @property array educations
  * @property string gender
  * @property string userUrl
  * @property string role
@@ -51,7 +54,6 @@ class User extends RedBeanController
     protected $company;
     protected $birthDate;
     protected $zipcode;
-    protected $province_id;
     protected $description;
     protected $facebook;
     protected $instagram;
@@ -78,6 +80,8 @@ class User extends RedBeanController
     protected $custom_skill = [];
 
     private $is_valid = true;
+
+    protected $province;
 
     function __construct($id = 0)
     {
@@ -254,17 +258,20 @@ class User extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return Province
      */
-    public function getProvinceId()
+    public function getProvince()
     {
-        return $this->dataModel->province_id;
+        if (empty($this->province)) {
+            $this->province = new Province($this->dataModel->province_id);
+        }
+        return $this->province;
     }
 
     /**
      * @param int $province_id
      */
-    public function setProvinceId($province_id)
+    public function setProvince($province_id)
     {
         $this->dataModel->province_id = $province_id;
     }
@@ -446,20 +453,11 @@ class User extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return int Age
      */
     public function getAge()
     {
-        //TODO: Can get form calculate
-        return $this->dataModel->age;
-    }
-
-    /**
-     * @param int $age
-     */
-    public function setAge($age)
-    {
-        $this->dataModel->age = $age;
+        return DateTimeProvider::yearDiff($this->getBirthDate(),  date("Y-m-d H:i:s"));
     }
 
     /**
@@ -492,6 +490,27 @@ class User extends RedBeanController
     public function setTel($tel)
     {
         $this->dataModel->tel = $tel;
+    }
+
+    /**
+     * @return Education
+     */
+    public function getEducations()
+    {
+        return $this->dataModel->sharedEducation;
+    }
+
+    /**
+     * @param array $educations
+     */
+    public function setEducations($educations)
+    {
+        unset($this->dataModel->sharedEducation);
+        if (is_array($educations)) {
+            foreach ($educations as $education) {
+                $this->dataModel->sharedEducation[] = \R::load(Table::education, $education);
+            }
+        }
     }
 
     /**
@@ -531,7 +550,7 @@ class User extends RedBeanController
         unset($this->dataModel->ownResume);
         if (is_array($resumes)) {
             foreach ($resumes as $resume) {
-                $this->dataModel->ownResume[] = \R::load('resume', $resume);
+                $this->dataModel->ownResume[] = \R::load(Table::resume, $resume);
             }
         }
     }
@@ -552,8 +571,32 @@ class User extends RedBeanController
         unset($this->dataModel->sharedBadge);
         if (is_array($badges)) {
             foreach ($badges as $badge) {
-                $this->dataModel->sharedBadge[] = \R::load('badge', $badge);
+                $this->dataModel->sharedBadge[] = \R::load(Table::badge, $badge);
             }
         }
     }
+
+    /**
+     * @return array
+     */
+    public function isSendToJob()
+    {
+        return array_keys($this->dataModel->sharedBadge);
+    }
+
+    /**
+     * @param $companies array Company
+     */
+    public function setSentToCompany($companies)
+    {
+        unset($this->dataModel->sharedJob);
+        if (is_array($companies)) {
+            foreach ($companies as $company_id) {
+                $this->dataModel->sharedCompany[] = \R::load('company', $company_id);
+            }
+        }
+    }
+
+
+
 }

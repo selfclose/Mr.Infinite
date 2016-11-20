@@ -4,8 +4,8 @@ use Intern\ConcatTrait\NameLangTrait;
 use Intern\Controller\RedBeanController;
 
 /**
- * @property int university_id
- * @property string name
+ * @property int id
+ * @property string name_th
  * @property string name_eng
  * @property string short_name
  * @property string short_name_eng
@@ -24,11 +24,11 @@ class University extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return UniversityType
      */
     public function getType()
     {
-        return $this->dataModel->universitytype_id;
+        return new UniversityType($this->dataModel->universitytype_id);
     }
 
     /**

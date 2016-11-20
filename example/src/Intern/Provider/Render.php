@@ -60,12 +60,12 @@ class Render
 
             //group or not
             if (!$relation_model && !$relation_column) {
-                foreach ($table->readAllAction() as $key => $value) {
+                foreach ($table->findAllAction() as $key => $value) {
                     echo "<option value=\"{$value->id}\">{$value[$column]}</option>";
                 }
             }
             else {
-                foreach ($table->readAllAction() as $key => $value) {
+                foreach ($table->findAllAction() as $key => $value) {
                     echo "<optgroup label='{$value[$column]}'></optgroup>";
 
                     foreach ($value[$relation_model] as $sk) {
@@ -118,11 +118,13 @@ class Render
         $required = isset($parameters['required'])?' required':'';
         $placeholder = isset($parameters['placeholder'])?$parameters['placeholder']:'';
         $type = isset($parameters['type'])?$parameters['type']:'text';
+        $disabled = $parameters['disabled'] == true ?'disabled="true"': '';
+//        $muted = isset($parameters['muted'])?
         $data = isset($parameters['data'])?$parameters['data']:'';
 
         echo "<div class=\"form-group{$required}\">";
         echo "<label for=\"{$id}\" class=\"{$class_label}\">{$label}</label>";
-        echo "<input type=\"{$type}\" class=\"{$class}\" id=\"{$id}\" placeholder=\"{$placeholder}\" value=\"{$data}\">";
+        echo "<input type=\"{$type}\" class=\"{$class}\" id=\"{$id}\" placeholder=\"{$placeholder}\" {$disabled} value=\"{$data}\">";
         echo "</div>";
     }
 

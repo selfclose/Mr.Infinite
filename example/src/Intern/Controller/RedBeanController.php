@@ -1,6 +1,8 @@
 <?php
 namespace Intern\Controller;
 
+use RedBeanPHP\OODB;
+
 class RedBeanController
 {
     protected $table;
@@ -26,9 +28,10 @@ class RedBeanController
             $this->dataModel = \R::getRedBean()->dispense( $this->table ); //can use underscore
         }
 
-        if ($id > 0) {
+        if ((is_numeric($id) && $id > 0) || is_array($id)) {
             $this->readAction($id);
         }
+
     }
 
     /**
@@ -111,8 +114,13 @@ class RedBeanController
      */
     public function readAction($id = 0)
     {
-        if ($id > 0) {
+        if (is_numeric($id) && $id > 0) {
             $this->dataModel->id = $id;
+        }
+        elseif (is_array($id)){
+            print_r($this->table);
+            print_r(array_column($id, 'id'));
+            return \R::loadAll($this->table, array_column($id, 'id'));
         }
 
         $data = \R::load($this->table, $this->dataModel->id);
@@ -125,12 +133,22 @@ class RedBeanController
     }
 
     /**
+     * @param $getClassMethod object|OODB such as ->getEducations()
+     * @param string $column
+     * @return array
+     */
+    public function readAllAction($getClassMethod, $column = 'id')
+    {
+        return \R::loadAll($this->table, array_column($getClassMethod, $column));
+    }
+
+    /**
      * @param string $orderBy
      * @param bool $sortReverse
      * @param string $limit
      * @return array
      */
-    public function readAllAction($orderBy = '', $sortReverse = false, $limit = '')
+    public function findAllAction($orderBy = '', $sortReverse = false, $limit = '')
     {
         $concat = '';
         if ($orderBy!='')
@@ -141,7 +159,7 @@ class RedBeanController
     }
 
     /**
-     * @example  readAllAction('ORDER BY title DESC LIMIT 10');
+     * @example  findAllAction('ORDER BY title DESC LIMIT 10');
      * @param string $AddQuery
      * @return array
      */
@@ -200,7 +218,7 @@ class RedBeanController
         if ($search_key=='' && $search_value=='') {
             //if you paginate
             $this->paginate_count = $this->countAction();
-            return $this->readAllAction($orderBy, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
+            return $this->findAllAction($orderBy, $sortReverse, ($page - 1) * $limit . ', ' . $limit);
         }
         else {
             //if you search
@@ -344,6 +362,11 @@ class RedBeanController
     public function setDefaultValue($column_name, $defaultValue)
     {
         \R::exec(sprintf("ALTER TABLE %s ALTER COLUMN %s SET DEFAULT '%s';", $this->table, $column_name, $defaultValue));
+    }
+
+    public function setUnique($columns = [])
+    {
+        $this->dataModel->setMeta("buildcommand.unique", $columns);
     }
 
     //-------- Private Zone --------//

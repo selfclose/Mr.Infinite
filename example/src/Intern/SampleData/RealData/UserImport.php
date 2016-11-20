@@ -2,6 +2,7 @@
 namespace Intern\SampleData\RealData;
 
 use Intern\Model\Badge;
+use Intern\Model\Education;
 use Intern\Model\Skill;
 use Intern\Model\User;
 
@@ -22,6 +23,29 @@ class UserImport
         ],
     ];
 
+    protected $thaiName = [
+        'อานันทชัย ชมภูชัย',
+        'ทนาทร เกียรติสังหาร',
+        'ประสบ อุบัติเหตุ',
+        'พัดลม บินทะลุบ้าน',
+        'สมหวัง บุญมาน้อย',
+        'ภาสินอย หอยอารี',
+        'ภทรพงษ์ เหงาจัง',
+        'เกริกเกียรติ กางมุ้งคอย',
+        'แม็ก โดนอม',
+        'สุภาภร เจียมสังขาร',
+        'ลูกแพร ไทยไหม',
+        'วนาพร ป้อมป่ราการ',
+        'จตุพร กะละมัง',
+        'กนกพร เยสไอแคน',
+        'ผิวผ่อง ขลำยาว',
+        'สมอ เท่เสมอ',
+        'วรรณคดี มีฮา',
+        'พายัพ เยิน',
+        'คณานัพ สะดุดตา',
+        'อุดมการ เซลฟี่',
+    ];
+
     function __construct()
     {
 //        foreach ($this->records as $record) {
@@ -38,21 +62,26 @@ class UserImport
         $badge = new Badge();
         $allBadge = $badge->countAction();
 
+        $education = new Education();
+        $allEducation = $education->countAction();
+
+        $resume = new Education();
+        $allResume = $resume->countAction();
         iLog('--- Importing User ---', true);
 
         global $faker;
-        for($i=1;$i<20;$i++) {
+        for($i=1;$i<=count($this->thaiName);$i++) {
 
             $data = new User();
             $data->setUsername($faker->userName);
-            $data->setDisplayName($faker->name);
+            $data->setDisplayName($this->thaiName[$i-1]);
             $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setGender($faker->randomElement(['m', 'f', 'n']));
             $data->setAddress($faker->address);
             $data->setZipcode($faker->postcode);
-            $data->setProvinceId(rand(1, 77));
+            $data->setProvince(rand(1, 77));
             $data->setDescription($faker->paragraph(6));
-            $data->setBirthDate($faker->dateTime);
+            $data->setBirthDate($faker->dateTimeBetween('-50 years', '-16 years'));
             $data->setEmail($faker->email);
             $data->setFacebook('http://www.facebook.com/'.$faker->userName);
 
@@ -63,7 +92,9 @@ class UserImport
             $data->setBadge([rand(1,$allBadge)]);
 
             $data->setSkills([rand(1, $allSkill), rand(1, $allSkill), rand(1, $allSkill)]);
-            $data->setResumes([$i]);
+
+            $data->setEducations([rand(1, $allEducation), rand(1, $allEducation)]);
+            $data->setResumes([rand(1, $allResume), rand(1, $allResume)]);
 
             $data->insertAction();
             iLog($i.'. Inserted user: '.$data->getDisplayName());

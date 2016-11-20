@@ -7,23 +7,6 @@ use Intern\Model\User;
 
 class ResumeImport
 {
-    private $records = [
-        [
-            'user_id' => 1,
-        ],
-        [
-            'name' => 'มหาวิทยาลัยเปิด',
-        ],
-        [
-            'name' => 'มหาวิทยาลัยราชภัฏ',
-        ],
-        [
-            'name' => 'มหาวิทยาลัยเอกชน',
-        ],
-        [
-            'name' => 'มหาวิทยาลัยเทคโนโลยีราชมงคล',
-        ],
-    ];
 
     function __construct($loop = 10)
     {
@@ -40,13 +23,15 @@ class ResumeImport
         for ($i=1;$i<$loop;$i++) {
             $data = new Resume();
             $data->timestamp = true;
-            $data->setUserId(rand(1, $allUser));
+//            $data->setUser(rand(1, $allUser));
             $data->setTitle($faker->name);
             $data->setPingCompanyId(rand(1, $allCompany));
             $data->setDescription($faker->paragraph(1));
             $data->setPublic($faker->randomElement([Resume::PUBLIC_GLOBAL, Resume::PUBLIC_PRIVATE, Resume::PUBLIC_SPECIFIC]));
-            $data->setEndDate($faker->dateTimeThisMonth);
+            $data->setStartDate($faker->dateTimeThisMonth);
+            $data->setEndDate($faker->dateTimeBetween('2 months', '6 months'));
             $data->setAttachUrl($faker->url);
+            $data->setStatus($faker->randomElement([Resume::STATUS_APPROVE, Resume::STATUS_PENDING, Resume::STATUS_REJECT]));
 
             $data->insertAction();
             iLog('* Inserted Resume: '.$data->getTitle());

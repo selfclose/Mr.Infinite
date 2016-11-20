@@ -25,7 +25,7 @@ class DateTimeProvider
 //        $date = date('Y-m-d',strtotime($date.' +'.$add_days.' days');
     }
 
-    function yearDiff($start_date, $end_date) {
+    public static function yearDiff($start_date, $end_date) {
         $d1 = new \DateTime($end_date);
         $d2 = new \DateTime($start_date);
 
@@ -34,4 +34,12 @@ class DateTimeProvider
         return $diff->y;
     }
 
+    public static function MonthDiff($start_date, $end_date) {
+        $d1 = new \DateTime($end_date);
+        $d2 = new \DateTime($start_date);
+
+        $diff = $d2->diff($d1);
+
+        return $diff->m;
+    }
 }

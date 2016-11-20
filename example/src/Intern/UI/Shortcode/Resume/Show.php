@@ -1,25 +1,29 @@
 <?php
-namespace Intern\UI\Shortcode\User;
+namespace Intern\UI\Shortcode\Resume;
 
+use Intern\Config\Table;
 use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
 use Intern\Model\Province;
+use Intern\Model\Resume;
 use Intern\Model\Skill;
 use Intern\Model\SkillType;
 use Intern\Model\User;
+use Intern\Provider\DateTimeProvider;
 use Intern\Provider\FormProvider;
 use Intern\Provider\Render;
 
-class Profile
+class Show
 {
 
     public static function construct()
     {
 
-        \R::debug(false);
+//        \R::debug(true);
 
         $current_id = isset($_GET['id'])?$_GET['id']:0;
-        $user = new User($current_id);
+        $resume = new Resume($_GET['id']);
+
         $company = new Company();
         $province = new Province();
         $companyDepartment = new CompanyDepartment();
@@ -27,17 +31,6 @@ class Profile
         $skillType = new SkillType();
 
         Render::jQuery();
-//        self::Form_Begin();
-
-
-//        $category = \R::load('company', 1);
-//        $shops= $category->withCondition('companytype_id = ?',[1]);
-//        var_dump(json_encode($shops));
-
-//        var_dump('-------'.json_encode($skill));
-//
-        //----------------------------
-
         ?>
 
         <div class="container-fluid">
@@ -45,71 +38,82 @@ class Profile
                 <div class="col-md-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title">User Profile</h3>
+                            <h3 class="panel-title">Resume</h3>
                         </div>
 
                         <div class="panel-body">
                             <form role="form">
                                 <div class="form-group text-right">
-                                    <button class="btn btn-primary"><i class="fa fa-save"></i> บันทึก</button>
-                                    <button class="btn btn-default"><i class="fa fa-save"></i> ยกเลิก</button>
+                                    <button class="btn btn-primary"><i class="fa fa-check-square-o"></i> Approve</button>
+                                    <button class="btn btn-danger"><i class="fa fa-close"></i> Reject</button>
+                                    <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Back</button>
                                 </div>
 
-                                <?php
-                                Render::Input(
-                                    [
-                                        'id'    => 'email',
-                                        'label' => 'Email Address',
-                                        'data'  => $user->getEmail(),
-                                        'disabled'  => true,
-                                        'required'  => true,
-                                        'muted' => 'เป็นเมลล์ถาวร ไม่สามาถเปลี่ยนได้',
-                                    ]
-                                );
-                                ?>
                                 <div class="form-group required">
                                     <label for="email">Email address</label>
                                     <input type="email" class="form-control" id="email" aria-describedby="email"
-                                           placeholder="Enter email" value="<?=$user->getEmail()?>" disabled>
+                                           placeholder="Enter email" value="<?=$resume->getUser()->getEmail()?>" disabled>
                                     <small id="emailHelp" class="form-text text-muted">เป็นเมลล์ถาวร ไม่สามารถเปลี่ยนได้.</small>
                                 </div>
                                 <div class="form-group required">
                                     <label for="display_name" >ชื่อจริง - สกุล</label>
                                     <input type="text" class="form-control" id="display_name" aria-describedby="emailHelp" placeholder="น้องใหม่ ร้ายบริสุทธิ์"
-                                           value="<?=$user->getDisplayName()?>">
+                                           value="<?=$resume->getUser()->getDisplayName()?>">
                                     <small class="form-text text-muted">ไม่ต้องมีคำนำหน้าชื่อ</small>
                                 </div>
-                                <div class="form-group">
-                                    <img class="img-thumbnail" src="<?=$user->getImageUrl()?>">
+
+                                <h2><?=$resume->getTitle()?></h2>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <img class="img-thumbnail" src="<?=$resume->getUser()->getImageUrl()?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>ข้อมูลผู้สมัคร</h4>
+                                        <p>ชื่อ : <?=$resume->getUser()->getDisplayName()?></p>
+                                        <p>อายุ: <?=$resume->getUser()->getAge()?> ปี</p>
+                                        <p>จังหวัด: <?=$resume->getUser()->getProvince()->getName()?></p>
+                                        <hr/>
+                                        <h4>การศึกษา</h4>
+                                        <p>สถาบัน: </p>
+                                        <ul>
+                                        <?php foreach($resume->getUser()->getEducations() as $education) {
+                                            echo "<li>ระดับการศึกษา: ".$education->degree." - ". $education[Table::UNIVERSITY]->name_th."</li>";
+                                        }
+                                        ?>
+                                            </ul>
+                                        <hr/>
+                                        <h4>การฝึก:</h4>
+                                        <p>เริ่มฝึก: <?=$resume->getStartDate()?></p>
+                                        <p>สิ้นสุดการฝึก: <?=$resume->getEndDate()?></p>
+                                        <p>รวมระยะเวลา: <?=DateTimeProvider::MonthDiff($resume->getStartDate(), $resume->getEndDate())?> เดือน</p>
+                                        <hr/>
+                                        <p>Facebook: <a href="<?=$resume->getUser()->getFacebook()?>"><?=$resume->getUser()->getFacebook()?></a></p>
+                                    </div>
                                 </div>
+
+
                                 <?php
                                 Render::Input(
                                     [
                                         'id' => 'user',
                                         'label' => 'Username',
-                                        'data' => $user->getUsername(),
-                                        'disabled' => true,
+                                        'data' => $resume->getUser()->getUsername(),
                                     ]
                                 );
                                 Render::DateDialog(
                                     [
-                                        'id' => 'birth_date',
-                                        'label' => 'วันเกิด',
-                                        'data' => $user->getBirthDate(),
+                                        'id' => 'start_date',
+                                        'label' => 'วันที่เริ่มฝึก',
+                                        'data' => $resume->getStartDate(),
                                     ]
                                 );
-                                Render::Textarea(
+                                Render::DateDialog(
                                     [
-                                        'id' => 'address',
-                                        'label' => 'ที่อยู่',
-                                        'data' => $user->getAddress(),
-                                    ]
-                                );
-                                Render::Input(
-                                    [
-                                        'id' => 'zipcode',
-                                        'label' => 'รหัสไปรษณีย์',
-                                        'data' => $user->getZipcode(),
+                                        'id' => 'start_date',
+                                        'label' => 'วันที่สิ้นสุด',
+                                        'data' => $resume->getEndDate(),
                                     ]
                                 );
                                 ?>
@@ -120,7 +124,7 @@ class Profile
                                             [
                                                 'id' => 'facebook',
                                                 'label' => 'Facebook',
-                                                'data' => $user->getFacebook(),
+                                                'data' => $resume->getUser()->getFacebook(),
                                             ]
                                         );
                                         ?>
@@ -131,7 +135,7 @@ class Profile
                                             [
                                                 'id' => 'line',
                                                 'label' => 'Line',
-                                                'data' => $user->getLine(),
+                                                'data' => $resume->getUser()->getLine(),
                                             ]
                                         );
                                         ?>
@@ -142,7 +146,7 @@ class Profile
                                             [
                                                 'id' => 'instagram',
                                                 'label' => 'Instagram',
-                                                'data' => $user->getInstagram(),
+                                                'data' => $resume->getUser()->getInstagram(),
                                             ]
                                         );
                                         ?>
@@ -154,7 +158,7 @@ class Profile
                                         'id' => 'description',
                                         'label' => 'อธิบายส่วนตัว',
                                         'class' => 'form-control editor',
-                                        'data' => $user->getDescription(),
+                                        'data' => $resume->getUser()->getDescription(),
                                     ]
                                 );
                                 Render::Select(
@@ -166,7 +170,7 @@ class Profile
                                         'class' => 'form-control',
 //                                        'relation_model' => 'sharedSkill',
 //                                        'relation_column' => 'name',
-                                        'data' => $user->getProvince()->getId(),
+                                        'data' => $resume->getUser()->getProvince()->getId(),
                                     ]
                                 );
                                 Render::Select(
@@ -179,7 +183,7 @@ class Profile
                                         'class' => 'form-control',
                                         'relation_model' => 'sharedSkill',
                                         'relation_column' => 'name',
-                                        'data' => $user->getSkills(),
+                                        'data' => $resume->getUser()->getSkills(),
                                     ]
                                 );
 
@@ -192,7 +196,7 @@ class Profile
                                             'f' => 'หญิง',
                                             'n' => 'ไม่ระบุ',
                                         ],
-                                        'data' => $user->getGender(),
+                                        'data' => $resume->getUser()->getGender(),
                                     ]
                                 );
                                 Render::RadioGroup(
@@ -203,7 +207,7 @@ class Profile
                                             '0' => 'ว่างงาน',
                                             '1' => 'มีงานแล้ว',
                                         ],
-                                        'data' => $user->isGotJob(),
+                                        'data' => $resume->getUser()->isGotJob(),
                                     ]
                                 );
 
@@ -211,7 +215,7 @@ class Profile
                                     [
                                         'id' => 'tel',
                                         'label' => 'เบอร์โทรศัพท์',
-                                        'data' => $user->getTel(),
+                                        'data' => $resume->getUser()->getTel(),
                                     ]
                                 );
 

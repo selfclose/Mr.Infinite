@@ -4,7 +4,7 @@ echo "<select name='test'>";
 /**
  * @var $skType SkillType
  */
-foreach ($skillType->readAllAction() as $skType) {
+foreach ($skillType->findAllAction() as $skType) {
 
     echo "<optgroup label='{$skType->name}'></optgroup>";
 

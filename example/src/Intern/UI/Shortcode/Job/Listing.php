@@ -17,19 +17,18 @@ class Listing
 
         $job = new Job();
         $jobTag = new JobTag();
-        $allTags = $jobTag->readAllAction();
+        $allTags = $jobTag->findAllAction();
         $company = new Company();
 
         $job_paginate = $job->paginateAction($page, $limit, 'id', false);
         ?>
 
-        <table class="table table-striped">
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th>#</th>
-                <th>ชื่อบริษัท</th>
+                <th>รายละเอียด</th>
                 <th>ประกาศโดย</th>
-                <th>ประเภท</th>
             </tr>
             </thead>
             <tbody>
@@ -46,17 +45,25 @@ class Listing
                 ?>
                 <tr>
                     <th scope="row"><?=$i?></th>
-                    <td><a href="?id=<?=$item->id?>"><?=$item->title?></a></td>
-                    <td><a href="?company=<?=$company->getId()?>"><?=$company->getName()?></a></td>
                     <td>
-                        <?php
+                        <div class="pull-left">
+                            <img class="img-thumbnail" style="max-width: 120px;" src="<?=$company->getImageUrl()?>" />
+                        </div>
+                        <p><a href="?id=<?=$item->id?>"><?=$item->title?></a></p>
+                        <p><a href="?company=<?=$company->getId()?>"><?=$company->getName()?></a></p>
 
-                        /**
-                         * @var $tag JobTag
-                         */
-                        foreach ($item->sharedJobtag as $tag) { ?>
-                <a class="btn btn-primary" href="?all=<?=$tag->id?>"><?php print_r($tag->name_th)?></a>
-                        <?php } ?>
+                        <div>
+                            <?php
+                            /**
+                             * @var $tag JobTag
+                             */
+                            foreach ($item->sharedJobtag as $tag) { ?>
+                                <a class="btn btn-default btn-sm" href="?all=<?=$tag->id?>"><?=$tag->name_th?></a>
+                            <?php } ?>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-warning btn-lg">สมัครงาน</a>
                     </td>
                 </tr>
             <?php } ?>
