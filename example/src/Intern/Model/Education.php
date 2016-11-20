@@ -3,6 +3,7 @@ namespace Intern\Model;
 
 use Intern\ConcatTrait\EnabledTrait;
 use Intern\ConcatTrait\NameTrait;
+use Intern\Config\Table;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -67,6 +68,27 @@ class Education extends RedBeanController
     public function setDegree($degree)
     {
         $this->dataModel->degree = $degree;
+    }
+
+    /**
+     * @return EducationMajor
+     */
+    public function getMajors()
+    {
+        return $this->dataModel->sharedMajor;
+    }
+
+    /**
+     * @param array $education_majors
+     */
+    public function setMajors($education_majors)
+    {
+        unset($this->dataModel->sharedMajor);
+        if (is_array($education_majors)) {
+            foreach ($education_majors as $education_major) {
+                $this->dataModel->sharedMajor[] = \R::load(Table::MAJOR, $education_major);
+            }
+        }
     }
 
     /**
