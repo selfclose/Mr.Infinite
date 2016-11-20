@@ -69,7 +69,7 @@ class CompanyImport
             $data->timestamp = true;
 
             $data->setAccountType($faker->randomElement([Company::ACCOUNT_FREE, Company::ACCOUNT_PREMIUM, Company::ACCOUNT_VIP]));
-            $data->setName('บริษํท '.$faker->company);
+            $data->setName('บริษัท '.$faker->company);
             $data->setImageUrl($faker->imageUrl(320, 240));
             $data->setType(rand(1, $all_comp_type));
             $data->setFounder($faker->firstName);

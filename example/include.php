@@ -6,6 +6,7 @@ require_once __DIR__.'/vendor/autoload.php'; //composer autoload
 ?>
 <head> <meta charset="UTF-8"> </head>
 <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'>
 <link rel='stylesheet' type='text/css' href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'>
 <link rel='stylesheet' type='text/css' href='src/Intern/UI/css/all_page.css'>

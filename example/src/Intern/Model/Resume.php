@@ -209,5 +209,4 @@ class Resume extends RedBeanController
     {
         $this->dataModel->status = $status;
     }
-
 }
