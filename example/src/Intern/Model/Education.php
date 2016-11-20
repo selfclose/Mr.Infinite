@@ -24,6 +24,7 @@ class Education extends RedBeanController
     const DEGREE_Masters = 'mas'; //ปริญญาโท
     const DEGREE_Doctoral = 'doc'; //ปริญญาโท
 
+    protected $user;
 
     function __construct($id = 0)
     {
@@ -38,7 +39,10 @@ class Education extends RedBeanController
      */
     public function getUser()
     {
-        return $this->dataModel->ownWp_user;
+        if (empty($this->user)) {
+            $this->user = new User($this-$this->dataModel->wp_users_id);
+        }
+        return $this->user;
     }
 
     /**

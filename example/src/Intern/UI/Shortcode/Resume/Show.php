@@ -77,10 +77,12 @@ class Show
                                         <hr/>
                                         <h4>การศึกษา</h4>
                                         <p>สถาบัน: </p>
+                                        <ul>
                                         <?php foreach($resume->getUser()->getEducations() as $education) {
-                                            echo $education[Table::UNIVERSITY]->name_th;
+                                            echo "<li>ระดับการศึกษา: ".$education->degree." - ". $education[Table::UNIVERSITY]->name_th."</li>";
                                         }
                                         ?>
+                                            </ul>
                                         <hr/>
                                         <h4>การฝึก:</h4>
                                         <p>เริ่มฝึก: <?=$resume->getStartDate()?></p>
