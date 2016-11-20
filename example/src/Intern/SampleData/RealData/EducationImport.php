@@ -19,6 +19,7 @@ class EducationImport
         $allUniversity = $university->countAction();
 
         $allDegree = \R::count(Table::DEGREE);
+        $allMajor = \R::count(Table::MAJOR);
 
         global $faker;
 
@@ -26,6 +27,7 @@ class EducationImport
             $data = new Education();
 //            $data->setDegree($faker->randomElement([Education::DEGREE_Bachelor, Education::DEGREE_Diploma, Education::DEGREE_Doctoral, Education::DEGREE_Masters]));
             $data->setDegree(rand(1, $allDegree));
+            $data->setMajors(rand(1, $allMajor));
             $data->setUniversity(rand(1, $allUniversity));
 //            $data->setUser(rand(1, $allUser));
             $data->setDescription($faker->sentence(6));

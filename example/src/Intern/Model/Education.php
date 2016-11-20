@@ -27,6 +27,7 @@ class Education extends RedBeanController
 
     protected $user;
     protected $degree;
+    protected $major;
 
     function __construct($id = 0)
     {
@@ -79,20 +80,18 @@ class Education extends RedBeanController
      */
     public function getMajors()
     {
-        return $this->dataModel->sharedMajor;
+        if (empty($this->major)) {
+            $this->major = new EducationMajor($this->dataModel->major_id);
+        }
+        return $this->major;
     }
 
     /**
-     * @param array $education_majors
+     * @param int $major_id
      */
-    public function setMajors($education_majors)
+    public function setMajors($major_id)
     {
-        unset($this->dataModel->sharedMajor);
-        if (is_array($education_majors)) {
-            foreach ($education_majors as $education_major) {
-                $this->dataModel->sharedMajor[] = \R::load(Table::MAJOR, $education_major);
-            }
-        }
+        $this->dataModel->major_id = $major_id;
     }
 
     /**

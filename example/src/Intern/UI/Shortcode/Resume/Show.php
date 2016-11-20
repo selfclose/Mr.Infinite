@@ -84,7 +84,7 @@ class Show
                                          * @var $education Education
                                          */
                                         foreach($resume->getUser()->getEducations() as $education) {
-                                            echo "<li>ระดับการศึกษา: {$education->degree->name_th} - {$education[Table::UNIVERSITY]->name_th} | GPA: {$education->GPA}</li>";
+                                            echo "<li>ระดับการศึกษา: {$education->degree->name_th} - คณะ {$education->major->name_th} - {$education[Table::UNIVERSITY]->name_th} | GPA: {$education->GPA}</li>";
                                         }
                                         ?>
                                             </ul>
