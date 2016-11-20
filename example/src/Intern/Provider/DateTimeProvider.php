@@ -42,4 +42,13 @@ class DateTimeProvider
 
         return $diff->m;
     }
+
+    public static function DayDiff($start_date, $end_date) {
+        $d1 = new \DateTime($end_date);
+        $d2 = new \DateTime($start_date);
+
+        $diff = $d2->diff($d1);
+
+        return $diff->days;
+    }
 }

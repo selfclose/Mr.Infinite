@@ -4,6 +4,7 @@ namespace Intern\UI\Shortcode\Resume;
 use Intern\Config\Table;
 use Intern\Model\Company;
 use Intern\Model\CompanyDepartment;
+use Intern\Model\Education;
 use Intern\Model\Province;
 use Intern\Model\Resume;
 use Intern\Model\Skill;
@@ -64,7 +65,7 @@ class Show
 
                                 <h2><?=$resume->getTitle()?></h2>
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4 text-center">
                                         <div class="form-group">
                                             <img class="img-thumbnail" src="<?=$resume->getUser()->getImageUrl()?>">
                                         </div>
@@ -78,8 +79,12 @@ class Show
                                         <h4>การศึกษา</h4>
                                         <p>สถาบัน: </p>
                                         <ul>
-                                        <?php foreach($resume->getUser()->getEducations() as $education) {
-                                            echo "<li>ระดับการศึกษา: ".$education->degree." - ". $education[Table::UNIVERSITY]->name_th."</li>";
+                                        <?php
+                                        /**
+                                         * @var $education Education
+                                         */
+                                        foreach($resume->getUser()->getEducations() as $education) {
+                                            echo "<li>ระดับการศึกษา: {$education->degree->name_th} - {$education[Table::UNIVERSITY]->name_th} | GPA: {$education->GPA}</li>";
                                         }
                                         ?>
                                             </ul>
@@ -87,7 +92,7 @@ class Show
                                         <h4>การฝึก:</h4>
                                         <p>เริ่มฝึก: <?=$resume->getStartDate()?></p>
                                         <p>สิ้นสุดการฝึก: <?=$resume->getEndDate()?></p>
-                                        <p>รวมระยะเวลา: <?=DateTimeProvider::MonthDiff($resume->getStartDate(), $resume->getEndDate())?> เดือน</p>
+                                        <p>รวมระยะเวลา: <?=DateTimeProvider::MonthDiff($resume->getStartDate(), $resume->getEndDate())?> เดือน (<?=DateTimeProvider::DayDiff($resume->getStartDate(), $resume->getEndDate())?> วัน)</p>
                                         <hr/>
                                         <p>Facebook: <a href="<?=$resume->getUser()->getFacebook()?>"><?=$resume->getUser()->getFacebook()?></a></p>
                                     </div>

@@ -1,6 +1,7 @@
 <?php
 namespace Intern\SampleData\RealData;
 
+use Intern\Config\Table;
 use Intern\Model\Company;
 use Intern\Model\Education;
 use Intern\Model\Resume;
@@ -17,14 +18,14 @@ class EducationImport
         $university = new University();
         $allUniversity = $university->countAction();
 
-        $user = new User();
-        $allUser = $user->countAction();
+        $allDegree = \R::count(Table::DEGREE);
 
         global $faker;
 
         for ($i=1;$i<$loop;$i++) {
             $data = new Education();
-            $data->setDegree($faker->randomElement([Education::DEGREE_Bachelor, Education::DEGREE_Diploma, Education::DEGREE_Doctoral, Education::DEGREE_Masters]));
+//            $data->setDegree($faker->randomElement([Education::DEGREE_Bachelor, Education::DEGREE_Diploma, Education::DEGREE_Doctoral, Education::DEGREE_Masters]));
+            $data->setDegree(rand(1, $allDegree));
             $data->setUniversity(rand(1, $allUniversity));
 //            $data->setUser(rand(1, $allUser));
             $data->setDescription($faker->sentence(6));
@@ -34,7 +35,7 @@ class EducationImport
             $data->setHonour(rand(0, 2));
 
             $data->insertAction();
-            iLog('* Inserted Education: '.$data->getDegree());
+            iLog('* Inserted Education: '.$i);
         }
     }
 }
