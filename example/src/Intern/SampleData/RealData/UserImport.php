@@ -81,7 +81,7 @@ class UserImport
             $data->setZipcode($faker->postcode);
             $data->setProvince(rand(1, 77));
             $data->setDescription($faker->paragraph(6));
-            $data->setBirthDate($faker->dateTime);
+            $data->setBirthDate($faker->dateTimeBetween('-50 years', '-16 years'));
             $data->setEmail($faker->email);
             $data->setFacebook('http://www.facebook.com/'.$faker->userName);
 

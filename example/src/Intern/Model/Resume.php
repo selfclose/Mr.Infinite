@@ -29,6 +29,8 @@ class Resume extends RedBeanController
     const STATUS_APPROVE = 'approve';
     const STATUS_REJECT = 'reject';
 
+    protected $user;
+
     function __construct($id = 0)
     {
         parent::__construct($id);
@@ -39,7 +41,10 @@ class Resume extends RedBeanController
      */
     public function getUser()
     {
-        return new User($this->dataModel->wp_users_id);
+        if (empty($this->user)) {
+            $this->user = new User($this->dataModel->wp_users_id);
+        }
+        return $this->user;
     }
 
     /**

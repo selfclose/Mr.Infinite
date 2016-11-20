@@ -3,6 +3,7 @@ namespace Intern\Model;
 use Intern\ConcatTrait\ImageTrait;
 use Intern\Config\Table;
 use Intern\Controller\RedBeanController;
+use Intern\Provider\DateTimeProvider;
 
 /**
  * @property int id
@@ -53,7 +54,6 @@ class User extends RedBeanController
     protected $company;
     protected $birthDate;
     protected $zipcode;
-    protected $province_id;
     protected $description;
     protected $facebook;
     protected $instagram;
@@ -80,6 +80,9 @@ class User extends RedBeanController
     protected $custom_skill = [];
 
     private $is_valid = true;
+
+    protected $province;
+    protected $education;
 
     function __construct($id = 0)
     {
@@ -260,7 +263,10 @@ class User extends RedBeanController
      */
     public function getProvince()
     {
-        return new Province($this->dataModel->province_id);
+        if (empty($this->province)) {
+            $this->province = new Province($this->dataModel->province_id);
+        }
+        return $this->province;
     }
 
     /**
@@ -448,20 +454,11 @@ class User extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return int Age
      */
     public function getAge()
     {
-        //TODO: Can get form calculate
-        return $this->dataModel->age;
-    }
-
-    /**
-     * @param int $age
-     */
-    public function setAge($age)
-    {
-        $this->dataModel->age = $age;
+        return DateTimeProvider::yearDiff($this->getBirthDate(),  date("Y-m-d H:i:s"));
     }
 
     /**
@@ -501,7 +498,19 @@ class User extends RedBeanController
      */
     public function getEducations()
     {
-        return $this->dataModel->sharedEducation;
+        if (empty($this->education)) {
+            $university = new University();
+            /**
+             * @var $edu Education
+             */
+            foreach ($this->dataModel->sharedEducation as $edu) {
+                $this->education[] = $edu;
+                $this->education['university'] = $university->readAction($edu->university_id);
+            }
+//            $this->education = new Education($this->dataModel->sharedEducation);
+        }
+        return $this->education;
+//        return $this->dataModel->sharedEducation;
     }
 
     /**

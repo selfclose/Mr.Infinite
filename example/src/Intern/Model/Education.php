@@ -9,7 +9,7 @@ use Intern\Controller\RedBeanController;
  * @property int id
  * @property User user
  * @property string degree
- * @property int university
+ * @property int university_id
  * @property int GPA
  * @property \DateTime start_year
  * @property \DateTime end_year

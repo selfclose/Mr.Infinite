@@ -28,7 +28,8 @@ class ResumeImport
             $data->setPingCompanyId(rand(1, $allCompany));
             $data->setDescription($faker->paragraph(1));
             $data->setPublic($faker->randomElement([Resume::PUBLIC_GLOBAL, Resume::PUBLIC_PRIVATE, Resume::PUBLIC_SPECIFIC]));
-            $data->setEndDate($faker->dateTimeThisMonth);
+            $data->setStartDate($faker->dateTimeThisMonth);
+            $data->setEndDate($faker->dateTimeBetween('2 months', '6 months'));
             $data->setAttachUrl($faker->url);
             $data->setStatus($faker->randomElement([Resume::STATUS_APPROVE, Resume::STATUS_PENDING, Resume::STATUS_REJECT]));
 

@@ -82,7 +82,7 @@ class Listing
                     echo "<li><a href=\"?id={$edu->id}\">{$edu->name_th}</a></li>";
                 }?></ul></td>
                     <td><a href="?id=<?=$user->getProvince()->getId()?>"><?=$user->getProvince()->getName()?></a></td>
-                    <td><a href="?id=<?=$item->id?>"><?=$timeProvider->yearDiff($user->getBirthDate(),  date("Y-m-d H:i:s"))?></a></td>
+                    <td><a href="?id=<?=$item->id?>"><?=$user->getAge()?></a></td>
                     <td><a href="?id=<?=$item->company_id?>"><?php
                             $company->readAction($item->company_id);
                             echo $company->getName();
@@ -90,6 +90,7 @@ class Listing
 
                     <td>
                         <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                        <a href="?id=<?=$item->id?>" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                     </td>
                     <td class="text-center">
                         <i class="fa fa-circle status-<?=$item->status?>"></i><br/>

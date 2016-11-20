@@ -119,7 +119,7 @@ class Render
         $placeholder = isset($parameters['placeholder'])?$parameters['placeholder']:'';
         $type = isset($parameters['type'])?$parameters['type']:'text';
         $disabled = $parameters['disabled'] == true ?'disabled="true"': '';
-        $muted = isset($parameters['muted'])?
+//        $muted = isset($parameters['muted'])?
         $data = isset($parameters['data'])?$parameters['data']:'';
 
         echo "<div class=\"form-group{$required}\">";

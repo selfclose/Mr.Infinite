@@ -119,6 +119,7 @@ class RedBeanController
         }
         elseif (is_array($id)){
             print_r($this->table);
+            print_r(array_column($id, 'id'));
             return \R::loadAll($this->table, array_column($id, 'id'));
         }
 
