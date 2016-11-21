@@ -9,4 +9,7 @@ class Table
     const province = 'province';
     const education = 'education';
     const UNIVERSITY = 'university';
+    const MAJOR = 'major';
+    const SUBMAJOR = 'submajor';
+    const DEGREE = 'degree';
 }

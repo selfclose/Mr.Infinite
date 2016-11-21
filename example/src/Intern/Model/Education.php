@@ -3,6 +3,7 @@ namespace Intern\Model;
 
 use Intern\ConcatTrait\EnabledTrait;
 use Intern\ConcatTrait\NameTrait;
+use Intern\Config\Table;
 use Intern\Controller\RedBeanController;
 
 /**
@@ -19,12 +20,14 @@ use Intern\Controller\RedBeanController;
  */
 class Education extends RedBeanController
 {
-    const DEGREE_Diploma = 'dip'; //อนุปริญญา
-    const DEGREE_Bachelor = 'bac'; //ปริญญาตรี
-    const DEGREE_Masters = 'mas'; //ปริญญาโท
-    const DEGREE_Doctoral = 'doc'; //ปริญญาโท
+//    const DEGREE_Diploma = 'dip'; //อนุปริญญา
+//    const DEGREE_Bachelor = 'bac'; //ปริญญาตรี
+//    const DEGREE_Masters = 'mas'; //ปริญญาโท
+//    const DEGREE_Doctoral = 'doc'; //ปริญญาโท
 
     protected $user;
+    protected $degree;
+    protected $major;
 
     function __construct($id = 0)
     {
@@ -54,19 +57,41 @@ class Education extends RedBeanController
     }
 
     /**
-     * @return int
+     * @return EducationDegree
      */
     public function getDegree()
     {
-        return $this->dataModel->degree;
+        if (empty($degree)) {
+            $this->degree = new EducationDegree($this->dataModel->degree_id);
+        }
+        return $this->degree;
     }
 
     /**
-     * @param string $degree
+     * @param string $degree_id
      */
-    public function setDegree($degree)
+    public function setDegree($degree_id)
     {
-        $this->dataModel->degree = $degree;
+        $this->dataModel->degree_id = $degree_id;
+    }
+
+    /**
+     * @return EducationMajor
+     */
+    public function getMajors()
+    {
+        if (empty($this->major)) {
+            $this->major = new EducationMajor($this->dataModel->major_id);
+        }
+        return $this->major;
+    }
+
+    /**
+     * @param int $major_id
+     */
+    public function setMajors($major_id)
+    {
+        $this->dataModel->major_id = $major_id;
     }
 
     /**
