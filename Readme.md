@@ -1,4 +1,4 @@
-## **My startup redbean**
+## **Mr.Infinite (beta)**
 
 Use autoload (PSR-0) and [Redbean](http://www.redbeanphp.com/) for ORM
 
