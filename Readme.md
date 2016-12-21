@@ -1,11 +1,28 @@
-## **Mr.Infinite (beta)**
+## **WP_Infinite (beta Unstable)**
+Create Wordpress plugin with MVC(Kind of) + CRUD in simple or indy way
+
+[![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=0.1.2&x2=0)](#)
+[![WordPress](https://img.shields.io/wordpress/v/akismet.svg)]()
+
+First You need to know this vendor help you manage your data spread table from wp_posts or wp_meta..
 
 Use autoload (PSR-0) and [Redbean](http://www.redbeanphp.com/) for ORM
+
+### Requirement:
+* Wordpress (of course)
+* Composer
+* Jade or Pug (not important) For make fast and flexable UI
+
+#### Turn you back on Database
+* We CREATE TABLE By class name But...
+* No worry about manage table, It's automatic CREAT, ALTER table or change TYPE of columns
+* Create t
 
 It's not fully MVC, but it can make things easier, because We do same thing all the time.
 
 I'm serious about file size, so I avoid large ORM or framework that's have a bunch of unused code.
 
+### How to begin
 * In 'include.php' there is config.
 * Each file will tell how it's work.
 * Example model (src/RB/Model) that's extends from Controller.
