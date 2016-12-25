@@ -1,7 +1,7 @@
 <?php
 
-require (__DIR__.'/vendor/RedBeanPHP4_3_3/rb.php');
-require (__DIR__.'/src/autoload.php');
+require(__DIR__ . '/vendor/RedBeanPHP4_3_3/rb.php');
+require(__DIR__ . '/src/autoload.php');
 
 R::setup( 'mysql:host=localhost;dbname=test_redbean', 'root', 'root' );
 

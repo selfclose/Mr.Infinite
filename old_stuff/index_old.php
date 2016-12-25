@@ -9,7 +9,7 @@ echo "<hr/>";
 
 //------------------------------------------
 
-require ('vendor/RedBeanPHP4_3_3/rb.php');
+require('vendor/RedBeanPHP4_3_3/rb.php');
 require ('RedBeanController.php');
 require ('RedbeanTrait.php');
 

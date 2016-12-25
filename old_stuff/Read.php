@@ -1,6 +1,6 @@
 <?php
 
-include (__DIR__.'/include.php');
+include (__DIR__ . '/include.php');
 
 //----------Read single (Where ID)---------//
 $idToRead = 2;

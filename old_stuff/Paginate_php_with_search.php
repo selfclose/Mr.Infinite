@@ -1,6 +1,6 @@
 <h2>Pagination - PHP</h2>
 <?php
-include (__DIR__.'/include.php');
+include (__DIR__ . '/include.php');
 
 ?>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
