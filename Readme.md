@@ -1,8 +1,11 @@
 ## **WP_Infinite (beta Unstable)**
-Create Wordpress plugin with MVC(Kind of) + CRUD in simple or indy way
+Create Wordpress plugin in MVC(Kind of) + CRUD in simple (maybe odd) way
+It's gonna looks alike Laravel.
 
 [![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=0.1.2&x2=0)](#)
 [![WordPress](https://img.shields.io/wordpress/v/akismet.svg)]()
+
+_it_531413016@hotmail.com_
 
 First You need to know this vendor help you manage your data spread table from wp_posts or wp_meta..
 
@@ -10,6 +13,7 @@ Use autoload (PSR-0) and [Redbean](http://www.redbeanphp.com/) for ORM
 
 ### Requirement:
 * Wordpress (of course)
+* phpstorm (just recommend for good autocomplete)
 * Composer
 * Jade or Pug (not important) For make fast and flexable UI
 
@@ -22,43 +26,27 @@ It's not fully MVC, but it can make things easier, because We do same thing all 
 
 I'm serious about file size, so I avoid large ORM or framework that's have a bunch of unused code.
 
+
+
 ### How to begin
-* In 'include.php' there is config.
-* Each file will tell how it's work.
-* Example model (src/RB/Model) that's extends from Controller.
+1. Create your plugin.
+2. require this vendor.
+3. Ok, Ready to go.
 
-### Ability
-* CRUD make more simple through model
-* ReadAll
-* Count
-* json_encode
-* Paginate (php / jQuery with ajax)
-
-_arnanthachai@intbizth.com_
-
-#### Simple Model
-
+#### Model
+_/wp-content/plugins/my-plugin/src/MyProject/Model/Book.php_
 ```php
 <?php
-/**
- * Class Book
- * @property int id
- * @property string name
- * @property int price
- */
-class Book extends RedBeanController
-{
-    function __construct($tableId = 0)
-    {
-        parent::__construct($tableId);
-    }
+namespace MyProject\Model;
 
+class Book extends ModelController
+{
     /**
      * @return string
      */
     public function getName()
     {
-        return $this->dataModel->name;
+        return $this->model->name;
     }
 
     /**
@@ -66,7 +54,7 @@ class Book extends RedBeanController
      */
     public function setName($name)
     {
-        $this->dataModel->name = $name;
+        $this->model->name = $name;
     }
 
     /**
@@ -74,7 +62,7 @@ class Book extends RedBeanController
      */
     public function getPrice()
     {
-        return $this->dataModel->price;
+        return $this->model->price;
     }
 
     /**
@@ -82,194 +70,78 @@ class Book extends RedBeanController
      */
     public function setPrice($price)
     {
-        $this->dataModel->price = $price;
+        $this->model->price = $price;
     }
 }
 ```
-It's will automatic create table's name by class name
 
-Or you can manually tell table's name by add
+It's will automatically create table by class name (in lower case).
+
+What if you want to custom table name? Just add property...
 
 ```php
     protected $table = 'book';
 ```
 
 
-**Now, You can insert update delete count paginate without concern about table**
+**Model In Action**
 
 ###### Insert
 ```php
 <?php
-$book = new \RB\Model\Book();
+$book = new \MyProject\Model\Book();
 $book->setName('Harry Potter');
 $book->setPrice(1200);
 $book->insertAction();
 ```
 
-###### Update (Same as insert just add id on construct)
+You may notics 'insertAction();' and it's going to do couple thing
+Yes, It will automatic create table, take care column type and insert record for you. thanks for readbean.
+
+**And another command**
+* ->insertAction();
+* ->updateAction();
+* ->deleteAction();
+* ->readAction();
+* ->readOneByAction();
+* ->findAllAction();
+* ->findOneByAction();
+* ->countAction();
+
+###### Read
 ```php
 <?php
-$idToUpdate = 1;
-$book = new \RB\Model\Book($idToUpdate);
-if ($book->readAction()) {
-    $book->setName('Harry potter and the cursed child');
-    $book->setPrice(1400);
+$book = new \MyProject\Model\Book();
+$book->readAction(5);   //read id 5
+echo $book->getName();
+echo $book->getPrice();
 
-    $book->updateAction();
-} else {
-    echo "Can't Update(or no id): ".$idToUpdate;
-}
 ```
 
+_CONTINUE WRITE SOON_
 ###### Delete
 ```php
 <?php
-$idToDelete = 1;
-$book = new \RB\Model\Book($idToDelete);
-if ($book->deleteAction()) {
-    echo "ID: ".$idToDelete." is Deleted!";
-} else {
-    echo "Can't Delete(or no id): ".$idToDelete;
-}
+$book = new \MyProject\Model\Book();
+if ($book->deleteAction(3))
+    echo "Deleted!";
+else
+    echo "Can't Delete";
 ```
 
-###### Display (Where id style)
+**CRUD Action also return bool or object you can retrieve and make condition too**
 ```php
 <?php
 $idToRead = 2;
-$book = new \RB\Model\Book($idToRead);
-if ($book->readAction()) {
-?>
-    <p>ID: <?=$book->getId()?></p>
-    <p>Name: <?=$book->getName()?></p>
-    <p>price: <?=$book->getPrice()?></p>
-<?php
+$book = new \MyProject\Model\Book();
+if ($book->readAction($idToRead)) {
+    //Do stuff
 } else {
     echo 'Can\'t read ID: '.$idToRead;
 }
 
-//--OR--
-$book = new \RB\Model\Book();
-if ($book->readAction(5)) {
-?>
-    ...
-<?php
-} else {
-    ...
-}
-
 ```
 
-Another thing in project.
-
-<hr/>
-###Relation Keyword (I May wrong)
-* Example Dummy is table name
-
-one-to-many: "own"
-
-```php
-//Library
-$this->dataModel->ownBook = \R::load('book', 1);
-```
-
-many-to-one: 
-
-```php
-//Library
-$this->dataModel->book_id = 2;
-```
-
-many-to-many: "shared"
-
-```php
-//Book
-$this->dataModel->sharedAuthor = \R::load('author', 1);
-```
-<hr/>
-
-#### Retrieve Relation object
-
-* Model - SkillType
-
-###### (little trick: I'm use annotation of column for easier to retrieve properties when foreach)
-
-```php
-/**
- * @property int|array id
- * @property string name
- * @property array sharedSkill
- */
-class SkillType extends RedBeanController
-{
-    function __construct($id = 0)
-    {
-        parent::__construct($id);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->dataModel->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->dataModel->name = $name;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSkills()
-    {
-        return $this->dataModel->sharedSkill;
-    }
-
-    /**
-     * @param $skills array Skill
-     */
-    public function setSkills($skills)
-    {
-        unset($this->dataModel->sharedSkill);
-        if (is_array($skills)) {
-            foreach ($skills as $skill) {
-                $this->dataModel->sharedSkill[] = \R::load('skill', $skill);
-            }
-        }
-    }
-
-    public function addSkill($skill)
-    {
-        $this->dataModel->sharedSkill[] = \R::load('skill', $skill);
-        iLog($skill);
-    }
-}
-```
-
-* Skill Class is the same but only get, set Name
-
-* Display
-
-```php
-        /**
-         * @var $skType SkillType
-         */
-        foreach ($skillType->readAllAction() as $skType) {
-
-            echo "<p>* {$skType->name}</p>";
-
-            /**
-             * @var $sk Skill
-             */
-            foreach ($skType->sharedSkill as $sk) {
-
-                echo "<p> {$sk->id}--{$sk->name}</p>";
-            }
-        }
-```
+### Other Ability
+* Paginate (php / jQuery with ajax)
+* Ajax Provider: Jquery and AngularJS
