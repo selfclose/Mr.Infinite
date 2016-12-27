@@ -1,7 +1,7 @@
 <?php
 /**
  * Mr.Infinite Beta
- * use for Redbean >= 4 for core
+ * use for Redbean => 4 for core
  * By arnanthachai@intbizth.com
  */
 namespace vendor\wp_infinite\Controller;
@@ -234,22 +234,15 @@ class ModelController extends UtilitiesController
             return \R::count(self::getTableStatic(), " {$column} = ?", [$find]);
     }
 
-    /**
-     * @param string $findBy
-     * @param $keyword
-     * @param string $orderBy
-     * @param bool $sortReverse
-     * @param string $limit
-     * @return array
-     */
-    static function findAction($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    static function countLike($column = 'id', $keyword = '')
     {
-        global $wpdb;
-        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
-        if ($limit != '')
-            $concat .= ' LIMIT ' . $limit;
+        if (substr($keyword, 0, 1) != '%' and substr($keyword, strlen($keyword)-1, 1) != "%")
+            $keyword = "%{$keyword}%";
 
-        return $wpdb->get_results("SELECT * FROM ".self::getTable()." WHERE {$findBy} = '{$keyword}'{$concat}");
+        if (empty($keyword))
+            return \R::count(self::getTableStatic());
+        else
+            return \R::count(self::getTableStatic(), " {$column} like ?", [$keyword]);
     }
 
     /**
@@ -260,14 +253,40 @@ class ModelController extends UtilitiesController
      * @param string $limit
      * @return array
      */
-    static function findLikeAction($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    static function find($keyword, $findBy = 'id', $orderBy = 'id', $sortReverse = false, $limit = '')
     {
         global $wpdb;
         $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
 
-        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '%{$keyword}%'{$concat}");
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} = '{$keyword}'{$concat}");
+    }
+
+    /**
+     * @param string $findBy
+     * @param $keyword
+     * @param string $orderBy
+     * @param bool $sortReverse
+     * @param string $limit
+     * @return array
+     */
+    static function findLike($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    {
+        if (substr($keyword, 0, 1) != '%' and substr($keyword, strlen($keyword)-1, 1) != "%")
+            $keyword = "%{$keyword}%";
+
+        global $wpdb;
+        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
+        if ($limit != '')
+            $concat .= ' LIMIT ' . $limit;
+
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '{$keyword}'{$concat}");
+    }
+
+    static function findId($id = 1)
+    {
+        return \R::load(self::getTableStatic(),$id);
     }
 
     public function readByAction($findBy = 'id', $value = '1')
