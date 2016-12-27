@@ -79,17 +79,29 @@ What if you want to custom table name? Just add property...
 
 ### Model In Action
 
-wp_infinte help you manage model
+Alright! You have to see these methods first.
 
-**Example method**
+**CRUD method**
 * ->insertAction();
 * ->updateAction();
 * ->deleteAction();
 * ->readAction();
-* ->readOneByAction();
-* ->findAllAction();
-* ->findOneByAction();
-* ->countAction();
+* ->readByAction();
+
+**Filter and Manage method**
+* ::find();
+* ::findAll()
+* ::findAllBy();
+* ::findLike();
+* [::count()](); _::count('name');_
+* ::purge();
+
+"->" Need to declare instance first. _(new Book())_<br/>
+"::" Work both declare or not declare instance. _(Book::find(), $book::find())_
+
+_Note:
+CRUD methods return bool;<br/>
+Filter methods return array;_
 
 ###### Insert
 ```php
@@ -111,9 +123,8 @@ echo $book->getName();
 echo $book->getPrice();
 
 ```
-_Note: When you read single item it's will fill properties in model. But If multiple such as WHERE, It will return array out._
 
-**CRUD Action also return bool or object you can retrieve, so you can make condition too**
+**CRUD Action also return bool or id of row, So you can make condition too**
 ```php
 $idToRead = 2;
 $book = new \MyProject\Model\Book();
@@ -131,6 +142,15 @@ if ($book->deleteAction(3))
     echo "Deleted!";
 else
     echo "Can't Delete";
+```
+
+**Filter return object or array of data**
+###### findAll
+```php
+    $books = \MyProject\Model\Book::findAll();
+    foreach ($books as $book) {
+        echo $book->name;
+    }
 ```
 
 ### Other Ability
