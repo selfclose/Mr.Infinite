@@ -1,7 +1,7 @@
 <?php
 /**
  * Mr.Infinite Beta
- * use for Redbean 4.^ for core
+ * use for Redbean >= 4 for core
  * By arnanthachai@intbizth.com
  */
 namespace vendor\wp_infinite\Controller;
@@ -40,6 +40,13 @@ class ModelController extends UtilitiesController
         return $this->table;
     }
 
+    private static function getTableStatic() {
+        $table = strtolower(get_class_vars(get_called_class())['table']);
+        if (empty($table))
+            return strtolower(end(explode("\\", get_called_class())));
+        return$table;
+    }
+
     //-------------CRUD-------------//
 
     /**
@@ -48,6 +55,7 @@ class ModelController extends UtilitiesController
      */
     public function insertAction($force = false)
     {
+        $this->__onInsertAction();
         //Dispense if force use getRedBean
         $bean = \R::getRedBean()->dispense($this->getTable()); //can use underscore
 
@@ -92,6 +100,10 @@ class ModelController extends UtilitiesController
     }
 
     public function __onUpdateAction() {
+        //FOR OVERRIDE ONLY
+    }
+
+    public function __onInsertAction() {
         //FOR OVERRIDE ONLY
     }
 
@@ -165,7 +177,7 @@ class ModelController extends UtilitiesController
      * @param string $limit
      * @return object
      */
-    public function findAllAction($orderBy = '', $sortReverse = false, $limit = '')
+    static function findAll($orderBy = '', $sortReverse = false, $limit = '')
     {
         global $wpdb;
         $concat = '';
@@ -173,7 +185,7 @@ class ModelController extends UtilitiesController
             $concat .= ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
-        return $wpdb->get_results("SELECT * FROM {$this->getTable()}{$concat}");
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()."{$concat}");
     }
 
     public function Query($query_command)
@@ -189,10 +201,10 @@ class ModelController extends UtilitiesController
      * @return int
      * Find Row Index for example : Top Money, what is my position?
      */
-    public function findRowIndex($column = 'id', $find, $sortReverse = false)
+    static function findRowIndex($column = 'id', $find, $sortReverse = false)
     {
         global $wpdb;
-        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM {$this->getTable()} WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM {$this->getTable()} WHERE {$column} = '{$find}'")->position;
+        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM ".self::getTable()." WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM ".self::getTable()." WHERE {$column} = '{$find}'")->position;
     }
 
     /**
@@ -207,16 +219,19 @@ class ModelController extends UtilitiesController
 
     //--------- FINDING Zone --------//
     /**
-     * @param string $findBy
-     * @param string $keyword
      * @return int
      */
-    public function countAction($findBy = 'id', $keyword = '')
+    static function count()
     {
-        if ($keyword == '')
-            return \R::count($this->getTable());
+        return \R::count(self::getTableStatic());
+    }
+
+    static function countBy($column = 'id', $find = '')
+    {
+        if (empty($find))
+            return \R::count(self::getTableStatic());
         else
-            return \R::count($this->getTable(), " {$findBy} = ?", [$keyword]);
+            return \R::count(self::getTableStatic(), " {$column} = ?", [$find]);
     }
 
     /**
@@ -227,14 +242,14 @@ class ModelController extends UtilitiesController
      * @param string $limit
      * @return array
      */
-    public function findAction($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    static function findAction($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
     {
         global $wpdb;
         $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
 
-        return $wpdb->get_results("SELECT * FROM {$this->getTable()} WHERE {$findBy} = '{$keyword}'{$concat}");
+        return $wpdb->get_results("SELECT * FROM ".self::getTable()." WHERE {$findBy} = '{$keyword}'{$concat}");
     }
 
     /**
@@ -245,14 +260,14 @@ class ModelController extends UtilitiesController
      * @param string $limit
      * @return array
      */
-    public function findLikeAction($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    static function findLikeAction($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
     {
         global $wpdb;
         $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
 
-        return $wpdb->get_results("SELECT * FROM {$this->getTable()} WHERE {$findBy} LIKE '%{$keyword}%'{$concat}");
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '%{$keyword}%'{$concat}");
     }
 
     public function readByAction($findBy = 'id', $value = '1')
@@ -274,16 +289,16 @@ class ModelController extends UtilitiesController
         }
     }
 
-    public function findOneBy($column = 'id', $find)
+    static function findOneBy($column = 'id', $find)
     {
         global $wpdb;
-        return $wpdb->get_row("SELECT * FROM {$this->getTable()} WHERE {$column} = '{$find}'");
+        return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
     }
 
     //-------- ETC --------//
-    public function setTableComment($comment)
+    static function setTableComment($comment)
     {
-        \R::exec("ALTER TABLE `{$this->getTable()}` COMMENT '{$comment}'");
+        \R::exec("ALTER TABLE `".self::getTableStatic()."` COMMENT '{$comment}'");
     }
 
     /**
@@ -291,16 +306,16 @@ class ModelController extends UtilitiesController
      * @param $comment
      * @return bool|int
      */
-    public function setColumnComment($column_name, $comment)
+    static function setColumnComment($column_name, $comment)
     {
         global $wpdb;
-        $type = $wpdb->get_row("SHOW FIELDS FROM {$this->getTable()} WHERE FIELD ='{$column_name}'")->Type;
-        return $wpdb->query("ALTER TABLE `{$this->getTable()}` CHANGE `{$column_name}` `{$column_name}` {$type} COMMENT '{$comment}'");
+        $type = $wpdb->get_row("SHOW FIELDS FROM ".self::getTableStatic()." WHERE FIELD ='{$column_name}'")->Type;
+        return $wpdb->query("ALTER TABLE `".self::getTableStatic()."` CHANGE `{$column_name}` `{$column_name}` {$type} COMMENT '{$comment}'");
     }
 
-    public function resetAutoIncrement()
+    static function resetAutoIncrement()
     {
-        \R::exec("ALTER TABLE {$this->getTable()} AUTO_INCREMENT = 1");
+        \R::exec("ALTER TABLE ".self::getTableStatic()." AUTO_INCREMENT = 1");
     }
 
     public function updateRelation($column = 'customer_id', $hookTable = 'customers')
@@ -310,9 +325,9 @@ class ModelController extends UtilitiesController
             , $this->getTable(), 'c_fk_' . $this->getTable() . '_' . $column, $column, $hookTable, $column));
     }
 
-    public function setDefaultValue($column_name, $defaultValue)
+    static function setDefaultValue($column_name, $defaultValue)
     {
-        \R::exec(sprintf("ALTER TABLE %s ALTER COLUMN %s SET DEFAULT '%s';", $this->getTable(), $column_name, $defaultValue));
+        \R::exec(sprintf("ALTER TABLE %s ALTER COLUMN %s SET DEFAULT '%s';", self::getTableStatic(), $column_name, $defaultValue));
     }
 
     public function setUnique($columns = [])
@@ -326,7 +341,7 @@ class ModelController extends UtilitiesController
     {
         if (is_null($value) or empty($value))
             throw new \Exception("**[ wp_infinite Error : \"Can't find item, Need ID (Have you use '->readAction(*id*)' yet?)\" ]**");
-        return \R::findOne(self::getTableClass(), "{$by_column_name} {$expression} ?", [$value] );
+        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$expression} ?", [$value] );
 
     }
 
@@ -334,15 +349,9 @@ class ModelController extends UtilitiesController
     {
         if (is_null($id) or empty($id))
             throw new \Exception("**[ wp_infinite Error : \"Can't find item, Need ID (Have you use '->readAction(*id*)' yet?)\" ]**");
-        return \R::load(self::getTableClass(), $id );
+        return \R::load(self::getTableStatic(), $id );
 
     }
 
-    static function getTableClass() {
-        $table = strtolower(get_class_vars(get_called_class())['table']);
-        if (empty($table))
-            return strtolower(end(explode("\\", get_called_class())));
-        return$table;
-    }
     //-------- Private Zone --------//
 }
