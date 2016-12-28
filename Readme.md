@@ -90,10 +90,12 @@ Alright! You have to see these methods first.
 
 **Filter and Manage method**
 * ::find();
-* ::findAll()
-* ::findAllBy();
+* ::findBy();
+* ::findOneBy();
+* ::findAll();
 * ::findLike();
 * [::count()](); _::count('name');_
+* ::countBy();
 * ::purge();
 
 "->" Need to declare instance first. _(new Book())_<br/>
