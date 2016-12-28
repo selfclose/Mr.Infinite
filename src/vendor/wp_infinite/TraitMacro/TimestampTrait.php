@@ -33,6 +33,12 @@ trait TimestampTrait
         $this->created_at = $created_time;
     }
 
+    public function __onInsertAction()
+    {
+        $this->created_at = $this->getCurrentTime();
+        $this->updated_at = $this->getCurrentTime();
+    }
+
     public function __onUpdateAction()
     {
         $this->updated_at = $this->getCurrentTime();

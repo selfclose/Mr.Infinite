@@ -1,7 +1,7 @@
 <?php
 /**
  * Mr.Infinite Beta
- * use for Redbean => 4 for core
+ * use for Redbean 4.^ for core
  * By arnanthachai@intbizth.com
  */
 namespace vendor\wp_infinite\Controller;
@@ -142,6 +142,29 @@ class ModelController extends UtilitiesController
     }
 
     /**
+     * @param string $findBy
+     * @param $value string
+     */
+    public function readByAction($findBy = 'id', $value)
+    {
+        $bean = \R::findOne($this->getTable(), $findBy . ' = ? ', [$value]);
+
+        //If ID is upper case fix (redbean upper bug)
+        if (is_array($bean) || is_object($bean)) {
+
+            foreach($bean as $key => $value){
+                $this->{$key} = $value;
+            }
+
+            foreach ($bean as $key => $val) {
+                if ($key == 'ID') {
+                    $this->id = $val;
+                }
+            }
+        }
+    }
+
+    /**
      * @param $getClassMethod object|OODB such as ->getEducations()
      * @param array $ids
      * @return array
@@ -204,7 +227,8 @@ class ModelController extends UtilitiesController
     static function findRowIndex($column = 'id', $find, $sortReverse = false)
     {
         global $wpdb;
-        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM ".self::getTable()." WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM ".self::getTable()." WHERE {$column} = '{$find}'")->position;
+        $table = self::getTableStatic();
+        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM {$table} WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM {$table} WHERE {$column} = '{$find}'")->position;
     }
 
     /**
@@ -226,12 +250,17 @@ class ModelController extends UtilitiesController
         return \R::count(self::getTableStatic());
     }
 
-    static function countBy($column = 'id', $find = '')
+    /**
+     * @param string $column
+     * @param $find string | int
+     * @return int
+     */
+    static function countBy($column = 'id', $condition = '=', $find)
     {
-        if (empty($find))
+        if (is_null($find))
             return \R::count(self::getTableStatic());
         else
-            return \R::count(self::getTableStatic(), " {$column} = ?", [$find]);
+            return \R::count(self::getTableStatic(), " {$column} {$condition} ?", [$find]);
     }
 
     static function countLike($column = 'id', $keyword = '')
@@ -253,7 +282,7 @@ class ModelController extends UtilitiesController
      * @param string $limit
      * @return array
      */
-    static function find($keyword, $findBy = 'id', $orderBy = 'id', $sortReverse = false, $limit = '')
+    static function findBy($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
     {
         global $wpdb;
         $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
@@ -284,34 +313,16 @@ class ModelController extends UtilitiesController
         return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '{$keyword}'{$concat}");
     }
 
-    static function findId($id = 1)
+    static function find($id)
     {
         return \R::load(self::getTableStatic(),$id);
     }
 
-    public function readByAction($findBy = 'id', $value = '1')
-    {
-        $bean = \R::findOne($this->getTable(), $findBy . ' = ? ', [$value]);
-
-        //If ID is upper case fix (redbean upper bug)
-        if (is_array($bean) || is_object($bean)) {
-
-            foreach($bean as $key => $value){
-                $this->{$key} = $value;
-            }
-
-            foreach ($bean as $key => $val) {
-                if ($key == 'ID') {
-                    $this->id = $val;
-                }
-            }
-        }
-    }
-
     static function findOneBy($column = 'id', $find)
     {
-        global $wpdb;
-        return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
+        //global $wpdb;
+        //return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
+        return \R::findOne(self::getTableStatic(), " {$column} = ? ", [$find]);
     }
 
     //-------- ETC --------//
@@ -356,11 +367,11 @@ class ModelController extends UtilitiesController
     }
 
     //--------------- RELATION HELPER ----------------//
-    static function OwnOneBy($by_column_name = 'id', $expression = '=', $value)
+    static function OwnOneBy($by_column_name = 'id', $condition = '=', $value)
     {
         if (is_null($value) or empty($value))
             throw new \Exception("**[ wp_infinite Error : \"Can't find item, Need ID (Have you use '->readAction(*id*)' yet?)\" ]**");
-        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$expression} ?", [$value] );
+        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$condition} ?", [$value] );
 
     }
 
