@@ -1,23 +1,23 @@
-## **WP_Infinite (beta Unstable)**
-Create Wordpress plugin in MVC(Kind of) + CRUD in simple (maybe odd) way
-It's gonna looks alike Laravel.
+## **WP_Infinite (beta)**
+Create Wordpress plugin in MVC(Kind of) + CRUD in simple way.
 
-[![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=0.1.2&x2=0)](#)
+[![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=0.2.1&x2=0)](#)
 [![WordPress](https://img.shields.io/wordpress/v/akismet.svg)]()
 
+Arnanthachai chomphuchai<br/>
 _it_531413016@hotmail.com_
 
-First You need to know this vendor help you manage your data spread table from wp_posts or wp_meta..
-
-Use autoload (PSR-0) and [Redbean](http://www.redbeanphp.com/) for ORM
+First You need to know this vendor help you manage your data spread table not store in wp_posts or wp_meta.
 
 ### Requirement:
 * Wordpress (of course)
-* phpstorm (just recommend for good autocomplete)
-* Composer
+* phpstorm (just recommend for autocomplete and wordpress support)
+* [Composer](https://getcomposer.org/)
+* [Redbean](http://www.redbeanphp.com/) >= 4 (included)
+* Autoload PSR-0 (included)
 * Jade or Pug (not important) For make fast and flexable UI
 
-#### Turn you back on Database
+### Turn you back on Database
 * We CREATE TABLE By class name But...
 * No worry about manage table, It's automatic CREAT, ALTER table or change TYPE of columns
 * Create t
@@ -29,53 +29,45 @@ I'm serious about file size, so I avoid large ORM or framework that's have a bun
 
 
 ### How to begin
-1. Create your plugin.
+1. Create your plugin index file.
 2. require this vendor.
 3. Ok, Ready to go.
 
-#### Model
-_/wp-content/plugins/my-plugin/src/MyProject/Model/Book.php_
+#### Model (Regular model)
+###### For make more sense I don't put php annotation yet.
+**Example:** _/wp-content/plugins/my-plugin/src/MyProject/Model/Book.php_
 ```php
 <?php
 namespace MyProject\Model;
 
+use vendor\wp_infinite\Controller\ModelController;
+
 class Book extends ModelController
 {
-    /**
-     * @return string
-     */
+    protected $name;
+    protected $price = 0;
+
     public function getName()
     {
-        return $this->model->name;
+        return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName($name)
     {
-        $this->model->name = $name;
+        $this->name = $name;
     }
 
-    /**
-     * @return int
-     */
     public function getPrice()
     {
-        return $this->model->price;
+        return $this->price;
     }
 
-    /**
-     * @param int $price
-     */
     public function setPrice($price)
     {
-        $this->model->price = $price;
+        $this->price = $price;
     }
 }
 ```
-
-It's will automatically create table by class name (in lower case).
 
 What if you want to custom table name? Just add property...
 
@@ -83,12 +75,36 @@ What if you want to custom table name? Just add property...
     protected $table = 'book';
 ```
 
+---
 
-**Model In Action**
+### Model In Action
+
+Alright! You have to see these methods first.
+
+**CRUD method**
+* ->insertAction();
+* ->updateAction();
+* ->deleteAction();
+* ->readAction();
+* ->readByAction();
+
+**Filter and Manage method**
+* ::find();
+* ::findAll()
+* ::findAllBy();
+* ::findLike();
+* [::count()](); _::count('name');_
+* ::purge();
+
+"->" Need to declare instance first. _(new Book())_<br/>
+"::" Work both declare or not declare instance. _(Book::find(), $book::find())_
+
+_Note:
+CRUD methods return bool;<br/>
+Filter methods return array;_
 
 ###### Insert
 ```php
-<?php
 $book = new \MyProject\Model\Book();
 $book->setName('Harry Potter');
 $book->setPrice(1200);
@@ -98,19 +114,9 @@ $book->insertAction();
 You may notics 'insertAction();' and it's going to do couple thing
 Yes, It will automatic create table, take care column type and insert record for you. thanks for readbean.
 
-**And another command**
-* ->insertAction();
-* ->updateAction();
-* ->deleteAction();
-* ->readAction();
-* ->readOneByAction();
-* ->findAllAction();
-* ->findOneByAction();
-* ->countAction();
 
 ###### Read
 ```php
-<?php
 $book = new \MyProject\Model\Book();
 $book->readAction(5);   //read id 5
 echo $book->getName();
@@ -118,20 +124,8 @@ echo $book->getPrice();
 
 ```
 
-_CONTINUE WRITE SOON_
-###### Delete
+**CRUD Action also return bool or id of row, So you can make condition too**
 ```php
-<?php
-$book = new \MyProject\Model\Book();
-if ($book->deleteAction(3))
-    echo "Deleted!";
-else
-    echo "Can't Delete";
-```
-
-**CRUD Action also return bool or object you can retrieve and make condition too**
-```php
-<?php
 $idToRead = 2;
 $book = new \MyProject\Model\Book();
 if ($book->readAction($idToRead)) {
@@ -142,6 +136,26 @@ if ($book->readAction($idToRead)) {
 
 ```
 
+```php
+$book = new \MyProject\Model\Book();
+if ($book->deleteAction(3))
+    echo "Deleted!";
+else
+    echo "Can't Delete";
+```
+
+**Filter return object or array of data**
+###### findAll
+```php
+    $books = \MyProject\Model\Book::findAll();
+    foreach ($books as $book) {
+        echo $book->name;
+    }
+```
+
 ### Other Ability
 * Paginate (php / jQuery with ajax)
 * Ajax Provider: Jquery and AngularJS
+* Some Wordpress model (Page, Post, Route)
+
+_CONTINUE WRITE SOON..._
