@@ -255,12 +255,12 @@ class ModelController extends UtilitiesController
      * @param $find string | int
      * @return int
      */
-    static function countBy($column = 'id', $condition = '=', $find)
+    static function countBy($column = 'id', $operator = '=', $find)
     {
         if (is_null($find))
-            return \R::count(self::getTableStatic());
+            die("**wp_infinite** : Need string to find ::countBy('money', '>', '1000');");
         else
-            return \R::count(self::getTableStatic(), " {$column} {$condition} ?", [$find]);
+            return \R::count(self::getTableStatic(), " {$column} {$operator} ?", [$find]);
     }
 
     static function countLike($column = 'id', $keyword = '')
@@ -367,11 +367,11 @@ class ModelController extends UtilitiesController
     }
 
     //--------------- RELATION HELPER ----------------//
-    static function OwnOneBy($by_column_name = 'id', $condition = '=', $value)
+    static function OwnOneBy($by_column_name = 'id', $operator = '=', $value)
     {
         if (is_null($value) or empty($value))
             throw new \Exception("**[ wp_infinite Error : \"Can't find item, Need ID (Have you use '->readAction(*id*)' yet?)\" ]**");
-        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$condition} ?", [$value] );
+        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$operator} ?", [$value] );
 
     }
 
