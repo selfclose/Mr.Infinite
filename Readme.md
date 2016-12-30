@@ -89,13 +89,13 @@ Alright! You have to see these methods first.
 * ->readByAction();
 
 **Filter and Manage method**
-* ::find();
-* ::findBy();
-* ::findOneBy();
-* ::findAll();
-* ::findLike();
-* [::count()](); _::count('name');_
-* ::countBy();
+* [::find();](https://github.com/selfclose/wp_infinite/wiki/Filter#find)
+* [::findBy();](https://github.com/selfclose/wp_infinite/wiki/Filter#findBy)
+* [::findOneBy();](https://github.com/selfclose/wp_infinite/wiki/Filter#findOnBy)
+* [::findAll();](https://github.com/selfclose/wp_infinite/wiki/Filter#findAll)
+* [::findLike();](https://github.com/selfclose/wp_infinite/wiki/Filter#findLike)
+* [::count()();](https://github.com/selfclose/wp_infinite/wiki/Filter#count)
+* [::countBy();](https://github.com/selfclose/wp_infinite/wiki/Filter#countBy)
 * ::purge();
 
 "->" Need to declare instance first. _(new Book())_<br/>
