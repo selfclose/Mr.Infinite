@@ -194,6 +194,47 @@ class ModelController extends UtilitiesController
         var_dump($this);
     }
 
+    public function Query($query_command)
+    {
+        global $wpdb;
+        return $wpdb->get_results($query_command);
+    }
+
+    /**
+     * @example  findAllAction('ORDER BY title DESC LIMIT 10');
+     * @param string $AddQuery
+     * @return array
+     */
+    public function readAllCustomQueryAction($AddQuery = '')
+    {
+        return array_values(\R::findAll($this->getTable(), $AddQuery));
+    }
+
+    //--------- Filter Zone --------//
+
+    static function find($id)
+    {
+        return \R::load(self::getTableStatic(),$id);
+    }
+
+    /**
+     * @param string $findBy
+     * @param $keyword
+     * @param string $orderBy
+     * @param bool $sortReverse
+     * @param string $limit
+     * @return array
+     */
+    static function findBy($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    {
+        global $wpdb;
+        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
+        if ($limit != '')
+            $concat .= ' LIMIT ' . $limit;
+
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} = '{$keyword}'{$concat}");
+    }
+
     /**
      * @param string $orderBy
      * @param bool $sortReverse
@@ -211,37 +252,6 @@ class ModelController extends UtilitiesController
         return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()."{$concat}");
     }
 
-    public function Query($query_command)
-    {
-        global $wpdb;
-        return $wpdb->get_results($query_command);
-    }
-
-    /**
-     * @param string $column
-     * @param $find
-     * @param bool $sortReverse
-     * @return int
-     * Find Row Index for example : Top Money, what is my position?
-     */
-    static function findRowIndex($column = 'id', $find, $sortReverse = false)
-    {
-        global $wpdb;
-        $table = self::getTableStatic();
-        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM {$table} WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM {$table} WHERE {$column} = '{$find}'")->position;
-    }
-
-    /**
-     * @example  findAllAction('ORDER BY title DESC LIMIT 10');
-     * @param string $AddQuery
-     * @return array
-     */
-    public function readAllCustomQueryAction($AddQuery = '')
-    {
-        return array_values(\R::findAll($this->getTable(), $AddQuery));
-    }
-
-    //--------- FINDING Zone --------//
     /**
      * @return int
      */
@@ -282,24 +292,6 @@ class ModelController extends UtilitiesController
      * @param string $limit
      * @return array
      */
-    static function findBy($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
-    {
-        global $wpdb;
-        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
-        if ($limit != '')
-            $concat .= ' LIMIT ' . $limit;
-
-        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} = '{$keyword}'{$concat}");
-    }
-
-    /**
-     * @param string $findBy
-     * @param $keyword
-     * @param string $orderBy
-     * @param bool $sortReverse
-     * @param string $limit
-     * @return array
-     */
     static function findLike($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
     {
         if (substr($keyword, 0, 1) != '%' and substr($keyword, strlen($keyword)-1, 1) != "%")
@@ -313,16 +305,25 @@ class ModelController extends UtilitiesController
         return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '{$keyword}'{$concat}");
     }
 
-    static function find($id)
-    {
-        return \R::load(self::getTableStatic(),$id);
-    }
-
     static function findOneBy($column = 'id', $find)
     {
         //global $wpdb;
         //return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
         return \R::findOne(self::getTableStatic(), " {$column} = ? ", [$find]);
+    }
+
+    /**
+     * @param string $column
+     * @param $find
+     * @param bool $sortReverse
+     * @return int
+     * Find Row Index for example : Top Money, what is my position?
+     */
+    static function findRowIndex($column = 'id', $find, $sortReverse = false)
+    {
+        global $wpdb;
+        $table = self::getTableStatic();
+        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM {$table} WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM {$table} WHERE {$column} = '{$find}'")->position;
     }
 
     //-------- ETC --------//

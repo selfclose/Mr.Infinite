@@ -5,7 +5,7 @@ trait TimestampTrait
 {
     protected $created_at;
     protected $updated_at;
-    
+
 //    public function addTimestamp()
 //    {
 //        $this->addBeforeUpdateAction(function () {
