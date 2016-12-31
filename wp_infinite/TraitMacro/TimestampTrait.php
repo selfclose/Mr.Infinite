@@ -1,5 +1,5 @@
 <?php
-namespace vendor\wp_infinite\TraitMacro;
+namespace wp_infinite\TraitMacro;
 
 trait TimestampTrait
 {

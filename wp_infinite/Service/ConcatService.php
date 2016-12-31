@@ -1,5 +1,5 @@
 <?php
-namespace vendor\wp_infinite\Service;
+namespace wp_infinite\Service;
 
 final class ConcatService
 {

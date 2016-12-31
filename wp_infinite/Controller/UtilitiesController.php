@@ -1,5 +1,5 @@
 <?php
-namespace vendor\wp_infinite\Controller;
+namespace wp_infinite\Controller;
 
 class UtilitiesController
 {

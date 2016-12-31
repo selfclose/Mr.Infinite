@@ -1,5 +1,5 @@
 <?php
-namespace vendor\wp_infinite\Provider;
+namespace wp_infinite\Provider;
 
 class DateTimeProvider
 {
