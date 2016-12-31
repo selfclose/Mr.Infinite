@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__.'/include.php';
+include_once __DIR__ . '/include.php';
 
 if (isset($_GET['import'])) {
     new \Intern\SampleData\Importer();

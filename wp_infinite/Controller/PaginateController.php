@@ -4,7 +4,7 @@
  * use for Redbean 4.^ for core
  * By arnanthachai@intbizth.com
  */
-namespace vendor\wp_infinite\Controller;
+namespace wp_infinite\Controller;
 
 use RedBeanPHP\Facade;
 use RedBeanPHP\OODB;
@@ -105,19 +105,19 @@ class PaginateController //extends Facade
 
         if ($search_column=='' && $search_value=='') {
             //if you paginate
-            $this->item_count = $this->model->countAction();
+            $this->item_count = $this->model->count();
 
-            return $this->model->findAllAction($orderBy, $sortReverse, ($this->getCurrentPage() - 1) * $this->getItemPerPage() . ', ' . $this->getItemPerPage());
+            return $this->model->findAll($orderBy, $sortReverse, ($this->getCurrentPage() - 1) * $this->getItemPerPage() . ', ' . $this->getItemPerPage());
         }
         else {
             //if you search
             if ($searchLike) {
                 $this->item_count = \R::count($this->model->getTable(), $search_column.' LIKE ? ', [ '%'.$search_value.'%' ]);
-                return $this->model->findLikeAction($search_column, $search_value, $orderBy, $sortReverse, ($this->getCurrentPage() - 1) * $this->getItemPerPage() . ', ' . $this->getItemPerPage());
+                return $this->model->findLike($search_column, $search_value, $orderBy, $sortReverse, ($this->getCurrentPage() - 1) * $this->getItemPerPage() . ', ' . $this->getItemPerPage());
             }
             else {
                 $this->item_count = \R::count($this->model->getTable(), $search_column.' = ? ', [ $search_value ]);
-                return $this->model->findAction($search_column, $search_value, $orderBy, $sortReverse, ($this->getCurrentPage() - 1) * $this->getItemPerPage() . ', ' . $this->getItemPerPage());
+                return $this->model->findBy($search_column, $search_value, $orderBy, $sortReverse, ($this->getCurrentPage() - 1) * $this->getItemPerPage() . ', ' . $this->getItemPerPage());
             }
 
         }

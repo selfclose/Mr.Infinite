@@ -1,11 +1,11 @@
 <?php
-namespace vendor\wp_infinite\TraitMacro;
+namespace wp_infinite\TraitMacro;
 
 trait TimestampTrait
 {
     protected $created_at;
     protected $updated_at;
-    
+
 //    public function addTimestamp()
 //    {
 //        $this->addBeforeUpdateAction(function () {
@@ -31,6 +31,12 @@ trait TimestampTrait
     public function setUpdatedAt($created_time)
     {
         $this->created_at = $created_time;
+    }
+
+    public function __onInsertAction()
+    {
+        $this->created_at = $this->getCurrentTime();
+        $this->updated_at = $this->getCurrentTime();
     }
 
     public function __onUpdateAction()

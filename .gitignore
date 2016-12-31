@@ -46,9 +46,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-example/components
+old_stuff/example/components
 .idea
 *.__jb_tmp__
 *.php__jb_tmp__
-example/vendor
+old_stuff/example/vendor
 *.lock

@@ -1,10 +1,10 @@
 <?php
 /**
  * Mr.Infinite Beta
- * use for Redbean => 4 for core
+ * use for Redbean 4.^ for core
  * By arnanthachai@intbizth.com
  */
-namespace vendor\wp_infinite\Controller;
+namespace wp_infinite\Controller;
 
 use RedBeanPHP\Facade;
 use RedBeanPHP\OODB;
@@ -142,6 +142,29 @@ class ModelController extends UtilitiesController
     }
 
     /**
+     * @param string $findBy
+     * @param $value string
+     */
+    public function readByAction($findBy = 'id', $value)
+    {
+        $bean = \R::findOne($this->getTable(), $findBy . ' = ? ', [$value]);
+
+        //If ID is upper case fix (redbean upper bug)
+        if (is_array($bean) || is_object($bean)) {
+
+            foreach($bean as $key => $value){
+                $this->{$key} = $value;
+            }
+
+            foreach ($bean as $key => $val) {
+                if ($key == 'ID') {
+                    $this->id = $val;
+                }
+            }
+        }
+    }
+
+    /**
      * @param $getClassMethod object|OODB such as ->getEducations()
      * @param array $ids
      * @return array
@@ -171,6 +194,47 @@ class ModelController extends UtilitiesController
         var_dump($this);
     }
 
+    public function Query($query_command)
+    {
+        global $wpdb;
+        return $wpdb->get_results($query_command);
+    }
+
+    /**
+     * @example  findAllAction('ORDER BY title DESC LIMIT 10');
+     * @param string $AddQuery
+     * @return array
+     */
+    public function readAllCustomQueryAction($AddQuery = '')
+    {
+        return array_values(\R::findAll($this->getTable(), $AddQuery));
+    }
+
+    //--------- Filter Zone --------//
+
+    static function find($id)
+    {
+        return \R::load(self::getTableStatic(),$id);
+    }
+
+    /**
+     * @param string $findBy
+     * @param $keyword
+     * @param string $orderBy
+     * @param bool $sortReverse
+     * @param string $limit
+     * @return array
+     */
+    static function findBy($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    {
+        global $wpdb;
+        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
+        if ($limit != '')
+            $concat .= ' LIMIT ' . $limit;
+
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} = '{$keyword}'{$concat}");
+    }
+
     /**
      * @param string $orderBy
      * @param bool $sortReverse
@@ -188,36 +252,6 @@ class ModelController extends UtilitiesController
         return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()."{$concat}");
     }
 
-    public function Query($query_command)
-    {
-        global $wpdb;
-        return $wpdb->get_results($query_command);
-    }
-
-    /**
-     * @param string $column
-     * @param $find
-     * @param bool $sortReverse
-     * @return int
-     * Find Row Index for example : Top Money, what is my position?
-     */
-    static function findRowIndex($column = 'id', $find, $sortReverse = false)
-    {
-        global $wpdb;
-        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM ".self::getTable()." WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM ".self::getTable()." WHERE {$column} = '{$find}'")->position;
-    }
-
-    /**
-     * @example  findAllAction('ORDER BY title DESC LIMIT 10');
-     * @param string $AddQuery
-     * @return array
-     */
-    public function readAllCustomQueryAction($AddQuery = '')
-    {
-        return array_values(\R::findAll($this->getTable(), $AddQuery));
-    }
-
-    //--------- FINDING Zone --------//
     /**
      * @return int
      */
@@ -226,12 +260,17 @@ class ModelController extends UtilitiesController
         return \R::count(self::getTableStatic());
     }
 
-    static function countBy($column = 'id', $find = '')
+    /**
+     * @param string $column
+     * @param $find string | int
+     * @return int
+     */
+    static function countBy($column = 'id', $operator = '=', $find)
     {
-        if (empty($find))
-            return \R::count(self::getTableStatic());
+        if (is_null($find))
+            die("**wp_infinite** : Need string to find ::countBy('money', '>', '1000');");
         else
-            return \R::count(self::getTableStatic(), " {$column} = ?", [$find]);
+            return \R::count(self::getTableStatic(), " {$column} {$operator} ?", [$find]);
     }
 
     static function countLike($column = 'id', $keyword = '')
@@ -243,24 +282,6 @@ class ModelController extends UtilitiesController
             return \R::count(self::getTableStatic());
         else
             return \R::count(self::getTableStatic(), " {$column} like ?", [$keyword]);
-    }
-
-    /**
-     * @param string $findBy
-     * @param $keyword
-     * @param string $orderBy
-     * @param bool $sortReverse
-     * @param string $limit
-     * @return array
-     */
-    static function find($keyword, $findBy = 'id', $orderBy = 'id', $sortReverse = false, $limit = '')
-    {
-        global $wpdb;
-        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
-        if ($limit != '')
-            $concat .= ' LIMIT ' . $limit;
-
-        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} = '{$keyword}'{$concat}");
     }
 
     /**
@@ -284,34 +305,25 @@ class ModelController extends UtilitiesController
         return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '{$keyword}'{$concat}");
     }
 
-    static function findId($id = 1)
-    {
-        return \R::load(self::getTableStatic(),$id);
-    }
-
-    public function readByAction($findBy = 'id', $value = '1')
-    {
-        $bean = \R::findOne($this->getTable(), $findBy . ' = ? ', [$value]);
-
-        //If ID is upper case fix (redbean upper bug)
-        if (is_array($bean) || is_object($bean)) {
-
-            foreach($bean as $key => $value){
-                $this->{$key} = $value;
-            }
-
-            foreach ($bean as $key => $val) {
-                if ($key == 'ID') {
-                    $this->id = $val;
-                }
-            }
-        }
-    }
-
     static function findOneBy($column = 'id', $find)
     {
+        //global $wpdb;
+        //return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
+        return \R::findOne(self::getTableStatic(), " {$column} = ? ", [$find]);
+    }
+
+    /**
+     * @param string $column
+     * @param $find
+     * @param bool $sortReverse
+     * @return int
+     * Find Row Index for example : Top Money, what is my position?
+     */
+    static function findRowIndex($column = 'id', $find, $sortReverse = false)
+    {
         global $wpdb;
-        return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
+        $table = self::getTableStatic();
+        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM {$table} WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM {$table} WHERE {$column} = '{$find}'")->position;
     }
 
     //-------- ETC --------//
@@ -356,11 +368,11 @@ class ModelController extends UtilitiesController
     }
 
     //--------------- RELATION HELPER ----------------//
-    static function OwnOneBy($by_column_name = 'id', $expression = '=', $value)
+    static function OwnOneBy($by_column_name = 'id', $operator = '=', $value)
     {
         if (is_null($value) or empty($value))
             throw new \Exception("**[ wp_infinite Error : \"Can't find item, Need ID (Have you use '->readAction(*id*)' yet?)\" ]**");
-        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$expression} ?", [$value] );
+        return \R::findOne(self::getTableStatic(), "{$by_column_name} {$operator} ?", [$value] );
 
     }
 
