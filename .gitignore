@@ -52,3 +52,5 @@ old_stuff/example/components
 *.php__jb_tmp__
 old_stuff/example/vendor
 *.lock
+
+old_stuff/
