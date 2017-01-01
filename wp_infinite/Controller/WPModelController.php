@@ -1,7 +1,7 @@
 <?php
 namespace wp_infinite\Controller;
 
-class WPDBController
+class WPModelController
 {
     protected $wpdb;
     protected $table;

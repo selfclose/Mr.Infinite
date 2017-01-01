@@ -1,5 +1,5 @@
 <?php
-//include this file IF you don't use composer.
+/**include this file IF you don't use composer.**/
 include_once __DIR__ . '/wp_infinite/Vendor/RedBeanPHP4_3_3/rb.php';
 
 /**
