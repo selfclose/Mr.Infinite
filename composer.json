@@ -23,6 +23,9 @@
   "autoload": {
     "psr-4": {
       "wp_infinite\\": "wp_infinite/"
-    }
+    },
+    "files": [
+      "wp_infinite/Vendor/RedBeanPHP4_3_3/rb.php"
+    ]
   }
 }
