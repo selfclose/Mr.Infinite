@@ -1,8 +1,8 @@
 <?php
 /**
- * Mr.Infinite Beta
- * use for Redbean 4.^ for core
- * By arnanthachai@intbizth.com
+ * wp_infinite (Beta)
+ * use for Redbean >= 4 for core
+ * mvc controller By it_531413016@hotmail.com
  */
 namespace wp_infinite\Controller;
 
@@ -30,20 +30,22 @@ class ModelController extends UtilitiesController
     {
         //if not override $table, it will use class name who's calling as table name
         if (is_null($this->table)) {
-            $this->table = strtolower(get_class_vars(get_called_class())['table']);
+            $class = get_called_class();
+            $this->table = strtolower(get_class_vars($class)['table']);
 
             if (empty($this->table)) {
-                $ex = explode("\\", get_called_class());
-                return $this->table = strtolower(end($ex));
+                return $this->table = strtolower(substr($class, strripos($class, '\\') + 1));
             }
         }
         return $this->table;
     }
 
     private static function getTableStatic() {
-        $table = strtolower(get_class_vars(get_called_class())['table']);
-        if (empty($table))
-            return strtolower(end(explode("\\", get_called_class())));
+        $class = get_called_class();
+        $table = strtolower(get_class_vars($class)['table']);
+        if (empty($table)) {
+            return strtolower(substr($class, strripos($class, '\\') + 1));
+        }
         return$table;
     }
 
