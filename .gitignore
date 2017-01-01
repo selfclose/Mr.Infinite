@@ -53,4 +53,4 @@ old_stuff/example/components
 old_stuff/example/vendor
 *.lock
 
-old_stuff/
+ignore/
