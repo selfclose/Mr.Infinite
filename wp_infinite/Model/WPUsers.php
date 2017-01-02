@@ -3,7 +3,7 @@ namespace wp_infinite\Model;
 
 use wp_infinite\Controller\WPModelController;
 
-class WPUser extends WPModelController
+class WPUsers extends WPModelController
 {
     protected $table = 'wp_users';
 

@@ -1,7 +1,7 @@
 ## **WP_Infinite (beta)**
 Create Wordpress plugin in MVC(Kind of) + CRUD in simple way.
 
-[![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=0.2.1&x2=0)](#)
+[![GitHub version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=gh&type=6&v=0.3.0&x2=0)](#)
 [![WordPress](https://img.shields.io/wordpress/v/akismet.svg)]()
 
 Arnanthachai chomphuchai<br/>
