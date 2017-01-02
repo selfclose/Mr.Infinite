@@ -7,7 +7,6 @@ class WPUsers extends WPModelController
 {
     protected $table = 'wp_users';
 
-    protected $ID;
     protected $user_login;
     protected $user_pass;
     protected $user_nicename;
@@ -19,23 +18,7 @@ class WPUsers extends WPModelController
     protected $display_name;
 
     /**
-     * @return mixed
-     */
-    public function getID()
-    {
-        return $this->ID;
-    }
-
-    /**
-     * @param mixed $ID
-     */
-    public function setID($ID)
-    {
-        $this->ID = $ID;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getUserLogin()
     {
@@ -43,7 +26,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_login
+     * @param string $user_login
      */
     public function setUserLogin($user_login)
     {
@@ -51,7 +34,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserPass()
     {
@@ -59,7 +42,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_pass
+     * @param string $user_pass
      */
     public function setUserPass($user_pass)
     {
@@ -67,7 +50,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserNicename()
     {
@@ -75,7 +58,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_nicename
+     * @param string $user_nicename
      */
     public function setUserNicename($user_nicename)
     {
@@ -83,7 +66,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserEmail()
     {
@@ -91,7 +74,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_email
+     * @param string $user_email
      */
     public function setUserEmail($user_email)
     {
@@ -99,7 +82,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserUrl()
     {
@@ -107,7 +90,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_url
+     * @param string $user_url
      */
     public function setUserUrl($user_url)
     {
@@ -115,7 +98,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserRegistered()
     {
@@ -123,7 +106,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_registered
+     * @param string $user_registered
      */
     public function setUserRegistered($user_registered)
     {
@@ -131,7 +114,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserActivationKey()
     {
@@ -139,7 +122,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_activation_key
+     * @param string $user_activation_key
      */
     public function setUserActivationKey($user_activation_key)
     {
@@ -147,7 +130,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserStatus()
     {
@@ -155,7 +138,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $user_status
+     * @param string $user_status
      */
     public function setUserStatus($user_status)
     {
@@ -163,7 +146,7 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDisplayName()
     {
@@ -171,35 +154,37 @@ class WPUsers extends WPModelController
     }
 
     /**
-     * @param mixed $display_name
+     * @param string $display_name
      */
     public function setDisplayName($display_name)
     {
         $this->display_name = $display_name;
     }
 
-    public function InsertAction($force = false)
+    /**
+     * @return int|\WP_Error
+     */
+    public function insertAction()
     {
-        global $wpdb;
+        return wp_insert_user([
+            'user_pass' => $this->getUserPass(),
+            'user_login' => $this->getUserLogin(),
+            'user_nicename' => $this->getUserNicename(),
+            'user_url' => $this->getUserUrl(),
+            'user_email' => $this->getUserEmail(),
+            'display_name' => $this->getDisplayName(),
+//            'nickname' => $this->getUserNicename(),
+//            'first_name' => $this->getUserNicename(),
+//            'last_name' => $this->getUserNicename(),
+//            'description' => $this->getUserNicename(),
+//            'role' => $this->getUserNicename(),
+
+        ]);
+
         print_r(get_class_methods($this));exit();
         $wpdb->get_row("INSERT INTO `{$this->table}` (user_login) VALUES ()");
         wp_create_user($this->getUserLogin(), $this->getUserPass());
         //wp_create_user();
-    }
-
-    static function find($id)
-    {
-        global $wpdb;
-        return $wpdb->get_row("SELECT * FROM wp_users WHERE ID = '{$id}'");
-    }
-
-    /**
-     * @return int
-     */
-    static function count()
-    {
-        global $wpdb;
-        return $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->users}");
     }
 
 }
