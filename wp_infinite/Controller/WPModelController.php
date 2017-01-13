@@ -1,6 +1,8 @@
 <?php
 namespace wp_infinite\Controller;
 
+use wp_infinite\Model\WPUsers;
+
 class WPModelController
 {
     protected $table;
@@ -47,6 +49,11 @@ class WPModelController
      */
     private static function getTableStatic() {
         $class = get_called_class();
+        if ($class == WPUsers::class) {
+            global $wpdb;
+            return $wpdb->users;
+        }
+
         $table = strtolower(get_class_vars($class)['table']);
         if (empty($table)) {
             return strtolower(substr($class, strripos($class, '\\') + 1));
@@ -85,9 +92,6 @@ class WPModelController
                 }
             }
         }
-
-        var_dump($concat_key);
-        var_dump($concat_val);
     }
 
     static function find($id)

@@ -5,7 +5,7 @@ use wp_infinite\Controller\WPModelController;
 
 class WPUsers extends WPModelController
 {
-    protected $table = 'wp_users';
+    //automatic table name 'wp_users'
 
     protected $user_login;
     protected $user_pass;
