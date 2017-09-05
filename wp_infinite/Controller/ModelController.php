@@ -89,6 +89,9 @@ class ModelController extends UtilitiesController
         }
 
         $this->__beforeUpdateAction();
+        if ($this->timestamp) {
+            $this->updated_at = $this->getCurrentTime();
+        }
 
         //collect property
         $props = array_diff_key(get_object_vars($this), array_flip(['table', 'dataModel']));
