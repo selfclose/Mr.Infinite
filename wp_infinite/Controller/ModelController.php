@@ -13,6 +13,7 @@ class ModelController extends UtilitiesController
 {
     protected $id;
     protected $table;
+    protected $timestamp = true;
     public $dataModel;
 
     /**
@@ -57,23 +58,23 @@ class ModelController extends UtilitiesController
      */
     public function insertAction($force = false)
     {
-        $this->__onInsertAction();
+        $this->__beforeInsertAction();
+        if ($this->timestamp) {
+            $this->created_at = $this->getCurrentTime();
+            $this->updated_at = $this->getCurrentTime();
+        }
+
         //Dispense if force use getRedBean
         $bean = \R::getRedBean()->dispense($this->getTable()); //can use underscore
 
         //collect property
-        $props = array_diff_key(get_object_vars($this), array_flip(['table', 'id', 'dataModel']));
+        $props = array_diff_key(get_object_vars($this), array_flip(['table', 'id', 'dataModel', 'timestamp']));
 
         foreach ($props as $key=>$val) {
             if (is_null($val))
                 unset($props[$key]);
         }
 
-        //TODO: Go to timestamp trait
-//        if ($this->timestamp) {
-//            $this->created_at = $this->getCurrentTime();
-//            $this->updated_at = $this->getCurrentTime();
-//        }
         return \R::store($bean->import($props));
     }
 
@@ -87,7 +88,7 @@ class ModelController extends UtilitiesController
             throw new \Exception("**[ wp_infinite Error : \"Update Need ID (Have you use '->readAction()' yet?)\" ]**");
         }
 
-        $this->__onUpdateAction();
+        $this->__beforeUpdateAction();
 
         //collect property
         $props = array_diff_key(get_object_vars($this), array_flip(['table', 'dataModel']));
@@ -101,11 +102,11 @@ class ModelController extends UtilitiesController
         return \R::store($bean->import($props));
     }
 
-    public function __onUpdateAction() {
+    public function __beforeUpdateAction() {
         //FOR OVERRIDE ONLY
     }
 
-    public function __onInsertAction() {
+    public function __beforeInsertAction() {
         //FOR OVERRIDE ONLY
     }
 
