@@ -7,18 +7,19 @@ class WPModelController
 {
     protected $table;
     protected $ID;
+    protected $timestamp = true;
 
-//    function __construct()
-//    {
-//        global $wpdb;
-//        $this->wpdb = $wpdb;
-//
-//        //if you not override $table, it will use class name as table's name
-//        if (empty($this->table)) {
-//            $ex = explode("\\", get_called_class());
-//            $this->table = strtolower($ex[count($ex)-1]);
-//        }
-//    }
+    //    function __construct()
+    //    {
+    //        global $wpdb;
+    //        $this->wpdb = $wpdb;
+    //
+    //        //if you not override $table, it will use class name as table's name
+    //        if (empty($this->table)) {
+    //            $ex = explode("\\", get_called_class());
+    //            $this->table = strtolower($ex[count($ex)-1]);
+    //        }
+    //    }
 
     /**
      * @return int
@@ -60,6 +61,8 @@ class WPModelController
         }
         return $table;
     }
+
+    //TODO: insertAction
 
     public function readAction($id)
     {
@@ -145,6 +148,45 @@ class WPModelController
     {
         global $wpdb;
         return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM ".self::getTableStatic()." WHERE {$column} " .($sortReverse?"<=":">=")." '{$find}') AS position FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'")->position;
+    }
+
+    public function query($query_command)
+    {
+        global $wpdb;
+        return $wpdb->get_results($query_command);
+    }
+
+    /**
+     * @param string $findBy
+     * @param $keyword
+     * @param string $orderBy
+     * @param bool $sortReverse
+     * @param string $limit
+     * @return array
+     */
+    static function findLike($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    {
+        if (substr($keyword, 0, 1) != '%' and substr($keyword, strlen($keyword)-1, 1) != "%")
+            $keyword = "%{$keyword}%";
+
+        global $wpdb;
+        $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
+        if ($limit != '')
+            $concat .= ' LIMIT ' . $limit;
+
+        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '{$keyword}'{$concat}");
+    }
+
+    /**
+     * @param $column_name
+     * @param $comment
+     * @return bool|int
+     */
+    static function setColumnComment($column_name, $comment)
+    {
+        global $wpdb;
+        $type = $wpdb->get_row("SHOW FIELDS FROM ".self::getTableStatic()." WHERE FIELD ='{$column_name}'")->Type;
+        return $wpdb->query("ALTER TABLE `".self::getTableStatic()."` CHANGE `{$column_name}` `{$column_name}` {$type} COMMENT '{$comment}'");
     }
 
 }

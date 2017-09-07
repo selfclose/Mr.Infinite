@@ -41,7 +41,7 @@ class ModelController extends UtilitiesController
         return $this->table;
     }
 
-    private static function getTableStatic() {
+    public static function getTableStatic() {
         $class = get_called_class();
         $table = strtolower(get_class_vars($class)['table']);
         if (empty($table)) {
@@ -188,6 +188,11 @@ class ModelController extends UtilitiesController
             return \R::trash($this->getTable(), $id);
     }
 
+    public static function wipe()
+    {
+        return \R::wipe(self::getTableStatic());
+    }
+
     public function queryGet()
     {
         $arr = [];
@@ -200,20 +205,9 @@ class ModelController extends UtilitiesController
         var_dump($this);
     }
 
-    public function Query($query_command)
+    public function query($query)
     {
-        global $wpdb;
-        return $wpdb->get_results($query_command);
-    }
-
-    /**
-     * @example  findAllAction('ORDER BY title DESC LIMIT 10');
-     * @param string $AddQuery
-     * @return array
-     */
-    public function readAllCustomQueryAction($AddQuery = '')
-    {
-        return array_values(\R::findAll($this->getTable(), $AddQuery));
+        return \R::exec($query);
     }
 
     //--------- Filter Zone --------//
@@ -233,29 +227,37 @@ class ModelController extends UtilitiesController
      */
     static function findBy($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
     {
-        global $wpdb;
         $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
 
-        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} = '{$keyword}'{$concat}");
+        return \R::find(self::getTableStatic()," WHERE {$findBy} = '{$keyword}'{$concat}");
+    }
+
+    /**
+     * @example  findByQuery('ORDER BY title DESC LIMIT 10');
+     * @param string $AddQuery
+     * @return array
+     */
+    static function findByQuery($query = '')
+    {
+        return array_values(\R::findAll(self::getTableStatic(), $query));
     }
 
     /**
      * @param string $orderBy
      * @param bool $sortReverse
      * @param string $limit
-     * @return object
+     * @return array
      */
     static function findAll($orderBy = '', $sortReverse = false, $limit = '')
     {
-        global $wpdb;
         $concat = '';
         if ($orderBy != '')
             $concat .= ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
-        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()."{$concat}");
+        return \R::findAll(self::getTableStatic(), "SELECT * FROM ".self::getTableStatic()."{$concat}");
     }
 
     /**
@@ -292,23 +294,19 @@ class ModelController extends UtilitiesController
 
     /**
      * @param string $findBy
-     * @param $keyword
+     * @param array $keyword
      * @param string $orderBy
      * @param bool $sortReverse
      * @param string $limit
      * @return array
      */
-    static function findLike($findBy = 'id', $keyword, $orderBy = 'id', $sortReverse = false, $limit = '')
+    static function findLike($findBy = 'id', $keywords = [], $orderBy = 'id', $sortReverse = false, $limit = '')
     {
-        if (substr($keyword, 0, 1) != '%' and substr($keyword, strlen($keyword)-1, 1) != "%")
-            $keyword = "%{$keyword}%";
-
-        global $wpdb;
         $concat = ' ORDER BY ' . $orderBy . ' ' . ($sortReverse ? 'DESC' : 'ASC');
         if ($limit != '')
             $concat .= ' LIMIT ' . $limit;
 
-        return $wpdb->get_results("SELECT * FROM ".self::getTableStatic()." WHERE {$findBy} LIKE '{$keyword}'{$concat}");
+        return \R::findLike(self::getTableStatic(), $keywords, $concat);
     }
 
     static function findOneBy($column = 'id', $find)
@@ -327,9 +325,7 @@ class ModelController extends UtilitiesController
      */
     static function findRowIndex($column = 'id', $find, $sortReverse = false)
     {
-        global $wpdb;
-        $table = self::getTableStatic();
-        return $wpdb->get_row("SELECT (SELECT COUNT(*) FROM {$table} WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM {$table} WHERE {$column} = '{$find}'")->position;
+        return \R::exec("SELECT (SELECT COUNT(*) FROM ".self::getTableStatic()." WHERE {$column} " . ($sortReverse ? "<=" : ">=") . " '{$find}') AS position FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
     }
 
     //-------- ETC --------//
@@ -341,36 +337,36 @@ class ModelController extends UtilitiesController
     /**
      * @param $column_name
      * @param $comment
-     * @return bool|int
      */
     static function setColumnComment($column_name, $comment)
     {
-        global $wpdb;
-        $type = $wpdb->get_row("SHOW FIELDS FROM ".self::getTableStatic()." WHERE FIELD ='{$column_name}'")->Type;
-        return $wpdb->query("ALTER TABLE `".self::getTableStatic()."` CHANGE `{$column_name}` `{$column_name}` {$type} COMMENT '{$comment}'");
+        $type = \R::getRow("SHOW FIELDS FROM ".self::getTableStatic()." WHERE FIELD ='{$column_name}'")['Type'];
+        \R::exec("ALTER TABLE `".self::getTableStatic()."` CHANGE `{$column_name}` `{$column_name}` {$type} COMMENT '{$comment}'");
     }
 
     static function resetAutoIncrement()
     {
-        \R::exec("ALTER TABLE ".self::getTableStatic()." AUTO_INCREMENT = 1");
+        return \R::exec("ALTER TABLE ".self::getTableStatic()." AUTO_INCREMENT = 1");
     }
 
-    public function updateRelation($column = 'customer_id', $hookTable = 'customers')
+    static function updateRelation($column = 'customer_id', $hookTable = 'customers', $onUpdate = 'CASCADE', $onDelete = 'CASCADE')
     {
         \R::exec(sprintf(
-            "ALTER TABLE %s ADD CONSTRAINT `%s` FOREIGN KEY (`%s`) REFERENCES `%s` (`%s`) ON DELETE CASCADE ON UPDATE CASCADE"
-            , $this->getTable(), 'c_fk_' . $this->getTable() . '_' . $column, $column, $hookTable, $column));
+            "ALTER TABLE %s ADD CONSTRAINT `%s` FOREIGN KEY (`%s`) REFERENCES `%s` (`%s`) ON DELETE $onDelete ON UPDATE $onUpdate"
+            , self::getTableStatic(), 'c_fk_' . self::getTableStatic() . '_' . $column, $column, $hookTable, $column));
     }
 
     static function setDefaultValue($column_name, $defaultValue)
     {
-        \R::exec(sprintf("ALTER TABLE %s ALTER COLUMN %s SET DEFAULT '%s';", self::getTableStatic(), $column_name, $defaultValue));
+        $def = $defaultValue == null ? 'NULL' : "'$defaultValue'";
+        \R::exec("ALTER TABLE `".self::getTableStatic()."` ALTER COLUMN `{$column_name}` SET DEFAULT {$def}");
     }
 
     public function setUnique($columns = [])
     {
         //TODO: change to wpdb;
-        $this->setMeta("buildcommand.unique", $columns);
+        $b = \R::dispense(self::getTableStatic());
+        $b->setMeta("buildcommand.unique", $columns);
     }
 
     //--------------- RELATION HELPER ----------------//
@@ -389,6 +385,5 @@ class ModelController extends UtilitiesController
         return \R::load(self::getTableStatic(), $id );
 
     }
-
     //-------- Private Zone --------//
 }
