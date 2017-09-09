@@ -75,7 +75,11 @@ class ModelController extends UtilitiesController
                 unset($props[$key]);
         }
 
-        return \R::store($bean->import($props));
+        if ($res =\R::store($bean->import($props))) {
+            $this->__afterInsertAction();
+            return $res;
+        }
+        return false;
     }
 
     /**
@@ -102,14 +106,24 @@ class ModelController extends UtilitiesController
         }
         $bean = \R::getRedBean()->dispense($this->getTable()); //can use underscore
 
-        return \R::store($bean->import($props));
+        if ($res = \R::store($bean->import($props))) {
+            $this->__afterUpdateAction();
+        }
+        return $res;
     }
 
     public function __beforeUpdateAction() {
         //FOR OVERRIDE ONLY
     }
+    public function __afterUpdateAction() {
+        //FOR OVERRIDE ONLY
+    }
 
     public function __beforeInsertAction() {
+        //FOR OVERRIDE ONLY
+    }
+
+    public function __afterInsertAction() {
         //FOR OVERRIDE ONLY
     }
 
@@ -235,11 +249,11 @@ class ModelController extends UtilitiesController
     }
 
     /**
-     * @example  findByQuery('ORDER BY title DESC LIMIT 10');
-     * @param string $AddQuery
+     * @example  findWithQuery('ORDER BY title DESC LIMIT 10');
+     * @param string $query
      * @return array
      */
-    static function findByQuery($query = '')
+    static function findWithQuery($query = '')
     {
         return array_values(\R::findAll(self::getTableStatic(), $query));
     }
@@ -309,11 +323,15 @@ class ModelController extends UtilitiesController
         return \R::findLike(self::getTableStatic(), $keywords, $concat);
     }
 
-    static function findOneBy($column = 'id', $find)
+    static function findOneBy($column = 'id', $find, $expression = '=')
     {
         //global $wpdb;
         //return $wpdb->get_row("SELECT * FROM ".self::getTableStatic()." WHERE {$column} = '{$find}'");
-        return \R::findOne(self::getTableStatic(), " {$column} = ? ", [$find]);
+        return \R::findOne(self::getTableStatic(), " {$column} {$expression} ? ", [$find]);
+    }
+
+    static function findOneOrCreate($column, $find, $fieldsToCreate, $expression = '=') {
+        return \R::findOneOrDispense(self::getTableStatic(), " {$column} {$expression} ? ", [$find]);
     }
 
     /**
